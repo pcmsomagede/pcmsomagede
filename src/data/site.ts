@@ -6,7 +6,8 @@ export const site = {
   whatsapp: ['081542889595', '081391329139'],
   email: '',
   url: 'https://pcmsomagede.github.io',
-  description: 'Website resmi Pimpinan Cabang Muhammadiyah Somagede Kabupaten Banyumas.',
+  description: 'Website resmi Pimpinan Cabang Muhammadiyah Somagede Kabupaten Banyumas sebagai pusat berita, kegiatan, agenda, dokumentasi, dan arsip digital.',
+  heroImage: '/hero.webp',
 };
 
 export const navItems = [
@@ -15,6 +16,7 @@ export const navItems = [
   { label: 'Kegiatan', href: '/kegiatan' },
   { label: 'Agenda', href: '/agenda' },
   { label: 'Organisasi', href: '/organisasi' },
+  { label: 'Pimpinan', href: '/pimpinan' },
   { label: 'Galeri', href: '/galeri' },
   { label: 'Arsip', href: '/arsip' },
   { label: 'Kontak', href: '/kontak' },
