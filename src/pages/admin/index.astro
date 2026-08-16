@@ -1,0 +1,49 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { site } from '../../data/site';
+---
+
+<MainLayout title="CMS Admin">
+  <main>
+    <section class="section">
+      <div class="container admin-shell">
+        <span class="eyebrow">CMS Admin</span>
+        <h1>Panel Editor PC Muhammadiyah Somagede</h1>
+        <p class="lead">Kelola berita, kegiatan, dan agenda dari satu tempat. Media foto, video, audio, dan PDF diunggah ke Cloudinary.</p>
+
+        <div class="warning">
+          <strong>Tahap pengembangan:</strong> editor ini sudah dapat membuat dan menyimpan draft di perangkat Anda, tetapi publikasi permanen ke GitHub belum diaktifkan. Kita akan menambahkan autentikasi + Cloudflare Worker sebelum panel ini dipakai pengurus secara resmi.
+        </div>
+
+        <div class="cms-grid">
+          <a class="cms-card" href="/admin/editor?type=berita"><span>📰</span><strong>Berita</strong><small>Tulis artikel, pilih kategori, tag, dan media.</small></a>
+          <a class="cms-card" href="/admin/editor?type=kegiatan"><span>📷</span><strong>Kegiatan</strong><small>Dokumentasi kegiatan dan galeri media.</small></a>
+          <a class="cms-card" href="/admin/editor?type=agenda"><span>📅</span><strong>Agenda</strong><small>Jadwal kegiatan, waktu, tempat, dan poster.</small></a>
+          <a class="cms-card" href="/admin/media"><span>☁️</span><strong>Media Center</strong><small>Upload foto, video, MP3, dan PDF ke Cloudinary.</small></a>
+        </div>
+
+        <div class="quick-info">
+          <div><span>Organisasi</span><strong>{site.shortName}</strong></div>
+          <div><span>Ketua</span><strong>{site.chair}</strong></div>
+          <div><span>WhatsApp</span><strong>{site.whatsapp.join(' · ')}</strong></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</MainLayout>
+
+<style>
+  .admin-shell { max-width:1000px; }
+  h1 { margin:.35rem 0 .6rem; }
+  .lead { max-width:760px; color:#5d697a; font-size:1.05rem; }
+  .warning { margin:1.5rem 0; padding:1rem 1.2rem; background:#fff8e8; border-left:4px solid #b87900; border-radius:10px; color:#5f4b20; }
+  .cms-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin-top:1.5rem; }
+  .cms-card { display:grid; grid-template-columns:auto 1fr; column-gap:.9rem; align-items:center; padding:1.25rem; background:#fff; border:1px solid #dbe2ec; border-radius:16px; text-decoration:none; color:inherit; transition:.2s ease; }
+  .cms-card:hover { transform:translateY(-2px); border-color:#0b4da2; box-shadow:0 10px 24px rgba(0,0,0,.07); }
+  .cms-card span { grid-row:span 2; font-size:2rem; }
+  .cms-card strong { font-size:1.08rem; }
+  .cms-card small { color:#687386; margin-top:.2rem; }
+  .quick-info { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid #e3e8ef; }
+  .quick-info span { display:block; color:#778396; font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; margin-bottom:.3rem; }
+  @media(max-width:700px){ .cms-grid,.quick-info{grid-template-columns:1fr;} }
+</style>
