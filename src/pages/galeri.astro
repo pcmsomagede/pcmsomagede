@@ -1,4 +1,8 @@
 ---
-import SectionPage from '../components/SectionPage.astro';
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/PageHero.astro';
 ---
-<SectionPage title="Galeri" intro="Galeri foto dan dokumentasi visual kegiatan PC Muhammadiyah Somagede." />
+<MainLayout title="Galeri">
+  <PageHero eyebrow="Dokumentasi" title="Galeri Kegiatan" description="Koleksi foto dan media kegiatan PC Muhammadiyah Somagede. Galeri akan terhubung ke Cloudinary pada tahap integrasi media." />
+  <main class="section"><div class="container"><div class="gallery-grid">{['Kegiatan & Pengajian','Rapat Organisasi','Program Sosial','Pendidikan','Publikasi','Milad Muhammadiyah','Dokumentasi Lapangan','Arsip Foto'].map((label) => <div class="gallery-item">{label}<br /><small>Media Cloudinary</small></div>)}</div></div></main>
+</MainLayout>
