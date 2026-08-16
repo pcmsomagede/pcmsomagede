@@ -1,4 +1,12 @@
 ---
-import SectionPage from '../components/SectionPage.astro';
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
 ---
-<SectionPage title="Kontak" intro="Informasi sekretariat dan saluran komunikasi resmi PC Muhammadiyah Somagede." />
+<MainLayout title="Kontak">
+  <PageHero eyebrow="Hubungi Kami" title="Kontak PC Muhammadiyah Somagede" description="Saluran komunikasi dan alamat sekretariat Pimpinan Cabang Muhammadiyah Somagede Kabupaten Banyumas." />
+  <main class="section"><div class="container contact-grid">
+    <article class="contact-card"><h2>Sekretariat</h2><p>{site.address}</p><h3>WhatsApp</h3>{site.whatsapp.map((number) => <p><a href={`https://wa.me/62${number.slice(1)}`}>{number}</a></p>)}</article>
+    <article class="contact-card"><h2>Informasi Organisasi</h2><p><strong>Ketua:</strong> {site.chair}</p><p><strong>Website:</strong> <a href="/">pcmsomagede.github.io</a></p><p>Untuk keperluan resmi, silakan gunakan salah satu nomor WhatsApp di atas.</p></article>
+  </div></main>
+</MainLayout>
