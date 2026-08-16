@@ -1,82 +1,98 @@
 ---
+import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_PRESETS } from '../lib/cloudinary';
+
 interface Props {
-  folder?: string;
-  buttonLabel?: string;
+  defaultType?: 'image' | 'video' | 'audio' | 'document';
 }
 
-const { folder = 'pcmsomagede/berita', buttonLabel = 'Unggah media' } = Astro.props;
-const cloudName = import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME ?? '';
-const uploadPreset = import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET ?? '';
-const configured = Boolean(cloudName && uploadPreset);
+const { defaultType = 'image' } = Astro.props;
 ---
 
-<div class="media-uploader" data-configured={configured ? 'true' : 'false'} data-cloud-name={cloudName} data-upload-preset={uploadPreset} data-folder={folder}>
-  <button class="upload-button" type="button" disabled={!configured}>
-    {buttonLabel}
-  </button>
-  <p class="upload-status" aria-live="polite">
-    {configured ? `Media akan disimpan ke folder ${folder}.` : 'Upload Cloudinary belum diaktifkan. Isi environment PUBLIC_CLOUDINARY_CLOUD_NAME dan PUBLIC_CLOUDINARY_UPLOAD_PRESET terlebih dahulu.'}
-  </p>
+<div class="media-uploader" data-cloud-name={CLOUDINARY_CLOUD_NAME} data-presets={JSON.stringify(CLOUDINARY_PRESETS)} data-default-type={defaultType}>
+  <div class="upload-grid">
+    <button class="upload-choice" type="button" data-type="image">🖼️ <strong>Foto</strong><small>JPG · PNG · WebP</small></button>
+    <button class="upload-choice" type="button" data-type="video">🎬 <strong>Video</strong><small>MP4 · MOV · WebM</small></button>
+    <button class="upload-choice" type="button" data-type="audio">🎵 <strong>Audio</strong><small>MP3 · M4A · WAV</small></button>
+    <button class="upload-choice" type="button" data-type="document">📄 <strong>Dokumen</strong><small>PDF</small></button>
+  </div>
+  <p class="upload-status" aria-live="polite">Pilih jenis media untuk membuka Cloudinary Upload Widget.</p>
+  <div class="upload-result" hidden></div>
 </div>
 
-{configured && (
-  <script is:inline>
-    const root = document.currentScript?.previousElementSibling;
-    if (root && root.dataset.configured === 'true') {
-      const button = root.querySelector('.upload-button');
-      const status = root.querySelector('.upload-status');
-      const cloudName = root.dataset.cloudName;
-      const uploadPreset = root.dataset.uploadPreset;
-      const folder = root.dataset.folder;
+<script is:inline define:vars={{ cloudName: CLOUDINARY_CLOUD_NAME, presets: CLOUDINARY_PRESETS }}>
+  const root = document.currentScript?.previousElementSibling;
+  const status = root?.querySelector('.upload-status');
+  const result = root?.querySelector('.upload-result');
+  let widgetScript;
+  let widget;
 
-      const loadWidget = () => new Promise((resolve, reject) => {
-        if (window.cloudinary?.createUploadWidget) return resolve(window.cloudinary);
+  const loadWidget = () => {
+    if (window.cloudinary?.createUploadWidget) return Promise.resolve(window.cloudinary);
+    if (!widgetScript) {
+      widgetScript = new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = 'https://upload-widget.cloudinary.com/latest/global/all.js';
+        script.async = true;
         script.onload = () => resolve(window.cloudinary);
         script.onerror = reject;
         document.head.appendChild(script);
       });
+    }
+    return widgetScript;
+  };
 
-      button?.addEventListener('click', async () => {
-        button.disabled = true;
-        status.textContent = 'Menyiapkan uploader...';
-        try {
-          const cloudinary = await loadWidget();
-          const widget = cloudinary.createUploadWidget({
+  root?.querySelectorAll('.upload-choice').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const type = button.dataset.type;
+      if (!type || !presets[type]) return;
+      status.textContent = 'Menyiapkan Cloudinary...';
+      try {
+        const cloudinary = await loadWidget();
+        if (!widget) {
+          widget = cloudinary.createUploadWidget({
             cloudName,
-            uploadPreset,
+            uploadPreset: presets.image,
             sources: ['local', 'camera'],
             multiple: true,
-            folder,
-            clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'pdf'],
-            maxFileSize: 10485760,
             showAdvancedOptions: false,
             cropping: false,
-          }, (error, result) => {
+          }, (error, info) => {
             if (error) {
-              status.textContent = 'Upload gagal. Periksa preset Cloudinary dan koneksi.';
-              button.disabled = false;
+              status.textContent = 'Upload gagal. Periksa format file dan preset Cloudinary.';
+              console.error(error);
               return;
             }
-            if (result?.event === 'success') {
-              status.textContent = `Berhasil diunggah: ${result.info?.original_filename ?? 'media'}`;
+            if (info?.event === 'success') {
+              const asset = info.info;
+              status.textContent = 'Upload berhasil. Metadata media siap dicatat ke konten.';
+              result.hidden = false;
+              result.textContent = `${asset.original_filename ?? 'media'} — ${asset.public_id ?? ''}`;
             }
-            if (result?.event === 'close') button.disabled = false;
           });
-          widget.open();
-        } catch {
-          status.textContent = 'Cloudinary Upload Widget gagal dimuat.';
-          button.disabled = false;
         }
-      });
-    }
-  </script>
-)}
+        widget.update({
+          uploadPreset: presets[type],
+          clientAllowedFormats: type === 'image' ? ['jpg', 'jpeg', 'png', 'webp'] : type === 'video' ? ['mp4', 'mov', 'webm'] : type === 'audio' ? ['mp3', 'm4a', 'wav'] : ['pdf'],
+          maxFileSize: type === 'image' ? 10000000 : type === 'document' ? 25000000 : 100000000,
+          folder: `pcmsomagede/${type}`,
+        });
+        widget.open();
+      } catch (error) {
+        status.textContent = 'Cloudinary Upload Widget gagal dimuat.';
+        console.error(error);
+      }
+    });
+  });
+</script>
 
 <style>
-  .media-uploader { display: grid; gap: .5rem; }
-  .upload-button { border: 0; border-radius: .75rem; padding: .75rem 1rem; background: #0b8068; color: #fff; font: inherit; font-weight: 700; cursor: pointer; width: fit-content; }
-  .upload-button:disabled { opacity: .55; cursor: not-allowed; }
-  .upload-status { margin: 0; color: #64748b; font-size: .9rem; }
+  .media-uploader { display:grid; gap:1rem; }
+  .upload-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.8rem; }
+  .upload-choice { border:1px solid #d7dfeb; background:#fff; border-radius:14px; padding:1rem; text-align:left; cursor:pointer; font:inherit; transition:.2s ease; }
+  .upload-choice:hover { border-color:#0b4da2; transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,.07); }
+  .upload-choice strong,.upload-choice small { display:block; }
+  .upload-choice small { margin-top:.25rem; color:#687386; font-size:.8rem; }
+  .upload-status { margin:0; color:#5b6677; }
+  .upload-result { padding:.8rem 1rem; background:#f4f7fa; border-radius:10px; word-break:break-word; }
+  @media (max-width:700px) { .upload-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 </style>
