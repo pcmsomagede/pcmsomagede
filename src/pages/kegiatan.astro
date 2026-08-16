@@ -1,4 +1,9 @@
 ---
-import SectionPage from '../components/SectionPage.astro';
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { activities } from '../data/content';
 ---
-<SectionPage title="Kegiatan" intro="Dokumentasi dan cerita kegiatan PC Muhammadiyah Somagede." />
+<MainLayout title="Kegiatan">
+  <PageHero eyebrow="Aktivitas" title="Kegiatan PC Muhammadiyah Somagede" description="Ruang dokumentasi program, aktivitas, dan kegiatan persyarikatan." />
+  <main class="section"><div class="container"><div class="cards">{activities.map((item) => <article class="card"><span class="tag">{item.category}</span><h3>{item.title}</h3><p>{item.description}</p><a class="read-more" href="/galeri">Lihat dokumentasi →</a></article>)}</div></div></main>
+</MainLayout>
