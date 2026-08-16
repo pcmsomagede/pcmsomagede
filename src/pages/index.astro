@@ -1,0 +1,61 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+---
+<MainLayout title={site.name}>
+  <Header />
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Media Informasi & Dokumentasi Persyarikatan</div>
+          <h1>Pimpinan Cabang Muhammadiyah Somagede.</h1>
+          <p class="lead">Portal resmi untuk menyajikan berita, agenda, kegiatan, profil organisasi, dan arsip digital Muhammadiyah di Somagede, Kabupaten Banyumas.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="/berita">Baca Berita</a>
+            <a class="button button-secondary" href="/organisasi">Tentang Organisasi</a>
+          </div>
+        </div>
+        <aside class="hero-card">
+          <img src="/logo.svg" alt="Logo PC Muhammadiyah Somagede" />
+          <h2>Bergerak bersama, menebar manfaat.</h2>
+          <p>Ruang digital PC Muhammadiyah Somagede untuk dokumentasi dan komunikasi publik.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div><h2>Berita & Informasi</h2><p>Konten terbaru dari PC Muhammadiyah Somagede.</p></div>
+          <a class="button button-secondary" href="/berita">Semua Berita →</a>
+        </div>
+        <div class="cards">
+          <article class="card"><span class="tag">Organisasi</span><h3>Selamat datang di website resmi PC Muhammadiyah Somagede</h3><p>Portal digital ini menjadi pusat informasi, publikasi, dan arsip kegiatan.</p></article>
+          <article class="card"><span class="tag">Kegiatan</span><h3>Dokumentasi kegiatan akan hadir di sini</h3><p>Galeri dan dokumentasi kegiatan akan terhubung dengan penyimpanan media Cloudinary.</p></article>
+          <article class="card"><span class="tag">Publikasi</span><h3>Arsip digital persyarikatan</h3><p>Dokumen, poster, dan publikasi akan disusun berdasarkan kategori dan tahun.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-head"><div><h2>Agenda & Kegiatan</h2><p>Tempat untuk menampilkan kegiatan yang akan datang.</p></div></div>
+        <div class="info-grid">
+          <div class="info-box"><strong>Agenda mendatang</strong><p>Belum ada agenda yang dipublikasikan. Data agenda akan dikelola melalui sistem konten.</p></div>
+          <div class="info-box"><strong>Dokumentasi</strong><p>Galeri foto kegiatan akan dioptimalkan dan disimpan di Cloudinary agar website tetap ringan.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><div><h2>Tentang PC Muhammadiyah Somagede</h2><p>{site.chair} · Ketua PC Muhammadiyah Somagede</p></div></div>
+        <div class="info-box"><p>Pimpinan Cabang Muhammadiyah Somagede merupakan bagian dari Persyarikatan Muhammadiyah di Kabupaten Banyumas. Website ini disiapkan sebagai pusat informasi publik, dokumentasi kegiatan, dan arsip digital organisasi.</p><p><strong>Sekretariat:</strong> {site.address}</p></div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</MainLayout>
