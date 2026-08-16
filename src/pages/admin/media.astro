@@ -1,0 +1,40 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import CloudinaryUploader from '../../components/CloudinaryUploader.astro';
+import { site } from '../../data/site';
+---
+
+<MainLayout title="Media Center">
+  <main>
+    <section class="section">
+      <div class="container admin-head">
+        <span class="eyebrow">Media Center</span>
+        <h1>Arsip Media PC Muhammadiyah Somagede</h1>
+        <p>Unggah foto, video, audio, dan dokumen ke Cloudinary. Setelah upload berhasil, simpan Public ID yang ditampilkan pada data berita, kegiatan, agenda, atau arsip.</p>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <div class="notice"><strong>Penting:</strong> halaman ini saat ini adalah uploader statis untuk pengembangan. Karena GitHub Pages tidak menjalankan backend, halaman ini belum merupakan login admin. Jangan membagikan alamat halaman ini sebagai sistem administrasi resmi sebelum kita menambahkan autentikasi dan signed upload.</div>
+        <CloudinaryUploader />
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container guide-grid">
+        <article class="info-box"><span class="eyebrow">Alur arsip</span><h2>Media terpisah dari kode website</h2><p>GitHub menyimpan kode dan metadata konten. Cloudinary menyimpan file media sehingga repository tetap ringan dan website dapat mengirim versi gambar/video yang dioptimalkan.</p></article>
+        <article class="info-box"><span class="eyebrow">Kontak organisasi</span><h2>{site.shortName}</h2><p>{site.address}</p><p>WhatsApp: {site.whatsapp.join(' · ')}</p></article>
+      </div>
+    </section>
+  </main>
+</MainLayout>
+
+<style>
+  .admin-head { max-width:850px; }
+  .admin-head h1 { margin:.35rem 0 .8rem; }
+  .admin-head p { max-width:760px; color:#5d697a; font-size:1.05rem; }
+  .notice { margin-bottom:1.5rem; padding:1rem 1.2rem; border-left:4px solid #b87900; background:#fff8e8; border-radius:8px; color:#5f4b20; }
+  .guide-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.2rem; }
+  @media (max-width:700px) { .guide-grid { grid-template-columns:1fr; } }
+</style>
