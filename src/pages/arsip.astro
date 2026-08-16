@@ -1,4 +1,9 @@
 ---
-import SectionPage from '../components/SectionPage.astro';
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { archiveYears } from '../data/content';
 ---
-<SectionPage title="Arsip" intro="Arsip digital dokumen, publikasi, poster, dan rekam kegiatan berdasarkan kategori dan tahun." />
+<MainLayout title="Arsip">
+  <PageHero eyebrow="Pusat Dokumen" title="Arsip Digital" description="Arsip berita, publikasi, dokumen, dan dokumentasi yang disusun berdasarkan tahun." />
+  <main class="section"><div class="container"><div class="archive-grid">{archiveYears.map((year) => <article class="archive-item"><strong>{year}</strong><h3>Arsip Tahun {year}</h3><p>Indeks arsip akan terisi otomatis saat konten dipublikasikan.</p><a class="read-more" href={`/berita?year=${year}`}>Lihat arsip →</a></article>)}</div></div></main>
+</MainLayout>
