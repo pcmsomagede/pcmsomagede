@@ -1,0 +1,23 @@
+---
+import { navItems, site } from '../data/site';
+---
+<header class="site-header">
+  <div class="topline">
+    <div class="container topbar">
+      <span>Website Resmi PC Muhammadiyah Somagede</span>
+      <span>Kabupaten Banyumas</span>
+    </div>
+  </div>
+  <div class="container header-main">
+    <a class="brand" href="/" aria-label={site.name}>
+      <img src="/logo.svg" alt="Logo PC Muhammadiyah Somagede" />
+      <span>
+        <strong>PC MUHAMMADIYAH</strong>
+        <small>SOMAGEDE · BANYUMAS</small>
+      </span>
+    </a>
+    <nav aria-label="Navigasi utama">
+      {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+  </div>
+</header>
