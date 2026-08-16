@@ -1,0 +1,20 @@
+---
+import { site } from '../data/site';
+---
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-brand">PC MUHAMMADIYAH SOMAGEDE</div>
+      <p>{site.description}</p>
+    </div>
+    <div>
+      <h3>Sekretariat</h3>
+      <p>{site.address}</p>
+    </div>
+    <div>
+      <h3>Kontak</h3>
+      <p>WhatsApp: {site.whatsapp.join(' · ')}</p>
+    </div>
+  </div>
+  <div class="container copyright">© {new Date().getFullYear()} Pimpinan Cabang Muhammadiyah Somagede Kabupaten Banyumas.</div>
+</footer>
