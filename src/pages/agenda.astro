@@ -1,4 +1,9 @@
 ---
-import SectionPage from '../components/SectionPage.astro';
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { agenda } from '../data/content';
 ---
-<SectionPage title="Agenda" intro="Jadwal pengajian, rapat, kegiatan, dan agenda persyarikatan." />
+<MainLayout title="Agenda">
+  <PageHero eyebrow="Kalender" title="Agenda Kegiatan" description="Informasi agenda dan jadwal kegiatan yang dibuka untuk publik." />
+  <main class="section"><div class="container"><div class="info-box">{agenda.map((item) => <div class="agenda-row"><div class="date-box">—<small>INFO</small></div><div><h3>{item.title}</h3><p>{item.description}</p>{item.location && <small>{item.location}</small>}</div></div>)}</div></div></main>
+</MainLayout>
