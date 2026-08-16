@@ -1,0 +1,195 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import CloudinaryUploader from '../../components/CloudinaryUploader.astro';
+---
+
+<MainLayout title="Editor Konten">
+  <main>
+    <section class="section editor-section">
+      <div class="container editor-wrap">
+        <div class="editor-top">
+          <div>
+            <a class="back" href="/admin">← Kembali ke CMS</a>
+            <span class="eyebrow">Editor Konten</span>
+            <h1 id="page-title">Buat Berita</h1>
+            <p class="muted">Isi konten, lampirkan media dari Cloudinary, lalu simpan sebagai draft di perangkat ini.</p>
+          </div>
+          <div class="status-pill" id="save-status">Belum disimpan</div>
+        </div>
+
+        <form id="content-form" class="editor-grid">
+          <section class="panel main-panel">
+            <div class="field-row two">
+              <label>Jenis konten<select id="content-type"><option value="berita">Berita</option><option value="kegiatan">Kegiatan</option><option value="agenda">Agenda</option></select></label>
+              <label>Status<select id="status"><option value="draft">Draft</option><option value="published">Terbit</option></select></label>
+            </div>
+
+            <label>Judul<input id="title" required placeholder="Contoh: Kajian Ahad Pagi PC Muhammadiyah Somagede"></label>
+            <label>Slug<input id="slug" placeholder="otomatis dari judul"></label>
+            <label>Ringkasan<textarea id="excerpt" rows="3" placeholder="Ringkasan yang muncul di kartu berita dan SEO."></textarea></label>
+            <label>Isi konten<textarea id="body" rows="14" placeholder="Tulis isi artikel di sini. Pisahkan paragraf dengan baris kosong."></textarea></label>
+
+            <div class="field-row two">
+              <label>Kategori<input id="category" value="Organisasi"></label>
+              <label>Penulis<input id="author" value="Pimpinan Cabang Muhammadiyah Somagede"></label>
+            </div>
+            <div class="field-row two">
+              <label>Tanggal<input id="date" type="date"></label>
+              <label>Tag<input id="tags" placeholder="muhammadiyah, somagede, kegiatan"></label>
+            </div>
+            <div id="agenda-fields" class="field-row two" hidden>
+              <label>Waktu<input id="time" placeholder="08.00 WIB"></label>
+              <label>Lokasi<input id="location" placeholder="Masjid Darul Arqom"></label>
+            </div>
+
+            <div class="actions">
+              <button class="button secondary" type="button" id="new-record">Konten Baru</button>
+              <button class="button secondary" type="button" id="save-draft">Simpan Draft</button>
+              <button class="button primary" type="submit">Simpan Konten</button>
+            </div>
+          </section>
+
+          <aside class="side-column">
+            <section class="panel">
+              <div class="panel-head"><span class="eyebrow">Media</span><h2>Tambahkan Media</h2></div>
+              <p class="muted small">Upload foto, video, MP3, atau PDF. Setelah upload, klik <strong>Tambahkan ke konten</strong> pada hasil upload.</p>
+              <CloudinaryUploader />
+              <div id="media-list" class="media-list"><p class="empty">Belum ada media yang dilampirkan.</p></div>
+            </section>
+
+            <section class="panel help-panel">
+              <span class="eyebrow">Alur publikasi</span>
+              <ol>
+                <li>Tulis judul dan isi.</li>
+                <li>Upload media ke Cloudinary.</li>
+                <li>Lampirkan media ke konten.</li>
+                <li>Simpan sebagai draft atau terbitkan.</li>
+              </ol>
+            </section>
+          </aside>
+        </form>
+      </div>
+    </section>
+  </main>
+</MainLayout>
+
+<script is:inline>
+  const qs = (s) => document.querySelector(s);
+  const form = qs('#content-form');
+  const type = qs('#content-type');
+  const status = qs('#status');
+  const title = qs('#title');
+  const slug = qs('#slug');
+  const body = qs('#body');
+  const date = qs('#date');
+  const mediaList = qs('#media-list');
+  const saveStatus = qs('#save-status');
+  const STORAGE = 'pcmsomagede.cms.records.v1';
+  let media = [];
+  let slugTouched = false;
+
+  const makeSlug = (value) => value.toLowerCase().trim().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const nowDate = () => new Date().toISOString().slice(0, 10);
+  const readRecords = () => { try { return JSON.parse(localStorage.getItem(STORAGE) || '[]'); } catch { return []; } };
+  const writeRecords = (records) => localStorage.setItem(STORAGE, JSON.stringify(records));
+
+  const renderMedia = () => {
+    if (!media.length) { mediaList.innerHTML = '<p class="empty">Belum ada media yang dilampirkan.</p>'; return; }
+    mediaList.innerHTML = media.map((m, i) => `<div class="media-item"><div><strong>${m.type}</strong><span>${m.originalFilename || m.publicId}</span></div><button type="button" data-remove-media="${i}" aria-label="Hapus media">×</button></div>`).join('');
+    mediaList.querySelectorAll('[data-remove-media]').forEach((button) => button.addEventListener('click', () => { media.splice(Number(button.dataset.removeMedia), 1); renderMedia(); }));
+  };
+
+  const reset = () => {
+    form.reset();
+    type.value = new URLSearchParams(location.search).get('type') || 'berita';
+    date.value = nowDate();
+    qs('#category').value = type.value === 'agenda' ? 'Agenda' : type.value === 'kegiatan' ? 'Kegiatan' : 'Organisasi';
+    qs('#author').value = 'Pimpinan Cabang Muhammadiyah Somagede';
+    qs('#agenda-fields').hidden = type.value !== 'agenda';
+    media = [];
+    slugTouched = false;
+    renderMedia();
+    saveStatus.textContent = 'Konten baru';
+    qs('#page-title').textContent = type.value === 'agenda' ? 'Buat Agenda' : type.value === 'kegiatan' ? 'Buat Kegiatan' : 'Buat Berita';
+  };
+
+  type.addEventListener('change', () => { qs('#agenda-fields').hidden = type.value !== 'agenda'; qs('#category').value = type.value === 'agenda' ? 'Agenda' : type.value === 'kegiatan' ? 'Kegiatan' : 'Organisasi'; qs('#page-title').textContent = type.value === 'agenda' ? 'Buat Agenda' : type.value === 'kegiatan' ? 'Buat Kegiatan' : 'Buat Berita'; });
+  title.addEventListener('input', () => { if (!slugTouched) slug.value = makeSlug(title.value); });
+  slug.addEventListener('input', () => { slugTouched = true; });
+
+  window.addEventListener('cloudinary:uploaded', (event) => {
+    const asset = event.detail;
+    media.push({ type: asset.type, publicId: asset.public_id, secureUrl: asset.secure_url, originalFilename: asset.original_filename, resourceType: asset.resource_type, format: asset.format });
+    renderMedia();
+  });
+
+  const collect = () => ({
+    id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}`,
+    type: type.value,
+    slug: slug.value || makeSlug(title.value),
+    title: title.value.trim(),
+    excerpt: qs('#excerpt').value.trim(),
+    body: body.value.trim(),
+    category: qs('#category').value.trim(),
+    author: qs('#author').value.trim(),
+    date: date.value,
+    updated: new Date().toISOString(),
+    status: status.value,
+    tags: qs('#tags').value.split(',').map(x => x.trim()).filter(Boolean),
+    location: qs('#location').value.trim(),
+    time: qs('#time').value.trim(),
+    media
+  });
+
+  const save = (forceStatus) => {
+    if (!title.value.trim()) { title.focus(); alert('Judul wajib diisi.'); return; }
+    const record = collect();
+    if (forceStatus) record.status = forceStatus;
+    const records = readRecords();
+    records.push(record);
+    writeRecords(records);
+    status.value = record.status;
+    saveStatus.textContent = record.status === 'published' ? 'Tersimpan sebagai terbit' : 'Draft tersimpan';
+    saveStatus.classList.add('saved');
+  };
+
+  qs('#save-draft').addEventListener('click', () => save('draft'));
+  form.addEventListener('submit', (e) => { e.preventDefault(); save(status.value); });
+  qs('#new-record').addEventListener('click', reset);
+  reset();
+</script>
+
+<style>
+  .editor-section { padding-top:2.5rem; }
+  .editor-wrap { max-width:1180px; }
+  .editor-top { display:flex; justify-content:space-between; gap:1rem; align-items:flex-end; margin-bottom:1.5rem; }
+  .back { display:inline-block; margin-bottom:1rem; color:#0b4da2; text-decoration:none; font-weight:600; }
+  h1 { margin:.3rem 0 .5rem; }
+  .muted { color:#667386; }
+  .small { font-size:.88rem; }
+  .status-pill { padding:.5rem .8rem; border:1px solid #dbe2ec; border-radius:999px; background:#fff; white-space:nowrap; color:#687386; }
+  .status-pill.saved { border-color:#8cc6a2; background:#effaf3; color:#24633a; }
+  .editor-grid { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(320px,.8fr); gap:1.2rem; align-items:start; }
+  .side-column { display:grid; gap:1.2rem; }
+  .panel { background:#fff; border:1px solid #dbe2ec; border-radius:16px; padding:1.25rem; box-shadow:0 6px 20px rgba(18,39,67,.04); }
+  .panel-head h2 { margin:.25rem 0 .5rem; font-size:1.25rem; }
+  label { display:grid; gap:.4rem; margin-bottom:1rem; font-weight:650; font-size:.92rem; }
+  input,select,textarea { width:100%; box-sizing:border-box; border:1px solid #cfd8e4; border-radius:9px; padding:.75rem .8rem; font:inherit; color:#1d2b3a; background:#fff; }
+  textarea { resize:vertical; line-height:1.6; }
+  input:focus,select:focus,textarea:focus { outline:2px solid rgba(11,77,162,.16); border-color:#0b4da2; }
+  .field-row.two { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .actions { display:flex; flex-wrap:wrap; gap:.7rem; padding-top:.5rem; }
+  .button { border:0; border-radius:9px; padding:.75rem 1rem; font:inherit; font-weight:700; cursor:pointer; }
+  .button.primary { background:#0b4da2; color:#fff; }
+  .button.secondary { background:#eef2f7; color:#26374b; }
+  .media-list { display:grid; gap:.55rem; margin-top:1rem; }
+  .media-item { display:flex; align-items:center; justify-content:space-between; gap:.6rem; padding:.65rem .7rem; border:1px solid #e1e6ee; border-radius:9px; }
+  .media-item strong,.media-item span { display:block; }
+  .media-item strong { font-size:.78rem; text-transform:uppercase; color:#0b4da2; }
+  .media-item span { font-size:.82rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:250px; }
+  .media-item button { border:0; background:transparent; font-size:1.3rem; cursor:pointer; color:#8b3a3a; }
+  .empty { margin:0; color:#8792a2; font-size:.88rem; }
+  .help-panel ol { margin:.6rem 0 0 1.2rem; padding:0; color:#5f6c7e; line-height:1.8; }
+  @media(max-width:850px){ .editor-grid{grid-template-columns:1fr;} }
+  @media(max-width:600px){ .editor-top{align-items:flex-start; flex-direction:column;} .field-row.two{grid-template-columns:1fr;} }
+</style>
