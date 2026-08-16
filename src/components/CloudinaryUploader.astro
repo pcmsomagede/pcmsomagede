@@ -1,0 +1,82 @@
+---
+interface Props {
+  folder?: string;
+  buttonLabel?: string;
+}
+
+const { folder = 'pcmsomagede/berita', buttonLabel = 'Unggah media' } = Astro.props;
+const cloudName = import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME ?? '';
+const uploadPreset = import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET ?? '';
+const configured = Boolean(cloudName && uploadPreset);
+---
+
+<div class="media-uploader" data-configured={configured ? 'true' : 'false'} data-cloud-name={cloudName} data-upload-preset={uploadPreset} data-folder={folder}>
+  <button class="upload-button" type="button" disabled={!configured}>
+    {buttonLabel}
+  </button>
+  <p class="upload-status" aria-live="polite">
+    {configured ? `Media akan disimpan ke folder ${folder}.` : 'Upload Cloudinary belum diaktifkan. Isi environment PUBLIC_CLOUDINARY_CLOUD_NAME dan PUBLIC_CLOUDINARY_UPLOAD_PRESET terlebih dahulu.'}
+  </p>
+</div>
+
+{configured && (
+  <script is:inline>
+    const root = document.currentScript?.previousElementSibling;
+    if (root && root.dataset.configured === 'true') {
+      const button = root.querySelector('.upload-button');
+      const status = root.querySelector('.upload-status');
+      const cloudName = root.dataset.cloudName;
+      const uploadPreset = root.dataset.uploadPreset;
+      const folder = root.dataset.folder;
+
+      const loadWidget = () => new Promise((resolve, reject) => {
+        if (window.cloudinary?.createUploadWidget) return resolve(window.cloudinary);
+        const script = document.createElement('script');
+        script.src = 'https://upload-widget.cloudinary.com/latest/global/all.js';
+        script.onload = () => resolve(window.cloudinary);
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+
+      button?.addEventListener('click', async () => {
+        button.disabled = true;
+        status.textContent = 'Menyiapkan uploader...';
+        try {
+          const cloudinary = await loadWidget();
+          const widget = cloudinary.createUploadWidget({
+            cloudName,
+            uploadPreset,
+            sources: ['local', 'camera'],
+            multiple: true,
+            folder,
+            clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'pdf'],
+            maxFileSize: 10485760,
+            showAdvancedOptions: false,
+            cropping: false,
+          }, (error, result) => {
+            if (error) {
+              status.textContent = 'Upload gagal. Periksa preset Cloudinary dan koneksi.';
+              button.disabled = false;
+              return;
+            }
+            if (result?.event === 'success') {
+              status.textContent = `Berhasil diunggah: ${result.info?.original_filename ?? 'media'}`;
+            }
+            if (result?.event === 'close') button.disabled = false;
+          });
+          widget.open();
+        } catch {
+          status.textContent = 'Cloudinary Upload Widget gagal dimuat.';
+          button.disabled = false;
+        }
+      });
+    }
+  </script>
+)}
+
+<style>
+  .media-uploader { display: grid; gap: .5rem; }
+  .upload-button { border: 0; border-radius: .75rem; padding: .75rem 1rem; background: #0b8068; color: #fff; font: inherit; font-weight: 700; cursor: pointer; width: fit-content; }
+  .upload-button:disabled { opacity: .55; cursor: not-allowed; }
+  .upload-status { margin: 0; color: #64748b; font-size: .9rem; }
+</style>
