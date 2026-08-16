@@ -1,0 +1,19 @@
+---
+import { site } from '../data/site';
+import '../styles/global.css';
+const { title = site.shortName, description = site.description } = Astro.props;
+---
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#006b3f" />
+    <link rel="icon" href="/logo.svg" />
+    <title>{title} | PC Muhammadiyah Somagede</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
