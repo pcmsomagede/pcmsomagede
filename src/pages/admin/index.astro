@@ -7,36 +7,73 @@ import { site } from '../../data/site';
   <main>
     <section class="section">
       <div class="container admin-shell">
-        <span class="eyebrow">CMS Admin</span>
-        <h1>Panel Editor PC Muhammadiyah Somagede</h1>
-        <p class="lead">Kelola berita, kegiatan, dan agenda dari satu tempat. Media foto, video, audio, dan PDF diunggah ke Cloudinary.</p>
-
-        <div class="warning">
-          <strong>Tahap pengembangan:</strong> editor ini sudah dapat membuat dan menyimpan draft di perangkat Anda, tetapi publikasi permanen ke GitHub belum diaktifkan. Kita akan menambahkan autentikasi + Cloudflare Worker sebelum panel ini dipakai pengurus secara resmi.
+        <div id="login-view" class="login-card">
+          <span class="eyebrow">CMS Admin</span>
+          <h1>Masuk Panel Editor</h1>
+          <p class="lead">Panel ini khusus pengelola Pimpinan Cabang Muhammadiyah Somagede.</p>
+          <form id="login-form">
+            <label>Username<input id="username" autocomplete="username" required></label>
+            <label>Password<input id="password" type="password" autocomplete="current-password" required></label>
+            <button class="button primary" type="submit">Masuk</button>
+            <p id="login-error" class="error" hidden></p>
+          </form>
         </div>
 
-        <div class="cms-grid">
-          <a class="cms-card" href="/admin/editor?type=berita"><span>📰</span><strong>Berita</strong><small>Tulis artikel, pilih kategori, tag, dan media.</small></a>
-          <a class="cms-card" href="/admin/editor?type=kegiatan"><span>📷</span><strong>Kegiatan</strong><small>Dokumentasi kegiatan dan galeri media.</small></a>
-          <a class="cms-card" href="/admin/editor?type=agenda"><span>📅</span><strong>Agenda</strong><small>Jadwal kegiatan, waktu, tempat, dan poster.</small></a>
-          <a class="cms-card" href="/admin/media"><span>☁️</span><strong>Media Center</strong><small>Upload foto, video, MP3, dan PDF ke Cloudinary.</small></a>
-        </div>
+        <div id="dashboard-view" hidden>
+          <span class="eyebrow">CMS Admin</span>
+          <h1>Panel Editor PC Muhammadiyah Somagede</h1>
+          <p class="lead">Kelola berita, kegiatan, agenda, dan media dari satu tempat.</p>
+          <div class="toolbar"><span class="session-ok">● Sesi aktif</span><button id="logout" class="button secondary">Keluar</button></div>
 
-        <div class="quick-info">
-          <div><span>Organisasi</span><strong>{site.shortName}</strong></div>
-          <div><span>Ketua</span><strong>{site.chair}</strong></div>
-          <div><span>WhatsApp</span><strong>{site.whatsapp.join(' · ')}</strong></div>
+          <div class="cms-grid">
+            <a class="cms-card" href="/admin/editor?type=berita"><span>📰</span><strong>Berita</strong><small>Tulis artikel dan terbitkan ke website.</small></a>
+            <a class="cms-card" href="/admin/editor?type=kegiatan"><span>📷</span><strong>Kegiatan</strong><small>Dokumentasi kegiatan dan galeri media.</small></a>
+            <a class="cms-card" href="/admin/editor?type=agenda"><span>📅</span><strong>Agenda</strong><small>Jadwal kegiatan, waktu, tempat, dan poster.</small></a>
+            <a class="cms-card" href="/admin/media"><span>☁️</span><strong>Media Center</strong><small>Upload foto, video, MP3, dan PDF ke Cloudinary.</small></a>
+          </div>
+
+          <div class="quick-info">
+            <div><span>Organisasi</span><strong>{site.shortName}</strong></div>
+            <div><span>Ketua</span><strong>{site.chair}</strong></div>
+            <div><span>WhatsApp</span><strong>{site.whatsapp.join(' · ')}</strong></div>
+          </div>
         </div>
       </div>
     </section>
   </main>
 </MainLayout>
 
+<script is:inline>
+  const API = import.meta.env.PUBLIC_CMS_API_URL || 'https://pcmsomagede-cms-api.workers.dev';
+  const loginView = document.querySelector('#login-view');
+  const dashboard = document.querySelector('#dashboard-view');
+  const error = document.querySelector('#login-error');
+  const showDashboard = () => { loginView.hidden = true; dashboard.hidden = false; };
+  const check = async () => { try { const r = await fetch(`${API}/api/session`, { credentials: 'include' }); if (r.ok && (await r.json()).authenticated) showDashboard(); } catch {} };
+  document.querySelector('#login-form').addEventListener('submit', async (e) => {
+    e.preventDefault(); error.hidden = true;
+    const r = await fetch(`${API}/api/login`, { method: 'POST', credentials: 'include', headers: {'content-type':'application/json'}, body: JSON.stringify({ username: document.querySelector('#username').value, password: document.querySelector('#password').value }) });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) { error.textContent = data.error || 'Login gagal.'; error.hidden = false; return; }
+    showDashboard();
+  });
+  document.querySelector('#logout').addEventListener('click', async () => { await fetch(`${API}/api/logout`, {method:'POST', credentials:'include'}); location.reload(); });
+  check();
+</script>
+
 <style>
   .admin-shell { max-width:1000px; }
   h1 { margin:.35rem 0 .6rem; }
   .lead { max-width:760px; color:#5d697a; font-size:1.05rem; }
-  .warning { margin:1.5rem 0; padding:1rem 1.2rem; background:#fff8e8; border-left:4px solid #b87900; border-radius:10px; color:#5f4b20; }
+  .login-card { max-width:480px; margin:2rem auto; padding:2rem; background:#fff; border:1px solid #dbe2ec; border-radius:18px; box-shadow:0 12px 30px rgba(18,39,67,.07); }
+  label { display:grid; gap:.4rem; margin:1rem 0; font-weight:650; }
+  input { width:100%; box-sizing:border-box; border:1px solid #cfd8e4; border-radius:9px; padding:.75rem .8rem; font:inherit; }
+  .button { border:0; border-radius:9px; padding:.75rem 1rem; font:inherit; font-weight:700; cursor:pointer; }
+  .primary { background:#0b4da2; color:#fff; }
+  .secondary { background:#eef2f7; color:#26374b; }
+  .error { color:#a02f2f; background:#fff0f0; padding:.7rem; border-radius:8px; }
+  .toolbar { display:flex; justify-content:space-between; align-items:center; margin:1.2rem 0; }
+  .session-ok { color:#24633a; font-weight:700; }
   .cms-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin-top:1.5rem; }
   .cms-card { display:grid; grid-template-columns:auto 1fr; column-gap:.9rem; align-items:center; padding:1.25rem; background:#fff; border:1px solid #dbe2ec; border-radius:16px; text-decoration:none; color:inherit; transition:.2s ease; }
   .cms-card:hover { transform:translateY(-2px); border-color:#0b4da2; box-shadow:0 10px 24px rgba(0,0,0,.07); }
