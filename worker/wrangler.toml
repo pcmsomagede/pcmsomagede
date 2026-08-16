@@ -5,8 +5,9 @@ compatibility_date = "2026-08-17"
 [vars]
 GITHUB_OWNER = "pcmsomagede"
 GITHUB_REPO = "pcmsomagede"
+PUBLIC_SITE_ORIGIN = "https://pcmsomagede.github.io"
 
-# Set secrets with:
+# Secrets (never commit their values):
 # wrangler secret put GITHUB_TOKEN
 # wrangler secret put ADMIN_USER
 # wrangler secret put ADMIN_PASSWORD
