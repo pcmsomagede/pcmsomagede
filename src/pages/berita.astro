@@ -1,4 +1,10 @@
 ---
-import SectionPage from '../components/SectionPage.astro';
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import NewsCard from '../components/NewsCard.astro';
+import { news } from '../data/content';
 ---
-<SectionPage title="Berita" intro="Berita, pengumuman, dan informasi terbaru dari PC Muhammadiyah Somagede." />
+<MainLayout title="Berita">
+  <PageHero eyebrow="Publikasi" title="Berita PC Muhammadiyah Somagede" description="Informasi, kabar organisasi, dan publikasi kegiatan persyarikatan." />
+  <main class="section"><div class="container"><div class="news-grid">{news.map((item) => <NewsCard item={item} />)}</div></div></main>
+</MainLayout>
