@@ -1,5 +1,7 @@
 ---
 import { site } from '../data/site';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 const { title = site.shortName, description = site.description } = Astro.props;
 ---
@@ -9,11 +11,14 @@ const { title = site.shortName, description = site.description } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#006b3f" />
+    <meta name="theme-color" content="#06479b" />
     <link rel="icon" href="/logo.svg" />
+    <link rel="canonical" href={site.url + Astro.url.pathname} />
     <title>{title} | PC Muhammadiyah Somagede</title>
   </head>
   <body>
+    <Header />
     <slot />
+    <Footer />
   </body>
 </html>
