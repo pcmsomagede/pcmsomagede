@@ -64,9 +64,10 @@ const { defaultType = 'image' } = Astro.props;
             }
             if (info?.event === 'success') {
               const asset = info.info;
-              status.textContent = 'Upload berhasil. Metadata media siap dicatat ke konten.';
+              status.textContent = 'Upload berhasil. Media siap dilampirkan ke konten.';
               result.hidden = false;
               result.textContent = `${asset.original_filename ?? 'media'} — ${asset.public_id ?? ''}`;
+              window.dispatchEvent(new CustomEvent('cloudinary:uploaded', { detail: { ...asset, type } }));
             }
           });
         }
