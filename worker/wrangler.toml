@@ -1,0 +1,13 @@
+name = "pcmsomagede-cms-api"
+main = "src/index.ts"
+compatibility_date = "2026-08-17"
+
+[vars]
+GITHUB_OWNER = "pcmsomagede"
+GITHUB_REPO = "pcmsomagede"
+
+# Set secrets with:
+# wrangler secret put GITHUB_TOKEN
+# wrangler secret put ADMIN_USER
+# wrangler secret put ADMIN_PASSWORD
+# wrangler secret put SESSION_SECRET
