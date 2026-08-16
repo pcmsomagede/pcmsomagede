@@ -1,0 +1,21 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+const { title, intro } = Astro.props;
+---
+<MainLayout title={title} description={intro}>
+  <Header />
+  <main class="section">
+    <div class="container">
+      <div class="eyebrow">PC Muhammadiyah Somagede</div>
+      <h1>{title}</h1>
+      <p class="lead">{intro}</p>
+      <div class="info-box" style="margin-top: 28px;">
+        <h2>Halaman sedang disiapkan</h2>
+        <p>Struktur halaman ini sudah tersedia. Tahap berikutnya adalah menghubungkan konten, editor, dan arsip media Cloudinary.</p>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</MainLayout>
