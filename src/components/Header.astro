@@ -2,22 +2,40 @@
 import { navItems, site } from '../data/site';
 ---
 <header class="site-header">
-  <div class="topline">
+  <div class="topbar-wrap">
     <div class="container topbar">
-      <span>Website Resmi PC Muhammadiyah Somagede</span>
-      <span>Kabupaten Banyumas</span>
+      <div>📍 {site.address}</div>
+      <div class="top-contact">💬 {site.whatsapp[0]} · {site.whatsapp[1]}</div>
     </div>
   </div>
-  <div class="container header-main">
-    <a class="brand" href="/" aria-label={site.name}>
-      <img src="/logo.svg" alt="Logo PC Muhammadiyah Somagede" />
-      <span>
-        <strong>PC MUHAMMADIYAH</strong>
-        <small>SOMAGEDE · BANYUMAS</small>
-      </span>
-    </a>
-    <nav aria-label="Navigasi utama">
-      {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
-    </nav>
+  <section class="masthead">
+    <div class="masthead-photo" aria-hidden="true"></div>
+    <div class="container masthead-content">
+      <a class="brand-hero" href="/" aria-label={site.name}>
+        <img src="/logo.svg" alt="Logo PC Muhammadiyah Somagede" />
+        <div>
+          <span>PIMPINAN CABANG</span>
+          <strong>MUHAMMADIYAH<br />SOMAGEDE</strong>
+          <b>KABUPATEN BANYUMAS</b>
+          <small>Ketua: {site.chair}</small>
+        </div>
+      </a>
+    </div>
+  </section>
+  <div class="nav-wrap">
+    <div class="container nav-inner">
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">☰ <span>Menu</span></button>
+      <nav id="main-nav" aria-label="Navigasi utama">
+        {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
+      </nav>
+    </div>
   </div>
 </header>
+<script>
+  const toggle = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('#main-nav');
+  toggle?.addEventListener('click', () => {
+    const open = nav?.classList.toggle('is-open') ?? false;
+    toggle?.setAttribute('aria-expanded', String(open));
+  });
+</script>
