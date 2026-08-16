@@ -1,0 +1,123 @@
+export interface Env {
+  GITHUB_TOKEN: string;
+  GITHUB_OWNER: string;
+  GITHUB_REPO: string;
+  ADMIN_USER: string;
+  ADMIN_PASSWORD: string;
+  SESSION_SECRET: string;
+}
+
+const cors = (origin: string | null) => ({
+  'access-control-allow-origin': origin || '*',
+  'access-control-allow-credentials': 'true',
+  'access-control-allow-headers': 'Content-Type, Authorization',
+  'access-control-allow-methods': 'GET, POST, OPTIONS',
+});
+
+const json = (data: unknown, status = 200, origin: string | null = null, extra: HeadersInit = {}) => new Response(JSON.stringify(data), {
+  status,
+  headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...cors(origin), ...extra },
+});
+
+const toBase64Url = (bytes: ArrayBuffer) => btoa(String.fromCharCode(...new Uint8Array(bytes))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+async function sign(value: string, secret: string) {
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  return toBase64Url(await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(value)));
+}
+
+async function makeSession(env: Env) {
+  const exp = Math.floor(Date.now() / 1000) + 60 * 60 * 8;
+  const payload = `admin.${exp}`;
+  return `${payload}.${await sign(payload, env.SESSION_SECRET)}`;
+}
+
+async function validSession(request: Request, env: Env) {
+  const cookie = request.headers.get('cookie') || '';
+  const cookieToken = cookie.match(/(?:^|;\s*)cms_session=([^;]+)/)?.[1];
+  const bearer = request.headers.get('authorization')?.replace(/^Bearer\s+/i, '');
+  const token = cookieToken || bearer;
+  if (!token) return false;
+  const [user, exp, sig] = token.split('.');
+  if (user !== 'admin' || !exp || !sig || Number(exp) < Date.now() / 1000) return false;
+  return sig === await sign(`admin.${exp}`, env.SESSION_SECRET);
+}
+
+async function github(env: Env, path: string, init: RequestInit = {}) {
+  return fetch(`https://api.github.com/repos/${env.GITHUB_OWNER}/${env.GITHUB_REPO}/${path}`, {
+    ...init,
+    headers: {
+      accept: 'application/vnd.github+json',
+      authorization: `Bearer ${env.GITHUB_TOKEN}`,
+      'x-github-api-version': '2022-11-28',
+      'user-agent': 'pcmsomagede-cms',
+      'content-type': 'application/json',
+      ...(init.headers || {}),
+    },
+  });
+}
+
+const slugify = (value: string) => value.toLowerCase().trim().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 120);
+
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const url = new URL(request.url);
+    const origin = request.headers.get('origin');
+
+    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(origin) });
+
+    if (url.pathname === '/api/health' && request.method === 'GET') return json({ ok: true, service: 'pcmsomagede-cms-api' }, 200, origin);
+
+    if (url.pathname === '/api/login' && request.method === 'POST') {
+      try {
+        const body = await request.json<{ username?: string; password?: string }>();
+        if (body.username !== env.ADMIN_USER || body.password !== env.ADMIN_PASSWORD) return json({ error: 'Username atau password salah.' }, 401, origin);
+        const token = await makeSession(env);
+        return json({ ok: true, user: env.ADMIN_USER }, 200, origin, {
+          'set-cookie': `cms_session=${token}; HttpOnly; Secure; SameSite=None; Max-Age=28800; Path=/`,
+        });
+      } catch {
+        return json({ error: 'Permintaan login tidak valid.' }, 400, origin);
+      }
+    }
+
+    if (url.pathname === '/api/logout' && request.method === 'POST') {
+      return json({ ok: true }, 200, origin, { 'set-cookie': 'cms_session=; HttpOnly; Secure; SameSite=None; Max-Age=0; Path=/' });
+    }
+
+    if (url.pathname === '/api/session' && request.method === 'GET') {
+      return json({ authenticated: await validSession(request, env) }, 200, origin);
+    }
+
+    if (url.pathname === '/api/publish' && request.method === 'POST') {
+      if (!(await validSession(request, env))) return json({ error: 'Sesi tidak valid atau sudah berakhir.' }, 401, origin);
+      try {
+        const body = await request.json<Record<string, unknown>>();
+        const type = String(body.type || 'berita');
+        if (!['berita', 'kegiatan', 'agenda'].includes(type)) return json({ error: 'Jenis konten tidak valid.' }, 400, origin);
+        const slug = slugify(String(body.slug || body.title || ''));
+        if (!slug) return json({ error: 'Judul/slug wajib diisi.' }, 400, origin);
+        const path = `src/content/${type}/${slug}.json`;
+        const content = JSON.stringify({ ...body, type, slug, updatedAt: new Date().toISOString() }, null, 2) + '\n';
+        const existing = await github(env, `contents/${path}`);
+        let sha: string | undefined;
+        if (existing.ok) sha = (await existing.json<{ sha: string }>()).sha;
+        else if (existing.status !== 404) return json({ error: 'Gagal memeriksa konten di GitHub.' }, 502, origin);
+        const response = await github(env, `contents/${path}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            message: `${sha ? 'update' : 'add'}: ${type} ${slug}`,
+            content: btoa(unescape(encodeURIComponent(content))),
+            ...(sha ? { sha } : {}),
+          }),
+        });
+        if (!response.ok) return json({ error: 'GitHub menolak publikasi.', detail: await response.text() }, 502, origin);
+        return json({ ok: true, published: true, path, slug }, 200, origin);
+      } catch {
+        return json({ error: 'Data konten tidak valid.' }, 400, origin);
+      }
+    }
+
+    return json({ error: 'Not found' }, 404, origin);
+  },
+};
