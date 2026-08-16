@@ -1,0 +1,17 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { news } from '../../data/content';
+export function getStaticPaths(){ return news.map((item) => ({ params: { slug: item.slug }, props: { item } })); }
+const { item } = Astro.props;
+const date = new Date(item.date).toLocaleDateString('id-ID', { day:'2-digit', month:'long', year:'numeric' });
+---
+<MainLayout title={item.title} description={item.excerpt}>
+  <main class="article-wrap">
+    <a class="read-more" href="/berita">← Kembali ke Berita</a>
+    <div class="eyebrow" style="margin-top:24px">{item.category}</div>
+    <h1>{item.title}</h1>
+    <div class="article-meta"><time datetime={item.date}>{date}</time><span>PC Muhammadiyah Somagede</span></div>
+    <img class="article-cover" src={item.image} alt="" />
+    <div class="prose">{item.body.map((paragraph) => <p>{paragraph}</p>)}</div>
+  </main>
+</MainLayout>
