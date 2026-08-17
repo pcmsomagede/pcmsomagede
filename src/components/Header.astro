@@ -1,35 +1,49 @@
 ---
 import { navItems, site, sitePath } from '../data/site';
 const asset = (path: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 <header class="site-header">
   <div class="topbar-wrap">
     <div class="container topbar">
-      <div>📍 {site.address}</div>
-      <div class="top-contact">💬 {site.whatsapp[0]} · {site.whatsapp[1]}</div>
+      <div class="topbar-location"><span class="status-dot"></span><span>PC Muhammadiyah Somagede · Banyumas</span></div>
+      <div class="top-contact">WhatsApp <b>{site.whatsapp[0]}</b><span>·</span><b>{site.whatsapp[1]}</b></div>
     </div>
   </div>
+
   <section class="masthead">
-    <img class="masthead-photo" src={site.heroImage} alt="Gedung dan lingkungan PC Muhammadiyah Somagede" loading="eager" />
+    <img class="masthead-photo" src={site.heroImage} alt="Gedung Komplek SMK Muhammadiyah Somagede dan Masjid Darul Arqom" loading="eager" />
     <div class="masthead-overlay" aria-hidden="true"></div>
+    <div class="masthead-glow masthead-glow-one" aria-hidden="true"></div>
+    <div class="masthead-glow masthead-glow-two" aria-hidden="true"></div>
     <div class="container masthead-content">
       <a class="brand-hero" href={sitePath('/')} aria-label={site.name}>
-        <span class="brand-logo"><img src={asset('logo.webp')} alt="Logo PC Muhammadiyah Somagede" /></span>
-        <div>
+        <img class="brand-logo-image" src={asset('logo.webp')} alt="Logo Muhammadiyah" />
+        <div class="brand-copy">
           <span>PIMPINAN CABANG</span>
           <strong>MUHAMMADIYAH<br />SOMAGEDE</strong>
           <b>KABUPATEN BANYUMAS</b>
           <small>Ketua: {site.chair}</small>
         </div>
       </a>
+      <div class="hero-badge" aria-label="Website resmi">
+        <span class="hero-badge-dot"></span>
+        <div><strong>Website Resmi</strong><small>Informasi · Kegiatan · Arsip</small></div>
+      </div>
     </div>
   </section>
+
   <div class="nav-wrap">
     <div class="container nav-inner">
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">☰ <span>Menu</span></button>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav"><span class="menu-icon">☰</span><span>Menu</span></button>
       <nav id="main-nav" aria-label="Navigasi utama">
-        {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
+        {navItems.map((item) => {
+          const itemPath = new URL(item.href, Astro.url).pathname.replace(/\/$/, '') || '/';
+          const active = itemPath === currentPath;
+          return <a class:list={{ active }} href={item.href} aria-current={active ? 'page' : undefined}><span class="nav-icon" aria-hidden="true">{item.icon}</span><span>{item.label}</span></a>;
+        })}
       </nav>
+      <a class="nav-admin" href={sitePath('/admin/')}><span>⚙</span> Admin</a>
     </div>
   </div>
 </header>
