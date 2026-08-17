@@ -5,7 +5,7 @@ const asset = (path: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/
 <footer class="footer">
   <div class="container footer-grid">
     <div class="footer-brand-block">
-      <img src={asset('logo.webp')} alt="Logo PC Muhammadiyah Somagede" />
+      <img src={asset('logo-final.svg')} alt="Logo PC Muhammadiyah Somagede" />
       <div><strong>PC MUHAMMADIYAH SOMAGEDE</strong><p>{site.description}</p></div>
     </div>
     <div><h3>Menu</h3><div class="footer-links">{navItems.slice(1, 6).map((item) => <a href={item.href}>{item.label}</a>)}</div></div>
