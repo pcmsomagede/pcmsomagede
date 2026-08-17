@@ -1,5 +1,6 @@
 ---
-import { navItems, site } from '../data/site';
+import { navItems, site, sitePath } from '../data/site';
+const asset = (path: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
 ---
 <header class="site-header">
   <div class="topbar-wrap">
@@ -9,10 +10,11 @@ import { navItems, site } from '../data/site';
     </div>
   </div>
   <section class="masthead">
-    <div class="masthead-photo" style={`background-image:linear-gradient(90deg,rgba(2,43,99,.96) 0%,rgba(2,43,99,.72) 36%,rgba(2,43,99,.12) 72%),url('${site.heroImage}')`} aria-hidden="true"></div>
+    <img class="masthead-photo" src={site.heroImage} alt="Gedung dan lingkungan PC Muhammadiyah Somagede" loading="eager" />
+    <div class="masthead-overlay" aria-hidden="true"></div>
     <div class="container masthead-content">
-      <a class="brand-hero" href={import.meta.env.BASE_URL} aria-label={site.name}>
-        <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="Logo PC Muhammadiyah Somagede" />
+      <a class="brand-hero" href={sitePath('/')} aria-label={site.name}>
+        <span class="brand-logo"><img src={asset('logo.webp')} alt="Logo PC Muhammadiyah Somagede" /></span>
         <div>
           <span>PIMPINAN CABANG</span>
           <strong>MUHAMMADIYAH<br />SOMAGEDE</strong>
