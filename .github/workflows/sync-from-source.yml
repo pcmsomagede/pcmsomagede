@@ -16,6 +16,7 @@ jobs:
       - name: Checkout user-site repository
         uses: actions/checkout@v4
         with:
+          repository: pcmsomagede/pcmsomagede.github.io
           path: user-site
 
       - name: Checkout latest source
