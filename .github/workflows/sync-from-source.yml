@@ -1,0 +1,53 @@
+name: Sync website from source repository
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout user-site repository
+        uses: actions/checkout@v4
+        with:
+          path: user-site
+
+      - name: Checkout latest source
+        uses: actions/checkout@v4
+        with:
+          repository: pcmsomagede/pcmsomagede
+          ref: main
+          path: source
+
+      - name: Copy latest website source
+        run: |
+          rsync -a --delete \
+            --exclude='.git' \
+            --exclude='.github/workflows/*' \
+            source/ user-site/
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('user-site/astro.config.mjs')
+          text = p.read_text()
+          text = text.replace("base: '/pcmsomagede',", "base: '/',")
+          p.write_text(text)
+          PY
+
+      - name: Commit synchronized website
+        working-directory: user-site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: sync latest website from source repository"
+            git push origin HEAD:main
+          fi
