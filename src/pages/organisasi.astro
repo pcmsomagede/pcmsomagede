@@ -1,12 +1,12 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import PageHero from '../components/PageHero.astro';
-import { site } from '../data/site';
+import { site, sitePath } from '../data/site';
 ---
 <MainLayout title="Organisasi">
   <PageHero eyebrow="Persyarikatan" title="Organisasi" description="Profil singkat Pimpinan Cabang Muhammadiyah Somagede Kabupaten Banyumas." />
   <main class="section"><div class="container info-grid">
     <article class="info-box"><h2>Profil PC Muhammadiyah Somagede</h2><p>Pimpinan Cabang Muhammadiyah Somagede merupakan bagian dari Persyarikatan Muhammadiyah di Kabupaten Banyumas. Halaman ini menjadi pusat informasi struktur, program, majelis, lembaga, dan amal usaha yang akan dilengkapi bertahap.</p><p>Website dibangun sebagai media komunikasi publik sekaligus arsip digital yang mudah ditelusuri.</p></article>
-    <article class="info-box"><h2>Identitas</h2><p><strong>Ketua:</strong> {site.chair}</p><p><strong>Sekretariat:</strong> {site.address}</p><a class="button button-primary" href="/pimpinan">Lihat Pimpinan</a></article>
+    <article class="info-box"><h2>Identitas</h2><p><strong>Ketua:</strong> {site.chair}</p><p><strong>Sekretariat:</strong> {site.address}</p><a class="button button-primary" href={sitePath('/pimpinan')}>Lihat Pimpinan</a></article>
   </div></main>
 </MainLayout>
