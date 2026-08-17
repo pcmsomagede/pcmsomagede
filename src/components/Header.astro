@@ -13,13 +13,13 @@ const heroSrc = site.heroImage.startsWith('http') ? site.heroImage : asset(site.
   </div>
 
   <section class="masthead">
-    <img class="masthead-photo" src={heroSrc} alt="Gedung Komplek SMK Muhammadiyah Somagede dan Masjid Darul Arqom" loading="eager" />
+    <img class="masthead-photo" src={heroSrc} alt="Gedung Komplek SMK Muhammadiyah Somagede dan Masjid Darul Arqom" loading="eager" fetchpriority="high" decoding="async" />
     <div class="masthead-overlay" aria-hidden="true"></div>
     <div class="masthead-glow masthead-glow-one" aria-hidden="true"></div>
     <div class="masthead-glow masthead-glow-two" aria-hidden="true"></div>
     <div class="container masthead-content">
       <a class="brand-hero" href={sitePath('/')} aria-label={site.name}>
-        <img class="brand-logo-image" src={asset('logo-final.svg')} alt="Logo PC Muhammadiyah Somagede" />
+        <img class="brand-logo-image" src={asset('logo-final.svg')} alt="Logo PC Muhammadiyah Somagede" width="136" height="136" decoding="async" />
         <div class="brand-copy">
           <span>PIMPINAN CABANG</span>
           <strong>MUHAMMADIYAH<br />SOMAGEDE</strong>
