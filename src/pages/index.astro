@@ -1,7 +1,7 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import NewsCard from '../components/NewsCard.astro';
-import { site } from '../data/site';
+import { site, sitePath } from '../data/site';
 import { news, agenda, activities } from '../data/content';
 ---
 <MainLayout title={site.name}>
@@ -12,34 +12,34 @@ import { news, agenda, activities } from '../data/content';
           <span class="eyebrow">Selamat Datang di Website</span>
           <h1>Pimpinan Cabang Muhammadiyah Somagede Kabupaten Banyumas</h1>
           <p>Portal informasi, publikasi, dokumentasi, dan arsip digital PC Muhammadiyah Somagede. Dibangun untuk memudahkan warga, simpatisan, dan masyarakat menemukan informasi persyarikatan.</p>
-          <div class="actions"><a class="button button-primary" href="/organisasi">Profil Kami</a><a class="button button-secondary" href="/kontak">Kontak Kami</a></div>
+          <div class="actions"><a class="button button-primary" href={sitePath('/organisasi')}>Profil Kami</a><a class="button button-secondary" href={sitePath('/kontak')}>Kontak Kami</a></div>
         </div>
         <aside class="side-panel">
           <h2>Agenda Terdekat</h2>
           {agenda.map((item) => <div class="agenda-row"><div class="date-box">—<small>INFO</small></div><div><strong>{item.title}</strong><p>{item.description}</p></div></div>)}
-          <a class="button button-primary" href="/agenda">Lihat Semua Agenda</a>
+          <a class="button button-primary" href={sitePath('/agenda')}>Lihat Semua Agenda</a>
         </aside>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <div class="section-head"><div><h2>Berita Terbaru</h2><p>Informasi dan publikasi dari PC Muhammadiyah Somagede.</p></div><a class="button button-secondary" href="/berita">Semua Berita →</a></div>
+        <div class="section-head"><div><h2>Berita Terbaru</h2><p>Informasi dan publikasi dari PC Muhammadiyah Somagede.</p></div><a class="button button-secondary" href={sitePath('/berita')}>Semua Berita →</a></div>
         <div class="news-grid">{news.map((item) => <NewsCard item={item} />)}</div>
       </div>
     </section>
 
     <section class="section section-alt">
       <div class="container">
-        <div class="section-head"><div><h2>Kegiatan & Dokumentasi</h2><p>Ruang untuk menghimpun kegiatan, program, dan dokumentasi persyarikatan.</p></div><a class="button button-secondary" href="/kegiatan">Lihat Kegiatan →</a></div>
+        <div class="section-head"><div><h2>Kegiatan & Dokumentasi</h2><p>Ruang untuk menghimpun kegiatan, program, dan dokumentasi persyarikatan.</p></div><a class="button button-secondary" href={sitePath('/kegiatan')}>Lihat Kegiatan →</a></div>
         <div class="cards">{activities.map((item) => <article class="card"><span class="tag">{item.category}</span><h3>{item.title}</h3><p>{item.description}</p></article>)}</div>
       </div>
     </section>
 
     <section class="section">
       <div class="container info-grid">
-        <div class="info-box"><span class="eyebrow">Tentang Organisasi</span><h2>Bergerak bersama, menebar manfaat.</h2><p>Pimpinan Cabang Muhammadiyah Somagede merupakan bagian dari Persyarikatan Muhammadiyah di Kabupaten Banyumas. Website ini menjadi pusat informasi publik dan arsip digital organisasi.</p><a class="read-more" href="/organisasi">Kenali organisasi →</a></div>
-        <div class="info-box"><span class="eyebrow">Ketua</span><h2>{site.chair}</h2><p>Informasi struktur pimpinan akan dilengkapi secara bertahap melalui sistem konten.</p><a class="read-more" href="/pimpinan">Lihat halaman pimpinan →</a></div>
+        <div class="info-box"><span class="eyebrow">Tentang Organisasi</span><h2>Bergerak bersama, menebar manfaat.</h2><p>Pimpinan Cabang Muhammadiyah Somagede merupakan bagian dari Persyarikatan Muhammadiyah di Kabupaten Banyumas. Website ini menjadi pusat informasi publik dan arsip digital organisasi.</p><a class="read-more" href={sitePath('/organisasi')}>Kenali organisasi →</a></div>
+        <div class="info-box"><span class="eyebrow">Ketua</span><h2>{site.chair}</h2><p>Informasi struktur pimpinan akan dilengkapi secara bertahap melalui sistem konten.</p><a class="read-more" href={sitePath('/pimpinan')}>Lihat halaman pimpinan →</a></div>
       </div>
     </section>
   </main>
