@@ -24,3 +24,4 @@ Website resmi **Pimpinan Cabang Muhammadiyah Somagede Kabupaten Banyumas**.
 4. Bangun model konten berita, agenda, kegiatan, dan arsip.
 5. Bangun panel editor.
 6. Hubungkan Cloudflare dan custom domain bila tersedia.
+PC Muhammadiyah Somagede CMS
