@@ -2,6 +2,7 @@
 import { navItems, site, sitePath } from '../data/site';
 const asset = (path: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const heroSrc = site.heroImage.startsWith('http') ? site.heroImage : asset(site.heroImage);
 ---
 <header class="site-header">
   <div class="topbar-wrap">
@@ -12,13 +13,13 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
   </div>
 
   <section class="masthead">
-    <img class="masthead-photo" src={site.heroImage} alt="Gedung Komplek SMK Muhammadiyah Somagede dan Masjid Darul Arqom" loading="eager" />
+    <img class="masthead-photo" src={heroSrc} alt="Gedung Komplek SMK Muhammadiyah Somagede dan Masjid Darul Arqom" loading="eager" />
     <div class="masthead-overlay" aria-hidden="true"></div>
     <div class="masthead-glow masthead-glow-one" aria-hidden="true"></div>
     <div class="masthead-glow masthead-glow-two" aria-hidden="true"></div>
     <div class="container masthead-content">
       <a class="brand-hero" href={sitePath('/')} aria-label={site.name}>
-        <img class="brand-logo-image" src={asset('logo.webp')} alt="Logo Muhammadiyah" />
+        <img class="brand-logo-image" src={asset('logo-final.svg')} alt="Logo PC Muhammadiyah Somagede" />
         <div class="brand-copy">
           <span>PIMPINAN CABANG</span>
           <strong>MUHAMMADIYAH<br />SOMAGEDE</strong>
