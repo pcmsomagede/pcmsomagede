@@ -1,77 +1,29 @@
 ---
 import { navItems, site, sitePath } from '../data/site';
-
 const asset = (path: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const heroSrc = site.heroImage.startsWith('http') ? site.heroImage : asset(site.heroImage);
 ---
-
 <header class="site-header">
-  <div class="utility-bar">
-    <div class="container utility-inner">
-      <span class="utility-place"><span class="utility-dot" aria-hidden="true"></span> Pimpinan Cabang Muhammadiyah Somagede · Banyumas</span>
-      <span class="utility-contact">WhatsApp <strong>{site.whatsapp[0]}</strong><span aria-hidden="true">·</span><strong>{site.whatsapp[1]}</strong></span>
-    </div>
-  </div>
-
-  <section class="masthead" aria-labelledby="site-brand-title">
-    <div class="masthead-shape masthead-shape-one" aria-hidden="true"></div>
-    <div class="masthead-shape masthead-shape-two" aria-hidden="true"></div>
-    <div class="container masthead-grid">
-      <div class="masthead-copy">
-        <a class="brand-lockup" href={sitePath('/')} aria-label="Beranda PC Muhammadiyah Somagede">
-          <span class="brand-logo-frame">
-            <img class="brand-logo" src={asset('logo-final.svg')} alt="Logo Pimpinan Cabang Muhammadiyah Somagede" width="124" height="124" decoding="async" />
-          </span>
-          <span class="brand-text">
-            <span class="brand-kicker">PIMPINAN CABANG</span>
-            <strong id="site-brand-title">MUHAMMADIYAH<br />SOMAGEDE</strong>
-            <span class="brand-region">KABUPATEN BANYUMAS</span>
-          </span>
+  <div class="utility-bar"><div class="container utility-inner"><span class="utility-place"><span class="utility-dot" aria-hidden="true"></span> Pimpinan Cabang Muhammadiyah Somagede · Banyumas</span><span class="utility-contact">WhatsApp <strong>{site.whatsapp[0]}</strong><span aria-hidden="true">·</span><strong>{site.whatsapp[1]}</strong></span></div></div>
+  <section class="hero-shell" aria-labelledby="site-brand-title">
+    <img class="hero-photo" src={heroSrc} alt="Gedung dan lingkungan Muhammadiyah Somagede" width="1600" height="720" loading="eager" fetchpriority="high" decoding="async" />
+    <div class="hero-overlay" aria-hidden="true"></div><div class="hero-vignette" aria-hidden="true"></div>
+    <div class="container hero-content">
+      <div class="hero-brand">
+        <a class="hero-lockup" href={sitePath('/')} aria-label="Beranda PC Muhammadiyah Somagede">
+          <img class="hero-logo" src={asset('logo-final.svg')} alt="Logo Pimpinan Cabang Muhammadiyah Somagede" width="118" height="118" decoding="async" />
+          <span class="hero-brand-text"><span class="hero-kicker">PIMPINAN CABANG MUHAMMADIYAH</span><strong id="site-brand-title">SOMAGEDE</strong><span class="hero-region">KABUPATEN BANYUMAS</span></span>
         </a>
-
-        <div class="masthead-intro">
-          <span class="masthead-status"><span aria-hidden="true"></span> WEBSITE RESMI</span>
-          <p>Pusat informasi, kegiatan, dokumentasi, dan arsip digital PC Muhammadiyah Somagede.</p>
-        </div>
+        <p class="hero-description">Pusat informasi, kegiatan, dokumentasi, dan arsip digital PC Muhammadiyah Somagede.</p>
+        <span class="hero-status"><span aria-hidden="true"></span> WEBSITE RESMI</span>
       </div>
-
-      <figure class="masthead-media">
-        <img src={heroSrc} alt="Gedung Komplek SMK Muhammadiyah Somagede dan lingkungan Masjid Darul Arqom" width="900" height="600" loading="eager" fetchpriority="high" decoding="async" />
-        <figcaption><span aria-hidden="true">⌂</span> Gedung & pusat aktivitas Muhammadiyah Somagede</figcaption>
-      </figure>
+      <div class="hero-caption" aria-hidden="true"><span>Gedung &amp; pusat aktivitas</span><b>MUHAMMADIYAH SOMAGEDE</b></div>
     </div>
   </section>
-
-  <div class="nav-wrap">
-    <div class="container nav-inner">
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">
-        <span class="menu-icon" aria-hidden="true">☰</span>
-        <span>Menu utama</span>
-      </button>
-      <nav id="main-nav" aria-label="Navigasi utama">
-        {navItems.map((item) => {
-          const itemPath = new URL(item.href, Astro.url).pathname.replace(/\/$/, '') || '/';
-          const active = itemPath === currentPath;
-          return (
-            <a class:list={{ active }} href={item.href} aria-current={active ? 'page' : undefined}>
-              <span class="nav-icon" aria-hidden="true">{item.icon}</span>
-              <span>{item.label}</span>
-            </a>
-          );
-        })}
-      </nav>
-      <a class="nav-admin" href={sitePath('/admin/')} aria-label="Buka halaman admin"><span aria-hidden="true">⚙</span><span>Admin</span></a>
-    </div>
-  </div>
+  <div class="nav-wrap"><div class="container nav-inner"><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav"><span class="menu-icon" aria-hidden="true">☰</span><span>Menu utama</span></button><nav id="main-nav" aria-label="Navigasi utama">{navItems.map((item) => { const itemPath = new URL(item.href, Astro.url).pathname.replace(/\/$/, '') || '/'; const active = itemPath === currentPath; return <a class:list={{ active }} href={item.href} aria-current={active ? 'page' : undefined}><span class="nav-icon" aria-hidden="true">{item.icon}</span><span>{item.label}</span></a>; })}</nav><a class="nav-admin" href={sitePath('/admin/')} aria-label="Buka halaman admin"><span aria-hidden="true">⚙</span><span>Admin</span></a></div></div>
 </header>
-
 <script>
-  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
-  const nav = document.querySelector<HTMLElement>('#main-nav');
-
-  toggle?.addEventListener('click', () => {
-    const open = nav?.classList.toggle('is-open') ?? false;
-    toggle.setAttribute('aria-expanded', String(open));
-  });
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle'); const nav = document.querySelector<HTMLElement>('#main-nav');
+  toggle?.addEventListener('click', () => { const open = nav?.classList.toggle('is-open') ?? false; toggle.setAttribute('aria-expanded', String(open)); });
 </script>
