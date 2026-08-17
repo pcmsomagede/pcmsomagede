@@ -1,4 +1,5 @@
 ---
+import { sitePath } from '../data/site';
 const { item } = Astro.props;
 const date = new Date(item.date).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
 ---
@@ -6,8 +7,8 @@ const date = new Date(item.date).toLocaleDateString('id-ID', { day: '2-digit', m
   <img src={item.image} alt="" loading="lazy" />
   <div class="news-card-body">
     <div class="meta"><span>{item.category}</span><time datetime={item.date}>{date}</time></div>
-    <h3><a href={`/berita/${item.slug}`}>{item.title}</a></h3>
+    <h3><a href={sitePath(`/berita/${item.slug}`)}>{item.title}</a></h3>
     <p>{item.excerpt}</p>
-    <a class="read-more" href={`/berita/${item.slug}`}>Baca selengkapnya →</a>
+    <a class="read-more" href={sitePath(`/berita/${item.slug}`)}>Baca selengkapnya →</a>
   </div>
 </article>
