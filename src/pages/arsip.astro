@@ -3,53 +3,17 @@ import MainLayout from '../layouts/MainLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import { archiveYears } from '../data/content';
 import { archiveCategories } from '../data/media';
+import { sitePath } from '../data/site';
 ---
 <MainLayout title="Arsip Digital">
   <PageHero eyebrow="Pusat Dokumen" title="Arsip Digital" description="Arsip berita, publikasi, dokumen, dan dokumentasi PC Muhammadiyah Somagede yang disusun berdasarkan jenis media dan tahun." />
-
-  <main class="section">
-    <div class="container">
-      <div class="section-heading">
-        <div>
-          <span class="eyebrow">Struktur media</span>
-          <h2>Arsip Cloudinary</h2>
-        </div>
-        <p>File media disimpan di Cloudinary, sedangkan indeks dan metadata konten tetap dikelola melalui GitHub.</p>
-      </div>
-
-      <div class="archive-grid">
-        {archiveCategories.map((category) => (
-          <article class="archive-item">
-            <span class="archive-folder">{category.folder}</span>
-            <h3>{category.label}</h3>
-            <p>Folder khusus untuk {category.label.toLowerCase()}.</p>
-            <a class="read-more" href={`/galeri?category=${category.slug}`}>Buka koleksi →</a>
-          </article>
-        ))}
-      </div>
-
-      <div class="section-heading" style="margin-top:4rem">
-        <div>
-          <span class="eyebrow">Indeks tahunan</span>
-          <h2>Arsip Berdasarkan Tahun</h2>
-        </div>
-        <p>Struktur ini memungkinkan arsip organisasi terus bertambah tanpa membebani repository dengan file media.</p>
-      </div>
-
-      <div class="archive-grid archive-years">
-        {archiveYears.map((year) => (
-          <article class="archive-item">
-            <strong>{year}</strong>
-            <h3>Arsip Tahun {year}</h3>
-            <p>Berita, kegiatan, agenda, dan publikasi pada tahun {year}.</p>
-            <a class="read-more" href={`/berita?year=${year}`}>Lihat arsip →</a>
-          </article>
-        ))}
-      </div>
-    </div>
-  </main>
+  <main class="section"><div class="container">
+    <div class="section-heading"><div><span class="eyebrow">Struktur media</span><h2>Arsip Cloudinary</h2></div><p>File media disimpan di Cloudinary, sedangkan indeks dan metadata konten tetap dikelola melalui GitHub.</p></div>
+    <div class="archive-grid">{archiveCategories.map((category) => <article class="archive-item"><span class="archive-folder">{category.folder}</span><h3>{category.label}</h3><p>Folder khusus untuk {category.label.toLowerCase()}.</p><a class="read-more" href={`${sitePath('/galeri')}?category=${category.slug}`}>Buka koleksi →</a></article>)}</div>
+    <div class="section-heading" style="margin-top:4rem"><div><span class="eyebrow">Indeks tahunan</span><h2>Arsip Berdasarkan Tahun</h2></div><p>Struktur ini memungkinkan arsip organisasi terus bertambah tanpa membebani repository dengan file media.</p></div>
+    <div class="archive-grid archive-years">{archiveYears.map((year) => <article class="archive-item"><strong>{year}</strong><h3>Arsip Tahun {year}</h3><p>Berita, kegiatan, agenda, dan publikasi pada tahun {year}.</p><a class="read-more" href={`${sitePath('/berita')}?year=${year}`}>Lihat arsip →</a></article>)}</div>
+  </div></main>
 </MainLayout>
-
 <style>
   .archive-folder { display:block; color:#0b8068; font-size:.78rem; font-weight:700; margin-bottom:.5rem; word-break:break-word; }
   .archive-years { margin-top:0; }
