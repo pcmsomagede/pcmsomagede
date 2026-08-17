@@ -1,57 +1,77 @@
 ---
 import { navItems, site, sitePath } from '../data/site';
+
 const asset = (path: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const heroSrc = site.heroImage.startsWith('http') ? site.heroImage : asset(site.heroImage);
 ---
+
 <header class="site-header">
-  <div class="topbar-wrap">
-    <div class="container topbar">
-      <div class="topbar-location"><span class="status-dot"></span><span>PC Muhammadiyah Somagede · Banyumas</span></div>
-      <div class="top-contact">WhatsApp <b>{site.whatsapp[0]}</b><span>·</span><b>{site.whatsapp[1]}</b></div>
+  <div class="utility-bar">
+    <div class="container utility-inner">
+      <span class="utility-place"><span class="utility-dot" aria-hidden="true"></span> Pimpinan Cabang Muhammadiyah Somagede · Banyumas</span>
+      <span class="utility-contact">WhatsApp <strong>{site.whatsapp[0]}</strong><span aria-hidden="true">·</span><strong>{site.whatsapp[1]}</strong></span>
     </div>
   </div>
 
-  <section class="masthead">
-    <img class="masthead-photo" src={heroSrc} alt="Gedung Komplek SMK Muhammadiyah Somagede dan Masjid Darul Arqom" loading="eager" fetchpriority="high" decoding="async" />
-    <div class="masthead-overlay" aria-hidden="true"></div>
-    <div class="masthead-glow masthead-glow-one" aria-hidden="true"></div>
-    <div class="masthead-glow masthead-glow-two" aria-hidden="true"></div>
-    <div class="container masthead-content">
-      <a class="brand-hero" href={sitePath('/')} aria-label={site.name}>
-        <img class="brand-logo-image" src={asset('logo-final.svg')} alt="Logo PC Muhammadiyah Somagede" width="136" height="136" decoding="async" />
-        <div class="brand-copy">
-          <span>PIMPINAN CABANG</span>
-          <strong>MUHAMMADIYAH<br />SOMAGEDE</strong>
-          <b>KABUPATEN BANYUMAS</b>
+  <section class="masthead" aria-labelledby="site-brand-title">
+    <div class="masthead-shape masthead-shape-one" aria-hidden="true"></div>
+    <div class="masthead-shape masthead-shape-two" aria-hidden="true"></div>
+    <div class="container masthead-grid">
+      <div class="masthead-copy">
+        <a class="brand-lockup" href={sitePath('/')} aria-label="Beranda PC Muhammadiyah Somagede">
+          <span class="brand-logo-frame">
+            <img class="brand-logo" src={asset('logo-final.svg')} alt="Logo Pimpinan Cabang Muhammadiyah Somagede" width="124" height="124" decoding="async" />
+          </span>
+          <span class="brand-text">
+            <span class="brand-kicker">PIMPINAN CABANG</span>
+            <strong id="site-brand-title">MUHAMMADIYAH<br />SOMAGEDE</strong>
+            <span class="brand-region">KABUPATEN BANYUMAS</span>
+          </span>
+        </a>
+
+        <div class="masthead-intro">
+          <span class="masthead-status"><span aria-hidden="true"></span> WEBSITE RESMI</span>
+          <p>Pusat informasi, kegiatan, dokumentasi, dan arsip digital PC Muhammadiyah Somagede.</p>
         </div>
-      </a>
-      <div class="hero-badge" aria-label="Website resmi">
-        <span class="hero-badge-dot"></span>
-        <div><strong>Website Resmi</strong><small>Informasi · Kegiatan · Arsip</small></div>
       </div>
+
+      <figure class="masthead-media">
+        <img src={heroSrc} alt="Gedung Komplek SMK Muhammadiyah Somagede dan lingkungan Masjid Darul Arqom" width="900" height="600" loading="eager" fetchpriority="high" decoding="async" />
+        <figcaption><span aria-hidden="true">⌂</span> Gedung & pusat aktivitas Muhammadiyah Somagede</figcaption>
+      </figure>
     </div>
   </section>
 
   <div class="nav-wrap">
     <div class="container nav-inner">
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav"><span class="menu-icon">☰</span><span>Menu</span></button>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">
+        <span class="menu-icon" aria-hidden="true">☰</span>
+        <span>Menu utama</span>
+      </button>
       <nav id="main-nav" aria-label="Navigasi utama">
         {navItems.map((item) => {
           const itemPath = new URL(item.href, Astro.url).pathname.replace(/\/$/, '') || '/';
           const active = itemPath === currentPath;
-          return <a class:list={{ active }} href={item.href} aria-current={active ? 'page' : undefined}><span class="nav-icon" aria-hidden="true">{item.icon}</span><span>{item.label}</span></a>;
+          return (
+            <a class:list={{ active }} href={item.href} aria-current={active ? 'page' : undefined}>
+              <span class="nav-icon" aria-hidden="true">{item.icon}</span>
+              <span>{item.label}</span>
+            </a>
+          );
         })}
       </nav>
-      <a class="nav-admin" href={sitePath('/admin/')}><span>⚙</span> Admin</a>
+      <a class="nav-admin" href={sitePath('/admin/')} aria-label="Buka halaman admin"><span aria-hidden="true">⚙</span><span>Admin</span></a>
     </div>
   </div>
 </header>
+
 <script>
-  const toggle = document.querySelector('.menu-toggle');
-  const nav = document.querySelector('#main-nav');
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const nav = document.querySelector<HTMLElement>('#main-nav');
+
   toggle?.addEventListener('click', () => {
     const open = nav?.classList.toggle('is-open') ?? false;
-    toggle?.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-expanded', String(open));
   });
 </script>
