@@ -10,17 +10,17 @@ export const site = {
   email: '',
   url: 'https://pcmsomagede.github.io/pcmsomagede/',
   description: 'Website resmi Pimpinan Cabang Muhammadiyah Somagede Kabupaten Banyumas sebagai pusat berita, kegiatan, agenda, dokumentasi, dan arsip digital.',
-  heroImage: 'https://res.cloudinary.com/v6hqki7m/image/upload/f_auto,q_auto,w_1600/profil-1-1024x490',
+  heroImage: sitePath('/hero.webp'),
 };
 
 export const navItems = [
-  { label: 'Beranda', href: sitePath('/') },
-  { label: 'Berita', href: sitePath('/berita') },
-  { label: 'Kegiatan', href: sitePath('/kegiatan') },
-  { label: 'Agenda', href: sitePath('/agenda') },
-  { label: 'Organisasi', href: sitePath('/organisasi') },
-  { label: 'Pimpinan', href: sitePath('/pimpinan') },
-  { label: 'Galeri', href: sitePath('/galeri') },
-  { label: 'Arsip', href: sitePath('/arsip') },
-  { label: 'Kontak', href: sitePath('/kontak') },
+  { label: 'Beranda', icon: '⌂', href: sitePath('/') },
+  { label: 'Berita', icon: '▤', href: sitePath('/berita') },
+  { label: 'Kegiatan', icon: '✦', href: sitePath('/kegiatan') },
+  { label: 'Agenda', icon: '▣', href: sitePath('/agenda') },
+  { label: 'Organisasi', icon: '◎', href: sitePath('/organisasi') },
+  { label: 'Pimpinan', icon: '♙', href: sitePath('/pimpinan') },
+  { label: 'Galeri', icon: '▧', href: sitePath('/galeri') },
+  { label: 'Arsip', icon: '▥', href: sitePath('/arsip') },
+  { label: 'Kontak', icon: '⌕', href: sitePath('/kontak') },
 ];
