@@ -6,92 +6,31 @@ import { news, agenda, activities } from '../data/content';
 ---
 <MainLayout title={site.name}>
   <main>
-    <section class="hero-home">
-      <div class="container hero-home-grid">
-        <div class="welcome" id="selayang-pandang">
-          <span class="eyebrow">Selamat datang</span>
-          <h1>PCM Somagede, ruang tumbuh bersama untuk dakwah, pendidikan, dan kemaslahatan.</h1>
-          <p>Jejak Muhammadiyah di Somagede memiliki akar sejak masa awal kemerdekaan, tumbuh dari ranting, lalu berkembang menjadi cabang dan terus bergerak melalui dakwah, pendidikan, kaderisasi, serta pelayanan masyarakat.</p>
-          <div class="actions"><a class="button button-primary" href="#sejarah-somagede">Jejak Sejarah</a><a class="button button-secondary" href={sitePath('/pustaka')}>Masuk PustakaMu</a></div>
-          <div class="stat-strip" aria-label="Ringkasan sejarah">
-            <div class="stat-chip"><strong>1950-an</strong><span>Jejak Muhammadiyah tercatat di Somagede</span></div>
-            <div class="stat-chip"><strong>1985</strong><span>Ranting Somagede mulai berkembang secara resmi</span></div>
-            <div class="stat-chip"><strong>2003</strong><span>Status berkembang menjadi Pimpinan Cabang</span></div>
-            <div class="stat-chip"><strong>2004</strong><span>SMK Muhammadiyah Somagede memperoleh izin pendirian</span></div>
-          </div>
-        </div>
-        <aside class="side-panel">
-          <h2>Agenda Terdekat</h2>
-          {agenda.map((item) => <div class="agenda-row"><div class="date-box">—<small>INFO</small></div><div><strong>{item.title}</strong><p>{item.description}</p></div></div>)}
-          <a class="button button-primary" href={sitePath('/agenda')}>Lihat Semua Agenda</a>
-        </aside>
+    <section class="hero-home"><div class="container hero-home-grid">
+      <div class="welcome" id="selayang-pandang"><span class="eyebrow">Selamat datang</span><h1>PCM Somagede, ruang tumbuh bersama untuk dakwah, pendidikan, dan kemaslahatan.</h1><p>Jejak Muhammadiyah di Somagede tidak hadir dalam satu malam. Ia tumbuh dari suasana masyarakat, pengajian, kaderisasi dan penguatan kehidupan keislaman di tengah budaya lokal, lalu berkembang menjadi organisasi yang terus bekerja untuk pendidikan, dakwah, sosial dan kemaslahatan warga.</p><p>Catatan penelitian UIN Syarif Hidayatullah menunjukkan keberadaan Muhammadiyah di Somagede sejak sekitar dekade 1950-an. Dari jejak awal itu, gerakan berkembang melalui ranting dan kemudian menjadi cabang. Sejarah lokal ini kami susun kembali dari sumber akademik, dokumentasi organisasi, dan arsip pendidikan agar generasi sekarang dapat membaca perjalanan gerakannya dengan lebih utuh.</p><div class="actions"><a class="button button-primary" href="#sejarah-somagede">Jejak Sejarah</a><a class="button button-secondary" href={sitePath('/pustaka')}>Masuk PustakaMu</a></div><div class="stat-strip"><div class="stat-chip"><strong>1950-an</strong><span>Jejak Muhammadiyah tercatat di Somagede</span></div><div class="stat-chip"><strong>1985</strong><span>Catatan pembentukan Ranting Somagede</span></div><div class="stat-chip"><strong>2003</strong><span>Tonggak perubahan menuju Pimpinan Cabang</span></div><div class="stat-chip"><strong>2004</strong><span>SMK Muhammadiyah Somagede memperoleh izin pendirian</span></div></div></div>
+      <aside class="side-panel"><h2>Agenda Terdekat</h2>{agenda.map((item) => <div class="agenda-row"><div class="date-box">—<small>INFO</small></div><div><strong>{item.title}</strong><p>{item.description}</p></div></div>)}<a class="button button-primary" href={sitePath('/agenda')}>Lihat Semua Agenda</a></aside>
+    </div></section>
+    <section id="sejarah-somagede" class="section history-section"><div class="container">
+      <div class="section-head history-heading"><div><span class="eyebrow">Kisah yang terus disambung</span><h2>Jejak Sejarah Muhammadiyah di Somagede</h2><p>Seperti pola narasi sejarah cabang Muhammadiyah di berbagai daerah, bagian ini menampilkan konteks, tonggak organisasi, dan warisan gerakan—tetapi disesuaikan dengan bukti yang tersedia tentang Somagede.</p></div></div>
+      <div class="history-intro"><p>Ketika Muhammadiyah berdiri di Kauman Yogyakarta pada 18 November 1912, gerakan ini sejak awal dirancang untuk melampaui batas lokal. Sumber resmi Muhammadiyah mencatat bahwa K.H. Ahmad Dahlan aktif mengembangkan dakwah ke berbagai kota, termasuk Purwokerto. Pada 15 November 1922, Muhammadiyah Purwokerto kemudian resmi menjadi cabang. Jalur perkembangan Jawa Tengah inilah yang menjadi salah satu konteks penting bagi tumbuhnya gerakan Muhammadiyah di Banyumas pada generasi-generasi berikutnya.</p><p>Di Somagede, sumber akademik yang paling rinci yang tersedia saat ini mencatat bahwa Muhammadiyah telah hadir sejak dekade 1950-an. Penelitian tersebut juga merekam bagaimana dakwah Muhammadiyah berhadapan dengan budaya lokal melalui pengajian, kajian Islam, pelayanan pendidikan, pembentukan organisasi otonom, serta kegiatan sosial-keagamaan. Dengan demikian, sejarah Somagede bukan hanya sejarah pergantian nama atau struktur, tetapi sejarah tentang bagaimana nilai gerakan diterjemahkan menjadi kegiatan nyata di tengah masyarakat.</p></div>
+      <div class="history-grid">
+        <article class="history-card history-card-context"><span class="history-year">1912</span><div><h3>Muhammadiyah lahir</h3><p>Pada 18 November 1912 di Kauman Yogyakarta, K.H. Ahmad Dahlan mendirikan Muhammadiyah. Organisasi ini sejak awal membawa misi dakwah, pendidikan dan amal sosial yang kemudian menyebar ke berbagai wilayah.</p></div></article>
+        <article class="history-card history-card-context"><span class="history-year">1922</span><div><h3>Purwokerto menjadi cabang resmi</h3><p>Catatan sejarah Muhammadiyah dan penelitian UMP menyebut Muhammadiyah Purwokerto resmi menjadi cabang pada 15 November 1922 melalui Surat Ketetapan No. 11/BM. Tonggak ini memperlihatkan bahwa jaringan Muhammadiyah telah berakar kuat di Banyumas sejak masa awal.</p></div></article>
+        <article class="history-card"><span class="history-year">1950-an</span><div><h3>Benih gerakan di Somagede</h3><p>Penelitian Mahdi Musthaffa di UIN Syarif Hidayatullah mencatat bahwa Muhammadiyah sudah hadir di Somagede sejak sekitar 1950-an. Pada fase awal, gerakan belum memiliki banyak amal usaha dan bertumpu pada aktivitas keagamaan masyarakat.</p></div></article>
+        <article class="history-card"><span class="history-year">1985</span><div><h3>Ranting mulai menguat</h3><p>Catatan penelitian berbasis wawancara lokal menyebut pembentukan Ranting Somagede secara resmi pada 1985. Fase ini menggambarkan penguatan struktur dari komunitas dakwah menuju organisasi yang lebih tertata.</p></div></article>
+        <article class="history-card history-card-accent"><span class="history-year">2003</span><div><h3>Menuju Pimpinan Cabang</h3><p>Dokumentasi penelitian menyebut perubahan status menjadi Cabang pada 2003. Dalam fase ini, jaringan ranting dan kepengurusan mulai dibaca sebagai satu kesatuan gerakan di tingkat kecamatan.</p></div></article>
+        <article class="history-card"><span class="history-year">2003–2004</span><div><h3>Pendidikan menjadi jejak amal usaha</h3><p>Panitia pendiri SMK Muhammadiyah Somagede dikukuhkan pada 23 April 2003 dan diperkuat oleh Majelis Dikdasmen PDM Banyumas pada 5 Juni 2003. Izin pendirian sekolah kemudian diterbitkan Bupati Banyumas pada 29 April 2004. Sejarah sekolah sendiri menggambarkan tonggak ini sebagai jawaban atas kebutuhan pendidikan menengah di Somagede.</p></div></article>
+        <article class="history-card"><span class="history-year">2012–2013</span><div><h3>Jejak organisasi terdokumentasi</h3><p>Penelitian 2013 mendokumentasikan lima ranting di bawah PCM Somagede: Piyasa Kulon, Planjan, Jero Tengah, Tanggeran, dan Kemawi. Data ini adalah potret historis pada masa penelitian, bukan jumlah ranting saat ini.</p></div></article>
+        <article class="history-card history-card-now"><span class="history-year">Kini</span><div><h3>Melanjutkan jejak, membuka jalan baru</h3><p>Hari ini warisan gerakan tidak hanya dijaga lewat pengajian dan organisasi, tetapi juga melalui pendidikan, kaderisasi, ortom, amal usaha, dokumentasi, serta layanan digital yang membuat sejarah, pengetahuan dan aktivitas organisasi lebih mudah diakses generasi baru.</p></div></article>
       </div>
-    </section>
-
-    <section id="sejarah-somagede" class="section history-section">
-      <div class="container">
-        <div class="section-head history-heading">
-          <div><span class="eyebrow">Dari jejak dakwah menuju gerakan</span><h2>Jejak Sejarah Muhammadiyah di Somagede</h2><p>Kronologi ini menyatukan konteks sejarah Muhammadiyah di Banyumas dengan catatan lokal Somagede yang ditemukan dalam sumber akademik dan dokumentasi resmi.</p></div>
-        </div>
-        <div class="history-grid">
-          <article class="history-card history-card-context"><span class="history-year">1912</span><div><h3>Lahirnya Muhammadiyah</h3><p>Muhammadiyah berdiri di Kauman, Yogyakarta, menjadi awal gerakan pembaruan Islam yang kemudian menyebar ke berbagai wilayah Indonesia.</p></div></article>
-          <article class="history-card history-card-context"><span class="history-year">1920–1922</span><div><h3>Jejak awal di Banyumas</h3><p>K.H. Ahmad Dahlan datang ke Purwokerto dan berdakwah; perkembangan berikutnya mengantarkan berdirinya Cabang Muhammadiyah Purwokerto secara formal pada 15 November 1922.</p></div></article>
-          <article class="history-card"><span class="history-year">1950-an</span><div><h3>Benih gerakan di Somagede</h3><p>Penelitian UIN Syarif Hidayatullah mencatat bahwa Muhammadiyah telah hadir di Somagede sejak awal kemerdekaan, sekitar dekade 1950-an, ketika gerakan masih berbentuk komunitas dan belum memiliki banyak amal usaha.</p></div></article>
-          <article class="history-card"><span class="history-year">1985</span><div><h3>Ranting mulai menguat</h3><p>Catatan penelitian yang berbasis wawancara lokal menyebut pembentukan Ranting Somagede secara resmi pada 1985 dengan kepemimpinan H. Suhodo. Pada fase ini amal usaha masih sederhana dan berpusat pada satu unit mushola.</p></div></article>
-          <article class="history-card history-card-accent"><span class="history-year">2003</span><div><h3>Dari ranting menjadi cabang</h3><p>Dalam rapat kerja Pimpinan Daerah Muhammadiyah Banyumas, status Ranting Somagede berubah menjadi Cabang. Sumber yang sama mencatat H. Moch. El-Badrun, S.Pd.I. sebagai ketua pertama PCM Somagede pada fase tersebut.</p></div></article>
-          <article class="history-card"><span class="history-year">2012–2013</span><div><h3>Snapshot perkembangan organisasi</h3><p>Dokumentasi penelitian mencatat lima ranting di bawah PCM Somagede: Piyasa Kulon, Planjan, Jero Tengah, Tanggeran, dan Kemawi. Ini adalah data historis pada masa penelitian, bukan klaim jumlah ranting saat ini.</p></div></article>
-          <article class="history-card"><span class="history-year">2003–2004</span><div><h3>Pendidikan sebagai jejak amal usaha</h3><p>Panitia pendiri SMK Muhammadiyah Somagede diperkuat pada 2003, kemudian izin pendirian sekolah diterbitkan Bupati Banyumas pada 29 April 2004. Ini menjadi salah satu tonggak penting penguatan layanan pendidikan Muhammadiyah di Somagede.</p></div></article>
-          <article class="history-card history-card-now"><span class="history-year">Kini</span><div><h3>Melanjutkan jejak dengan wajah baru</h3><p>Warisan tersebut diteruskan melalui kajian, pendidikan, organisasi otonom, amal usaha, dokumentasi, dan layanan digital agar nilai gerakan tetap hidup di tengah perubahan zaman.</p></div></article>
-        </div>
-        <div class="history-note"><strong>Catatan sejarah:</strong> beberapa data Somagede yang tersedia bersumber dari penelitian tahun 2013 dan dokumen sejarah sekolah. Karena itu, angka organisasi pada fase tersebut ditampilkan sebagai <em>snapshot historis</em>, bukan keadaan terkini.</div>
-        <div class="history-sources">
-          <span class="eyebrow">Rujukan utama</span>
-          <div class="source-links">
-            <a class="source-link" href="https://repository.uinjkt.ac.id/dspace/bitstream/123456789/28053/1/MAHDI%20MUSTHAFFA-FDK.pdf">Penelitian UIN Syarif Hidayatullah — Somagede</a>
-            <a class="source-link" href="https://repository.ump.ac.id/5140/">Repository Universitas Muhammadiyah Purwokerto — Sejarah Muhammadiyah Banyumas</a>
-            <a class="source-link" href="https://smkmuhsmgd.sch.id/sejarah-sekolah/">Sejarah SMK Muhammadiyah Somagede</a>
-            <a class="source-link" href="https://muhammadiyahjateng.or.id/pimpinan-daerah-muhammadiyah-kabupaten-banyumas/">PDM Banyumas — daftar PCM</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-head"><div><h2>Berita Terbaru</h2><p>Ikuti kabar dan cerita terbaru dari Somagede.</p></div><a class="button button-secondary" href={sitePath('/berita')}>Semua Berita →</a></div>
-        <div class="news-grid">{news.map((item) => <NewsCard item={item} />)}</div>
-      </div>
-    </section>
-
-    <section class="section section-alt">
-      <div class="container">
-        <div class="section-head"><div><h2>Kegiatan yang menghidupkan gerakan</h2><p>Kajian, program, agenda, dan aktivitas warga Muhammadiyah.</p></div><a class="button button-secondary" href={sitePath('/kegiatan')}>Lihat Kegiatan →</a></div>
-        <div class="cards">{activities.map((item) => <article class="card"><span class="tag">{item.category}</span><h3>{item.title}</h3><p>{item.description}</p></article>)}</div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container info-grid">
-        <article class="info-box"><span class="eyebrow">Organisasi</span><h2>Kenali PCM Somagede</h2><p>Lihat selayang pandang, kajian rutin, rapat rutin, organisasi otonom, amal usaha, dan profil pimpinan.</p><a class="read-more" href={sitePath('/organisasi')}>Buka Organisasi →</a></article>
-        <article class="info-box"><span class="eyebrow">ArsipMu</span><h2>Dokumen yang mudah dicari</h2><p>Surat menyurat, surat masuk, surat keluar, pedoman, dan arsip kegiatan dalam satu ruang yang rapi.</p><a class="read-more" href={sitePath('/arsip')}>Buka ArsipMu →</a></article>
-      </div>
-    </section>
+      <div class="history-note"><strong>Catatan kehati-hatian sejarah:</strong> ada variasi keterangan tahun dalam sumber lokal mengenai fase perkembangan cabang. Website ini menggunakan dekade 1950-an sebagai jejak awal yang terdokumentasi dan 2003 sebagai tonggak perubahan menuju Pimpinan Cabang yang paling konsisten muncul dalam dokumentasi penelitian. Data 1985 dan daftar lima ranting ditampilkan sebagai bagian dari historiografi sumber, bukan klaim keadaan organisasi sekarang.</div>
+      <div class="history-sources"><span class="eyebrow">Rujukan utama</span><div class="source-links"><a class="source-link" href="https://muhammadiyah.or.id/sejarah-singkat-muhammadiyah/">Sejarah Singkat Muhammadiyah — Muhammadiyah.org</a><a class="source-link" href="https://muhammadiyah.or.id/2023/06/setahun-sebelum-wafat-kemana-sajakah-agenda-dakwah-kh-ahmad-dahlan-pada-tahun-1922/">Agenda Dakwah K.H. Ahmad Dahlan 1922 — Muhammadiyah.org</a><a class="source-link" href="https://ejournal.uin-suka.ac.id/adab/thaqafiyyat/en/article/download/2080/970/5185">Kajian sejarah Muhammadiyah Purwokerto — UIN Sunan Kalijaga</a><a class="source-link" href="https://repository.uinjkt.ac.id/dspace/handle/123456789/28053">Penelitian Muhammadiyah di Somagede — UIN Syarif Hidayatullah</a><a class="source-link" href="https://smkmuhsmgd.sch.id/sejarah-sekolah/">Sejarah SMK Muhammadiyah Somagede</a><a class="source-link" href="https://muhammadiyahjateng.or.id/sejarah-pwm-jateng/">Sejarah Muhammadiyah Jawa Tengah — PWM Jateng</a></div></div>
+    </div></section>
+    <section class="section"><div class="container"><div class="section-head"><div><h2>Berita Terbaru</h2><p>Ikuti kabar dan cerita terbaru dari Somagede.</p></div><a class="button button-secondary" href={sitePath('/berita')}>Semua Berita →</a></div><div class="news-grid">{news.map((item) => <NewsCard item={item} />)}</div></div></section>
+    <section class="section section-alt"><div class="container"><div class="section-head"><div><h2>Kegiatan yang menghidupkan gerakan</h2><p>Kajian, program, agenda, dan aktivitas warga Muhammadiyah.</p></div><a class="button button-secondary" href={sitePath('/kegiatan')}>Lihat Kegiatan →</a></div><div class="cards">{activities.map((item) => <article class="card"><span class="tag">{item.category}</span><h3>{item.title}</h3><p>{item.description}</p></article>)}</div></div></section>
+    <section class="section"><div class="container info-grid"><article class="info-box"><span class="eyebrow">Organisasi</span><h2>Kenali PCM Somagede</h2><p>Lihat selayang pandang, kajian rutin, rapat rutin, organisasi otonom, amal usaha, dan profil pimpinan.</p><a class="read-more" href={sitePath('/organisasi')}>Buka Organisasi →</a></article><article class="info-box"><span class="eyebrow">ArsipMu</span><h2>Dokumen yang mudah dicari</h2><p>Surat menyurat, surat masuk, surat keluar, pedoman, dan arsip kegiatan dalam satu ruang yang rapi.</p><a class="read-more" href={sitePath('/arsip')}>Buka ArsipMu →</a></article></div></section>
   </main>
 </MainLayout>
 <style>
-  .history-section{background:linear-gradient(180deg,#f9fcff 0%,#eef7ff 100%)}
-  .history-heading{align-items:start;max-width:900px}
-  .history-heading h2{font-size:clamp(2rem,4vw,3rem);margin:.35rem 0 .6rem}
-  .history-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:24px}
-  .history-card{position:relative;display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:start;padding:22px;border:1px solid #dce7f3;border-radius:22px;background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(7,31,77,.07);overflow:hidden}
-  .history-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,#55d6ff,#0b4aa2)}
-  .history-card-context::before{background:linear-gradient(180deg,#ffd84a,#ff8b5a)}
-  .history-card-accent::before{background:linear-gradient(180deg,#11a7a1,#0b4aa2)}
-  .history-card-now::before{background:linear-gradient(180deg,#ff6ea8,#ffd84a)}
-  .history-year{display:inline-flex;justify-content:center;align-items:center;min-height:42px;padding:8px 10px;border-radius:13px;background:#edf5ff;color:#0b4aa2;font-weight:950;font-size:.82rem;line-height:1.1;text-align:center}
-  .history-card h3{margin:0 0 6px;font-size:1.02rem;color:#10284f}.history-card p{margin:0;color:#5e7088;font-size:.9rem}
-  .history-note{margin-top:22px;padding:15px 17px;border-radius:16px;background:#fff8dd;border:1px solid #f5df86;color:#5b4a17;font-size:.82rem}
-  .history-sources{margin-top:30px}.source-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.source-link{display:block;padding:12px 14px;border-radius:12px;background:#fff;border:1px solid #dce7f3;color:#0b4aa2;font-weight:800;font-size:.8rem;transition:transform .18s ease,box-shadow .18s ease}.source-link:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(7,31,77,.08)}
-  @media(max-width:800px){.history-grid,.source-links{grid-template-columns:1fr}.history-card{grid-template-columns:82px 1fr;gap:12px;padding:18px}.history-year{font-size:.75rem}}
-  @media(max-width:520px){.history-card{grid-template-columns:1fr}.history-year{justify-self:start}.history-card h3{font-size:.98rem}.history-card p{font-size:.86rem}}
+.history-section{background:linear-gradient(180deg,#f9fcff 0%,#eef7ff 100%)}.history-heading{align-items:start;max-width:900px}.history-heading h2{font-size:clamp(2rem,4vw,3rem);margin:.35rem 0 .6rem}.history-intro{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:22px}.history-intro p{margin:0;padding:18px 20px;border:1px solid #dce7f3;border-radius:18px;background:#fff;color:#425670;line-height:1.72;box-shadow:0 10px 26px rgba(7,31,77,.05)}.history-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:24px}.history-card{position:relative;display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:start;padding:22px;border:1px solid #dce7f3;border-radius:22px;background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(7,31,77,.07);overflow:hidden}.history-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,#55d6ff,#0b4aa2)}.history-card-context::before{background:linear-gradient(180deg,#ffd84a,#ff8b5a)}.history-card-accent::before{background:linear-gradient(180deg,#11a7a1,#0b4aa2)}.history-card-now::before{background:linear-gradient(180deg,#ff6ea8,#ffd84a)}.history-year{display:inline-flex;justify-content:center;align-items:center;min-height:42px;padding:8px 10px;border-radius:13px;background:#edf5ff;color:#0b4aa2;font-weight:950;font-size:.82rem;line-height:1.1;text-align:center}.history-card h3{margin:0 0 6px;font-size:1.02rem;color:#10284f}.history-card p{margin:0;color:#5e7088;font-size:.9rem}.history-note{margin-top:22px;padding:15px 17px;border-radius:16px;background:#fff8dd;border:1px solid #f5df86;color:#5b4a17;font-size:.82rem}.history-sources{margin-top:30px}.source-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.source-link{display:block;padding:12px 14px;border-radius:12px;background:#fff;border:1px solid #dce7f3;color:#0b4aa2;font-weight:800;font-size:.8rem;transition:transform .18s ease,box-shadow .18s ease}.source-link:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(7,31,77,.08)}@media(max-width:800px){.history-intro,.history-grid,.source-links{grid-template-columns:1fr}.history-card{grid-template-columns:82px 1fr;gap:12px;padding:18px}}@media(max-width:520px){.history-card{grid-template-columns:1fr}.history-year{justify-self:start}.history-card h3{font-size:.98rem}.history-card p{font-size:.86rem}}
 </style>
