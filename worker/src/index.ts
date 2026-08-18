@@ -88,6 +88,7 @@ async function readLoginBody(request: Request) {
   }
 }
 
+// Secrets are managed in the Cloudflare Worker dashboard and preserved across code deployments.
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
