@@ -2,19 +2,21 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import { archiveYears } from '../data/content';
-import { archiveCategories } from '../data/media';
 import { sitePath } from '../data/site';
 ---
-<MainLayout title="Arsip Digital">
-  <PageHero eyebrow="Pusat Dokumen" title="Arsip Digital" description="Arsip berita, publikasi, dokumen, dan dokumentasi PC Muhammadiyah Somagede yang disusun berdasarkan jenis media dan tahun." />
+<MainLayout title="ArsipMu">
+  <PageHero eyebrow="Dokumen & sejarah" title="ArsipMu" description="Ruang rapi untuk surat, pedoman, dokumen, dan jejak kegiatan PCM Somagede." />
   <main class="section"><div class="container">
-    <div class="section-heading"><div><span class="eyebrow">Struktur media</span><h2>Arsip Cloudinary</h2></div><p>File media disimpan di Cloudinary, sedangkan indeks dan metadata konten tetap dikelola melalui GitHub.</p></div>
-    <div class="archive-grid">{archiveCategories.map((category) => <article class="archive-item"><span class="archive-folder">{category.folder}</span><h3>{category.label}</h3><p>Folder khusus untuk {category.label.toLowerCase()}.</p><a class="read-more" href={`${sitePath('/galeri')}?category=${category.slug}`}>Buka koleksi →</a></article>)}</div>
-    <div class="section-heading" style="margin-top:4rem"><div><span class="eyebrow">Indeks tahunan</span><h2>Arsip Berdasarkan Tahun</h2></div><p>Struktur ini memungkinkan arsip organisasi terus bertambah tanpa membebani repository dengan file media.</p></div>
+    <div id="surat" class="section-anchor"><span class="eyebrow">Administrasi</span><h2>Surat Menyurat</h2><p>Pedoman dan contoh surat yang membantu administrasi organisasi tetap seragam, jelas, dan mudah digunakan.</p></div>
+    <div class="cards">
+      <article id="keluar" class="card"><span class="tag">Dokumen</span><h3>Surat Keluar</h3><p>Indeks surat yang diterbitkan PCM dan dokumen pendukungnya.</p><a class="read-more" href="#keluar">Buka koleksi →</a></article>
+      <article id="masuk" class="card"><span class="tag">Dokumen</span><h3>Surat Masuk</h3><p>Indeks surat masuk dan bahan tindak lanjut organisasi.</p><a class="read-more" href="#masuk">Buka koleksi →</a></article>
+      <article id="pedoman" class="card"><span class="tag">Panduan</span><h3>Pedoman Surat Menyurat</h3><p>Panduan format, tata naskah, penomoran, dan alur administrasi.</p><a class="read-more" href="#pedoman">Buka pedoman →</a></article>
+    </div>
+    <div class="section-anchor"><span class="eyebrow">Indeks waktu</span><h2>Arsip Tahunan</h2><p>Telusuri berita, kegiatan, agenda, dan publikasi berdasarkan tahun.</p></div>
     <div class="archive-grid archive-years">{archiveYears.map((year) => <article class="archive-item"><strong>{year}</strong><h3>Arsip Tahun {year}</h3><p>Berita, kegiatan, agenda, dan publikasi pada tahun {year}.</p><a class="read-more" href={`${sitePath('/berita')}?year=${year}`}>Lihat arsip →</a></article>)}</div>
   </div></main>
 </MainLayout>
 <style>
-  .archive-folder { display:block; color:#0b8068; font-size:.78rem; font-weight:700; margin-bottom:.5rem; word-break:break-word; }
-  .archive-years { margin-top:0; }
+.section-anchor{scroll-margin-top:120px;padding:42px 0;border-top:1px solid var(--line)}.section-anchor h2{margin:.3rem 0 .6rem;font-size:1.7rem}.section-anchor p{max-width:760px;color:var(--muted)}.archive-years{margin-top:0}
 </style>
