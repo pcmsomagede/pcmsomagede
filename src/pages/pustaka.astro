@@ -1,0 +1,18 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/PageHero.astro';
+---
+<MainLayout title="PustakaMu">
+  <PageHero eyebrow="Belajar & membaca" title="PustakaMu" description="Ruang belajar dan koleksi pengetahuan Muhammadiyah untuk dibaca, dipelajari, dan dibagikan." />
+  <main class="section">
+    <div class="container">
+      <div class="cards library-grid">
+        <article class="card" id="arab"><span class="tag">Bahasa Arab</span><h3>Arab Dasar → Mahir</h3><p>Materi bertahap dari huruf, kosakata, nahwu, sharaf, membaca teks, sampai latihan pemahaman.</p><a class="read-more" href="#arab">Mulai belajar →</a></article>
+        <article class="card" id="kitab"><span class="tag">Turats</span><h3>Kitab Kuning</h3><p>Peta belajar dari pengenalan kitab, adab belajar, cara membaca matan, hingga tingkat kajian lanjutan.</p><a class="read-more" href="#kitab">Buka ruang belajar →</a></article>
+        <article class="card" id="bukumu"><span class="tag">Koleksi</span><h3>BukuMu</h3><p>Koleksi buku Islam dengan pratinjau dan ruang unduh DOCX maupun PDF sesuai hak akses yang tersedia.</p><a class="read-more" href="#bukumu">Jelajahi buku →</a></article>
+        <article class="card" id="quranmu"><span class="tag">Al Qur’an</span><h3>Al Qur’anMu</h3><p>Baca, cari, dan pelajari ayat beserta materi pendukung yang akan terus dikembangkan.</p><a class="read-more" href="#quranmu">Buka Al Qur’anMu →</a></article>
+        <article class="card" id="haditsmu"><span class="tag">Hadits</span><h3>HaditsMu</h3><p>Koleksi hadits tematik untuk membaca, mencari, dan belajar berdasarkan kebutuhan pengunjung.</p><a class="read-more" href="#haditsmu">Buka HaditsMu →</a></article>
+      </div>
+    </div>
+  </main>
+</MainLayout>
