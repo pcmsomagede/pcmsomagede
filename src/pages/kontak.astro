@@ -4,9 +4,24 @@ import PageHero from '../components/PageHero.astro';
 import { site, sitePath } from '../data/site';
 ---
 <MainLayout title="Kontak">
-  <PageHero eyebrow="Hubungi Kami" title="Kontak PC Muhammadiyah Somagede" description="Saluran komunikasi dan alamat sekretariat Pimpinan Cabang Muhammadiyah Somagede Kabupaten Banyumas." />
+  <PageHero eyebrow="Terhubung langsung" title="Kontak" description="Hubungi PC Muhammadiyah Somagede melalui WhatsApp, telepon, atau kirim SuaraMu." />
   <main class="section"><div class="container contact-grid">
-    <article class="contact-card"><h2>Sekretariat</h2><p>{site.address}</p><h3>WhatsApp</h3>{site.whatsapp.map((number) => <p><a href={`https://wa.me/62${number.slice(1)}`}>{number}</a></p>)}</article>
-    <article class="contact-card"><h2>Informasi Organisasi</h2><p><strong>Ketua:</strong> {site.chair}</p><p><strong>Website:</strong> <a href={sitePath('/')}>pcmsomagede.github.io</a></p><p>Untuk keperluan resmi, silakan gunakan salah satu nomor WhatsApp di atas.</p></article>
+    <article id="hubungi" class="contact-card">
+      <span class="eyebrow">Hubungi Kami</span><h2>WhatsApp &amp; Telepon</h2><p>{site.address}</p>
+      {site.whatsapp.map((number) => <div class="contact-action"><a class="button button-primary" href={`https://wa.me/62${number.slice(1)}`}>WhatsApp {number}</a><a class="button button-secondary" href={`tel:${number}`}>Telepon</a></div>)}
+    </article>
+    <article id="suaramu" class="contact-card">
+      <span class="eyebrow">SuaraMu</span><h2>Tulisan dari Anda</h2><p>Kirim cerita, gagasan, kritik, atau apresiasi kepada PCM Somagede melalui email.</p>
+      <form class="voice-form" action="mailto:" method="post" enctype="text/plain">
+        <label>Nama<input name="nama" type="text" required /></label>
+        <label>Email<input name="email" type="email" required /></label>
+        <label>Pesan<textarea name="pesan" rows="6" required></textarea></label>
+        <button class="button button-primary" type="submit">Kirim SuaraMu</button>
+      </form>
+      <p class="form-note">Alamat email tujuan akan dihubungkan setelah alamat resmi organisasi ditetapkan.</p>
+    </article>
   </div></main>
 </MainLayout>
+<style>
+.contact-action{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.voice-form{display:grid;gap:12px;margin-top:18px}.voice-form label{display:grid;gap:6px;font-weight:800;font-size:.8rem;color:#304363}.voice-form input,.voice-form textarea{font:inherit;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff}.form-note{font-size:.78rem;color:var(--muted)}
+</style>
