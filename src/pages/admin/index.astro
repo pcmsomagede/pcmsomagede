@@ -18,30 +18,34 @@ const initAdmin = () => {
   if (!(loginView instanceof HTMLElement) || !(dashboard instanceof HTMLElement) || !(form instanceof HTMLFormElement) || !(error instanceof HTMLElement)) return;
   const show = () => { loginView.hidden = true; dashboard.hidden = false; };
   const token = () => sessionStorage.getItem(KEY) || '';
-  const check = async () => {
+  const sessionRequest = async () => {
     const t = token();
-    if (!t) return;
+    const headers: HeadersInit = t ? { Authorization: `Bearer ${t}` } : {};
+    return fetch(`${API}/api/session`, { headers, credentials: 'include', cache: 'no-store' });
+  };
+  const check = async () => {
     try {
-      const r = await fetch(`${API}/api/session`, { headers: { Authorization: `Bearer ${t}` } });
+      const r = await sessionRequest();
       const d = await r.json().catch(() => ({}));
-      if (r.ok && d.authenticated) show(); else sessionStorage.removeItem(KEY);
+      if (r.ok && d.authenticated) show();
+      else sessionStorage.removeItem(KEY);
     } catch { sessionStorage.removeItem(KEY); }
   };
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     error.hidden = true;
     const button = form.querySelector('button[type="submit"]');
-    if (!(button instanceof HTMLButtonElement)) return;
-    button.disabled = true;
-    button.textContent = 'Memeriksa...';
     const username = document.querySelector('#username');
     const password = document.querySelector('#password');
-    if (!(username instanceof HTMLInputElement) || !(password instanceof HTMLInputElement)) return;
+    if (!(button instanceof HTMLButtonElement) || !(username instanceof HTMLInputElement) || !(password instanceof HTMLInputElement)) return;
+    button.disabled = true;
+    button.textContent = 'Memeriksa...';
     try {
       const r = await fetch(`${API}/api/login`, {
         method: 'POST',
         headers: { 'content-type': 'application/json', accept: 'application/json' },
         body: JSON.stringify({ username: username.value.trim(), password: password.value }),
+        credentials: 'include',
         cache: 'no-store'
       });
       const d = await r.json().catch(() => ({}));
@@ -50,11 +54,13 @@ const initAdmin = () => {
         error.hidden = false;
         return;
       }
-      if (d.token) {
-        sessionStorage.setItem(KEY, d.token);
-        show();
-      } else {
-        error.textContent = 'Login berhasil tetapi session token tidak diterima.';
+      if (d.token) sessionStorage.setItem(KEY, d.token);
+      const verified = await sessionRequest();
+      const session = await verified.json().catch(() => ({}));
+      if (verified.ok && session.authenticated) show();
+      else {
+        sessionStorage.removeItem(KEY);
+        error.textContent = 'Login diterima tetapi sesi belum aktif. Muat ulang halaman lalu coba lagi.';
         error.hidden = false;
       }
     } catch (err) {
@@ -68,7 +74,7 @@ const initAdmin = () => {
   });
   logout?.addEventListener('click', async () => {
     const t = token();
-    try { await fetch(`${API}/api/logout`, { method: 'POST', headers: t ? { Authorization: `Bearer ${t}` } : {} }); }
+    try { await fetch(`${API}/api/logout`, { method: 'POST', headers: t ? { Authorization: `Bearer ${t}` } : {}, credentials: 'include' }); }
     finally { sessionStorage.removeItem(KEY); location.reload(); }
   });
   check();
