@@ -4,9 +4,31 @@ import PageHero from '../components/PageHero.astro';
 import { site, sitePath } from '../data/site';
 ---
 <MainLayout title="Organisasi">
-  <PageHero eyebrow="Persyarikatan" title="Organisasi" description="Profil singkat Pimpinan Cabang Muhammadiyah Somagede Kabupaten Banyumas." />
-  <main class="section"><div class="container info-grid">
-    <article class="info-box"><h2>Profil PC Muhammadiyah Somagede</h2><p>Pimpinan Cabang Muhammadiyah Somagede merupakan bagian dari Persyarikatan Muhammadiyah di Kabupaten Banyumas. Halaman ini menjadi pusat informasi struktur, program, majelis, lembaga, dan amal usaha yang akan dilengkapi bertahap.</p><p>Website dibangun sebagai media komunikasi publik sekaligus arsip digital yang mudah ditelusuri.</p></article>
-    <article class="info-box"><h2>Identitas</h2><p><strong>Ketua:</strong> {site.chair}</p><p><strong>Sekretariat:</strong> {site.address}</p><a class="button button-primary" href={sitePath('/pimpinan')}>Lihat Pimpinan</a></article>
-  </div></main>
+  <PageHero eyebrow="Persyarikatan" title="Organisasi" description="Selayang pandang, ritme organisasi, kaderisasi, dan amal usaha PCM Somagede." />
+  <main class="section">
+    <div class="container">
+      <div class="info-grid">
+        <article class="info-box"><span class="eyebrow">Selayang Pandang</span><h2>Bergerak dari akar, tumbuh bersama masyarakat</h2><p>Jejak Muhammadiyah di Somagede sudah dikenal sejak dekade 1950-an. PCM Somagede berdiri pada 2003 dan berkembang melalui dakwah, pendidikan, kaderisasi, kegiatan sosial, serta pelayanan umat.</p></article>
+        <article class="info-box"><span class="eyebrow">Sekretariat</span><h2>Rumah gerakan di Somagede</h2><p>{site.address}</p><a class="button button-primary" href={sitePath('/kontak')}>Hubungi Kami</a></article>
+      </div>
+
+      <div id="kajian" class="section-anchor"><span class="eyebrow">Kajian</span><h2>Kajian Rutin</h2><p>Ruang belajar Islam, dialog, dan penguatan pemahaman warga. Jadwal dan dokumentasi kajian ditampilkan pada KabarMu.</p></div>
+      <div id="rapat" class="section-anchor"><span class="eyebrow">Tata Kelola</span><h2>Rapat Rutin</h2><p>Rapat pimpinan dan koordinasi program menjadi ruang evaluasi, perencanaan, dan tindak lanjut gerakan.</p></div>
+      <div id="anggota" class="section-anchor"><span class="eyebrow">Keanggotaan</span><h2>Kartu Anggota Muhammadiyah</h2><p>Informasi pendaftaran, registrasi, dan langkah menjadi bagian dari Persyarikatan disiapkan sebagai panduan praktis bagi warga.</p><a class="button button-secondary" href={sitePath('/kontak')}>Tanyakan Registrasi →</a></div>
+      <div id="ortom" class="section-anchor"><span class="eyebrow">Organisasi & Amal Usaha</span><h2>Ekosistem gerakan</h2><div class="cards">
+        <article class="card"><span class="tag">Kader & Kepemudaan</span><h3>Kokam</h3><p>Ruang pengabdian, kedisiplinan, dan kesiapsiagaan kader muda.</p></article>
+        <article class="card"><span class="tag">Sosial</span><h3>Lazismu</h3><p>Gerakan zakat, infak, sedekah, dan pelayanan sosial.</p></article>
+        <article class="card"><span class="tag">Kepanduan</span><h3>Hizbul Wathan</h3><p>Pendidikan karakter, kepemimpinan, dan kepanduan.</p></article>
+        <article class="card"><span class="tag">Pendidikan</span><h3>SMK Muhammadiyah Somagede</h3><p>Amal usaha pendidikan vokasi yang menjadi bagian penting dari eksistensi Muhammadiyah di Somagede.</p></article>
+        <article class="card"><span class="tag">Pendidikan Anak</span><h3>TK Bustanul Athfal</h3><p>Pendidikan anak usia dini berbasis nilai-nilai Muhammadiyah.</p></article>
+      </div></div>
+
+      <div class="info-box" style="margin-top:28px"><span class="eyebrow">Profil Pimpinan</span><h2>Jajaran pimpinan PCM Somagede</h2><p>Profil, tugas, dan struktur pimpinan ditempatkan pada halaman tersendiri agar mudah diperbarui.</p><a class="button button-primary" href={sitePath('/pimpinan')}>Buka Profil Pimpinan →</a></div>
+    </div>
+  </main>
 </MainLayout>
+<style>
+.section-anchor{scroll-margin-top:120px;padding:42px 0;border-top:1px solid var(--line)}
+.section-anchor h2{margin:.3rem 0 .6rem;font-size:1.7rem}
+.section-anchor p{max-width:760px;color:var(--muted)}
+</style>
