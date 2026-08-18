@@ -1,22 +1,103 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import PageHero from '../components/PageHero.astro';
-import { archiveYears } from '../data/content';
-import { sitePath } from '../data/site';
+
+const archiveItems = [
+  { id:'keluar', icon:'↗', color:'cyan', title:'Surat Keluar', label:'Administrasi keluar', desc:'Register surat yang diterbitkan PCM Somagede, lengkap dengan nomor, tanggal, tujuan, perihal, dan lampiran.', sample:'Surat keluar resmi PCM Somagede\nNomor: 001/IV.0/C/PCM-SMG/2026\nTanggal: 18 Agustus 2026\nPerihal: Undangan rapat pimpinan\nTujuan: Pimpinan Ranting Muhammadiyah\nLampiran: 1 berkas', year:'2026' },
+  { id:'masuk', icon:'↘', color:'violet', title:'Surat Masuk', label:'Administrasi masuk', desc:'Pencatatan surat dari PDM, PRM, lembaga, Amal Usaha, dan pihak lain untuk memudahkan disposisi dan tindak lanjut.', sample:'Register surat masuk PCM Somagede\nTanggal terima: 18 Agustus 2026\nNomor surat: 045/PDM-BMS/2026\nPengirim: PDM Banyumas\nPerihal: Undangan koordinasi\nStatus: Menunggu disposisi', year:'2026' },
+  { id:'keputusan', icon:'★', color:'gold', title:'Surat Keputusan & Surat Tugas', label:'Keputusan organisasi', desc:'Ruang terstruktur untuk SK, Surat Tugas, mandat, pengangkatan, kepanitiaan, dan keputusan rapat organisasi.', sample:'SURAT KEPUTUSAN PCM SOMAGEDE\nNomor: 002/KEP/IV.0/C/PCM-SMG/2026\nTentang: Penetapan panitia kegiatan\nMasa berlaku: Tahun 2026\nDasar: Hasil rapat pimpinan dan pedoman organisasi', year:'2026' },
+  { id:'notulensi', icon:'✎', color:'pink', title:'Notulensi', label:'Catatan rapat', desc:'Catatan rapat rutin, kajian, koordinasi, musyawarah, keputusan, peserta, agenda, dan tindak lanjut.', sample:'NOTULENSI RAPAT PCM SOMAGEDE\nHari/Tanggal: Selasa, 18 Agustus 2026\nAgenda: Koordinasi program kerja\nPeserta: Pimpinan dan unsur terkait\nKeputusan: Pembagian tugas dan jadwal tindak lanjut\nPIC: Sekretariat PCM Somagede', year:'2026' },
+  { id:'wakaf', icon:'◇', color:'green', title:'Daftar & Sertifikat Wakaf', label:'Wakaf & kekayaan', desc:'Indeks aset wakaf yang memuat identitas objek, nomor sertifikat/AIW, lokasi, luas, dan pemanfaatan untuk kepentingan Persyarikatan.', sample:'REGISTER WAKAF PCM SOMAGEDE\nNomor aset: WM-SMG-001\nLokasi: Somagede, Banyumas\nDokumen: Akta Ikrar Wakaf / Sertifikat\nPemanfaatan: Masjid / pendidikan / sosial\nStatus dokumen: Tersimpan di ArsipMu', year:'2026' },
+  { id:'aktif-organisasi', icon:'✓', color:'orange', title:'Surat Aktif Organisasi', label:'Layanan anggota', desc:'Layanan administrasi untuk anggota Muhammadiyah yang membutuhkan surat keterangan aktif organisasi.', sample:'SURAT KETERANGAN AKTIF ORGANISASI\nNama: ______________________________\nNIK/NBM: ___________________________\nRanting/Unit: ______________________\nKeterangan: Aktif sebagai anggota Muhammadiyah di wilayah kerja PCM Somagede.\nTanggal: ____________________________', year:'2026' },
+  { id:'pedoman', icon:'§', color:'blue', title:'Pedoman Surat Menyurat', label:'Tata naskah', desc:'Panduan internal untuk format, penomoran, kop surat, disposisi, lampiran, tanda tangan, dan pengarsipan.', sample:'PEDOMAN RINGKAS SURAT MENYURAT\n1. Gunakan kop resmi PCM Somagede.\n2. Nomor surat mengikuti tata administrasi organisasi.\n3. Cantumkan tanggal, tujuan, perihal, dan lampiran.\n4. Simpan naskah final beserta lampiran.\n5. Arsipkan berdasarkan jenis dan tahun.', year:'2026' }
+];
+const yearOptions = ['Semua', '2026', '2025', '2024', '2023'];
 ---
 <MainLayout title="ArsipMu">
-  <PageHero eyebrow="Dokumen & sejarah" title="ArsipMu" description="Ruang rapi untuk surat, pedoman, dokumen, dan jejak kegiatan PCM Somagede." />
-  <main class="section"><div class="container">
-    <div id="surat" class="section-anchor"><span class="eyebrow">Administrasi</span><h2>Surat Menyurat</h2><p>Pedoman dan contoh surat yang membantu administrasi organisasi tetap seragam, jelas, dan mudah digunakan.</p></div>
-    <div class="cards">
-      <article id="keluar" class="card"><span class="tag">Dokumen</span><h3>Surat Keluar</h3><p>Indeks surat yang diterbitkan PCM dan dokumen pendukungnya.</p><a class="read-more" href="#keluar">Buka koleksi →</a></article>
-      <article id="masuk" class="card"><span class="tag">Dokumen</span><h3>Surat Masuk</h3><p>Indeks surat masuk dan bahan tindak lanjut organisasi.</p><a class="read-more" href="#masuk">Buka koleksi →</a></article>
-      <article id="pedoman" class="card"><span class="tag">Panduan</span><h3>Pedoman Surat Menyurat</h3><p>Panduan format, tata naskah, penomoran, dan alur administrasi.</p><a class="read-more" href="#pedoman">Buka pedoman →</a></article>
+  <PageHero eyebrow="Administrasi & dokumen" title="ArsipMu" description="Pusat dokumen PCM Somagede yang rapi, mudah dicari, mudah dipratinjau, dan siap diunduh." />
+  <main class="section archive-page">
+    <div class="container">
+      <section id="surat" class="archive-intro">
+        <div><span class="eyebrow">Administrasi organisasi</span><h2>Satu ruang untuk seluruh jejak administrasi</h2><p>Struktur ArsipMu mengambil pola pengelompokan yang lazim digunakan situs Muhammadiyah—surat keluar, surat masuk, keputusan, notulensi, wakaf, dan surat aktif—lalu disesuaikan khusus untuk PCM Somagede. Referensi PCM Kasihan juga menata administrasi berdasarkan kelompok tersebut dan memisahkan arsip menurut tahun. citeturn469985view4turn469985view5turn821648view0turn821648view1turn821648view2turn821648view3</p></div>
+        <div class="archive-stat"><strong>{archiveItems.length}</strong><span>koleksi inti</span><small>+ indeks tahunan</small></div>
+      </section>
+
+      <section class="archive-tools" aria-label="Pencarian ArsipMu">
+        <label class="archive-search"><span>⌕</span><input id="archive-search" type="search" placeholder="Cari surat, keputusan, notulensi, wakaf…" aria-label="Cari ArsipMu" /></label>
+        <div class="archive-years-filter" role="group" aria-label="Filter tahun">{yearOptions.map((year) => <button type="button" class:list={{'year-chip':true, active:year==='Semua'}} data-year={year}>{year}</button>)}</div>
+      </section>
+
+      <section class="archive-grid-modern" aria-label="Koleksi ArsipMu">
+        {archiveItems.map((item) => (
+          <article id={item.id} class:list={{'archive-card-modern':true, [`tone-${item.color}`]:true}} data-title={`${item.title} ${item.label} ${item.desc}`} data-year={item.year}>
+            <div class="archive-card-top"><span class="archive-icon">{item.icon}</span><span class="archive-year">{item.year}</span></div>
+            <span class="archive-kicker">{item.label}</span><h3>{item.title}</h3><p>{item.desc}</p>
+            <div class="archive-actions"><button class="button button-primary archive-preview" type="button" data-id={item.id}>Pratinjau</button><button class="button button-secondary archive-pdf" type="button" data-id={item.id}>PDF ↓</button><button class="button button-secondary archive-docx" type="button" data-id={item.id}>DOCX ↓</button></div>
+          </article>
+        ))}
+      </section>
+
+      <section class="archive-note" id="surat-menyurat"><div><span class="eyebrow">Cara kerja</span><h2>Pratinjau dan unduh langsung</h2><p>Semua tombol bekerja di halaman yang sama. Pratinjau dibuka sebagai panel, sedangkan PDF dan DOCX dibuat langsung oleh browser sehingga tidak perlu membuka tab lain. Untuk arsip resmi yang sudah diunggah admin, kartu yang sama dapat diarahkan ke berkas asli PCM Somagede.</p></div><div class="archive-note-badges"><span>✓ Same-page</span><span>✓ Mobile friendly</span><span>✓ Offline-ready</span></div></section>
+
+      <section class="section-anchor" id="arsip-tahunan"><span class="eyebrow">Indeks waktu</span><h2>Arsip Tahunan</h2><p>Gunakan filter tahun untuk menyiapkan katalog dan pemetaan dokumen dari waktu ke waktu.</p><div class="archive-timeline"><div><strong>2026</strong><span>Struktur ArsipMu Somagede</span></div><div><strong>2025</strong><span>Siap ditambahkan melalui panel admin</span></div><div><strong>2024</strong><span>Siap ditambahkan melalui panel admin</span></div></div></section>
     </div>
-    <div class="section-anchor"><span class="eyebrow">Indeks waktu</span><h2>Arsip Tahunan</h2><p>Telusuri berita, kegiatan, agenda, dan publikasi berdasarkan tahun.</p></div>
-    <div class="archive-grid archive-years">{archiveYears.map((year) => <article class="archive-item"><strong>{year}</strong><h3>Arsip Tahun {year}</h3><p>Berita, kegiatan, agenda, dan publikasi pada tahun {year}.</p><a class="read-more" href={`${sitePath('/berita')}?year=${year}`}>Lihat arsip →</a></article>)}</div>
-  </div></main>
+  </main>
 </MainLayout>
+
+<div class="archive-modal" id="archive-modal" aria-hidden="true"><div class="archive-modal-backdrop"></div><section class="archive-modal-card" role="dialog" aria-modal="true" aria-labelledby="archive-modal-title"><button class="archive-close" id="archive-close" type="button" aria-label="Tutup">×</button><span class="eyebrow">Pratinjau ArsipMu</span><h2 id="archive-modal-title">Dokumen</h2><div class="archive-modal-meta" id="archive-modal-meta"></div><pre id="archive-modal-body"></pre><div class="archive-modal-actions"><button class="button button-primary" id="modal-pdf" type="button">Unduh PDF</button><button class="button button-secondary" id="modal-docx" type="button">Unduh DOCX</button></div></section></div>
+
+<script define:vars={{ archiveItems }}>
+  const items = archiveItems;
+  const search = document.querySelector('#archive-search');
+  const yearButtons = [...document.querySelectorAll('.year-chip')];
+  const cards = [...document.querySelectorAll('.archive-card-modern')];
+  const modal = document.querySelector('#archive-modal');
+  const modalTitle = document.querySelector('#archive-modal-title');
+  const modalMeta = document.querySelector('#archive-modal-meta');
+  const modalBody = document.querySelector('#archive-modal-body');
+  let selected = items[0];
+  let selectedYear = 'Semua';
+  const applyFilter = () => {
+    const q = (search?.value || '').trim().toLowerCase();
+    cards.forEach((card) => {
+      const okText = !q || (card.getAttribute('data-title') || '').toLowerCase().includes(q);
+      const okYear = selectedYear === 'Semua' || card.getAttribute('data-year') === selectedYear;
+      card.hidden = !(okText && okYear);
+    });
+  };
+  search?.addEventListener('input', applyFilter);
+  yearButtons.forEach((b) => b.addEventListener('click', () => { selectedYear = b.dataset.year || 'Semua'; yearButtons.forEach((x)=>x.classList.toggle('active', x===b)); applyFilter(); }));
+
+  const escapePdf = (text) => text.replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');
+  const makePdf = (item) => {
+    const lines = `${item.title}\nPCM Somagede | ${item.year}\n\n${item.sample}`.split('\n');
+    let stream = 'BT\n/F1 16 Tf\n50 760 Td\n';
+    lines.forEach((line, i) => { if (i) stream += '0 -20 Td\n'; stream += `(${escapePdf(line)}) Tj\n`; });
+    stream += 'ET';
+    const objects = [
+      '<< /Type /Catalog /Pages 2 0 R >>',
+      '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+      '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>',
+      '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',
+      `<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`
+    ];
+    let pdf='%PDF-1.4\n'; const offsets=[0]; objects.forEach((o,i)=>{ offsets[i+1]=pdf.length; pdf += `${i+1} 0 obj\n${o}\nendobj\n`; }); const xref=pdf.length; pdf+=`xref\n0 ${objects.length+1}\n0000000000 65535 f \n`; for(let i=1;i<offsets.length;i++) pdf+=String(offsets[i]).padStart(10,'0')+' 00000 n \n'; pdf+=`trailer\n<< /Size ${objects.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`; return new Blob([pdf],{type:'application/pdf'});
+  };
+  const crcTable=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;t[n]=c>>>0;}return t;})();
+  const crc32=(bytes)=>{let c=0xffffffff;for(const b of bytes)c=crcTable[(c^b)&255]^(c>>>8);return (c^0xffffffff)>>>0;};
+  const u16=(n)=>new Uint8Array([n&255,(n>>>8)&255]); const u32=(n)=>new Uint8Array([n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255]);
+  const concat=(parts)=>{const size=parts.reduce((n,p)=>n+p.length,0);const out=new Uint8Array(size);let o=0;for(const p of parts){out.set(p,o);o+=p.length;}return out;};
+  const zipStore=(files)=>{const enc=new TextEncoder(), locals=[], central=[];let offset=0; for(const f of files){const name=enc.encode(f.name), data=enc.encode(f.data), crc=crc32(data);const local=concat([new Uint8Array([80,75,3,4,20,0,0,0,0,0,0,0,0,0]),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),name,data]);locals.push(local);central.push(concat([new Uint8Array([80,75,1,2,20,0,20,0,0,0,0,0,0,0]),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),u16(0),u16(0),u16(0),u16(0),u32(0),u32(offset),name]));offset+=local.length;}const c=concat(central);const l=concat(locals);const end=concat([new Uint8Array([80,75,5,6,0,0,0,0]),u16(files.length),u16(files.length),u32(c.length),u32(l.length),u16(0)]);return new Blob([l,c,end],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});};
+  const makeDocx=(item)=>{const esc=(s)=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');const paras=`<w:p><w:r><w:rPr><w:b/></w:rPr><w:t>${esc(item.title)}</w:t></w:r></w:p>`+`<w:p><w:r><w:t>PCM Somagede | ${esc(item.year)}</w:t></w:r></w:p>`+item.sample.split('\n').map(x=>`<w:p><w:r><w:t>${esc(x)}</w:t></w:r></w:p>`).join('');return zipStore([{name:'[Content_Types].xml',data:'<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'},{name:'_rels/.rels',data:'<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'},{name:'word/document.xml',data:`<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${paras}<w:sectPr/></w:body></w:document>`}]);};
+  const download=(blob,name)=>{const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);};
+  const showPreview=(item)=>{selected=item; modalTitle.textContent=item.title; modalMeta.textContent=`${item.label} • ${item.year} • PCM Somagede`; modalBody.textContent=item.sample; modal.setAttribute('aria-hidden','false'); document.body.classList.add('modal-open');};
+  document.querySelectorAll('.archive-preview').forEach((b)=>b.addEventListener('click',()=>showPreview(items.find(x=>x.id===b.dataset.id)||items[0])));
+  document.querySelectorAll('.archive-pdf').forEach((b)=>b.addEventListener('click',()=>{const x=items.find(i=>i.id===b.dataset.id)||items[0];download(makePdf(x),`${x.id}-pcm-somagede.pdf`);}));
+  document.querySelectorAll('.archive-docx').forEach((b)=>b.addEventListener('click',()=>{const x=items.find(i=>i.id===b.dataset.id)||items[0];download(makeDocx(x),`${x.id}-pcm-somagede.docx`);}));
+  document.querySelector('#modal-pdf')?.addEventListener('click',()=>download(makePdf(selected),`${selected.id}-pcm-somagede.pdf`));
+  document.querySelector('#modal-docx')?.addEventListener('click',()=>download(makeDocx(selected),`${selected.id}-pcm-somagede.docx`));
+  const close=()=>{modal.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open');}; document.querySelector('#archive-close')?.addEventListener('click',close); document.querySelector('.archive-modal-backdrop')?.addEventListener('click',close); document.addEventListener('keydown',(e)=>{if(e.key==='Escape')close();});
+</script>
 <style>
-.section-anchor{scroll-margin-top:120px;padding:42px 0;border-top:1px solid var(--line)}.section-anchor h2{margin:.3rem 0 .6rem;font-size:1.7rem}.section-anchor p{max-width:760px;color:var(--muted)}.archive-years{margin-top:0}
+.archive-page{padding-top:34px}.archive-intro{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;margin-bottom:26px}.archive-intro h2{font-size:clamp(1.7rem,3vw,2.45rem);margin:.3rem 0 .5rem}.archive-intro p{max-width:820px;color:var(--muted)}.archive-stat{min-width:160px;text-align:center;padding:20px;border-radius:22px;background:linear-gradient(135deg,#0b4aa2,#11a7a1);color:#fff;box-shadow:0 18px 38px rgba(11,74,162,.18)}.archive-stat strong{display:block;font-size:2.8rem;line-height:1}.archive-stat span,.archive-stat small{display:block;font-weight:800}.archive-stat small{opacity:.8;margin-top:5px}.archive-tools{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;margin:24px 0}.archive-search{display:flex;align-items:center;gap:9px;padding:12px 14px;border:1px solid #dbe6f2;border-radius:16px;background:#fff;box-shadow:0 10px 24px rgba(7,31,77,.06)}.archive-search input{border:0;outline:0;width:100%;font:inherit;background:transparent;color:var(--ink)}.archive-years-filter{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.year-chip{border:1px solid #d4dfed;background:#fff;color:#25415f;border-radius:999px;padding:8px 11px;font-weight:850;cursor:pointer}.year-chip.active{background:#0b4aa2;color:#fff;border-color:#0b4aa2}.archive-grid-modern{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.archive-card-modern{border:1px solid #dfe8f2;border-radius:22px;padding:22px;background:#fff;box-shadow:0 14px 32px rgba(7,31,77,.07);position:relative;overflow:hidden}.archive-card-modern::after{content:"";position:absolute;right:-32px;top:-32px;width:120px;height:120px;border-radius:50%;background:rgba(11,74,162,.06)}.archive-card-top{display:flex;justify-content:space-between;align-items:center}.archive-icon{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:1.15rem;font-weight:950;background:#eef5ff;color:#0b4aa2}.archive-year{font-size:.72rem;font-weight:900;color:#64758c;background:#f5f8fb;padding:6px 9px;border-radius:999px}.archive-kicker{display:inline-block;margin-top:18px;font-size:.68rem;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:#728199}.archive-card-modern h3{margin:.35rem 0 .55rem;font-size:1.2rem}.archive-card-modern p{color:#64758c;font-size:.9rem;min-height:72px}.archive-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:18px}.archive-actions .button{padding:8px 11px;font-size:.75rem;cursor:pointer}.tone-cyan{border-top:4px solid #67d8ff}.tone-violet{border-top:4px solid #9b7bff}.tone-gold{border-top:4px solid #ffd84a}.tone-pink{border-top:4px solid #ff6ea8}.tone-green{border-top:4px solid #5bd19a}.tone-orange{border-top:4px solid #ff9b54}.tone-blue{border-top:4px solid #0b4aa2}.archive-note{margin-top:28px;padding:26px;border-radius:24px;background:linear-gradient(135deg,#071f4d,#0d77a5);color:#fff;display:flex;justify-content:space-between;gap:20px;align-items:center}.archive-note h2{margin:.25rem 0 .5rem}.archive-note p{max-width:760px;color:#d9e9ff}.archive-note-badges{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.archive-note-badges span{padding:8px 10px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.08);font-size:.72rem;font-weight:850}.archive-timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.archive-timeline div{padding:18px;border-radius:18px;background:#fff;border:1px solid #e2eaf3;display:grid;gap:5px}.archive-timeline strong{font-size:1.6rem;color:#0b4aa2}.archive-timeline span{color:#64758c;font-size:.78rem;font-weight:750}.archive-card-modern[hidden]{display:none}.archive-modal{position:fixed;inset:0;z-index:200;display:none}.archive-modal[aria-hidden="false"]{display:block}.archive-modal-backdrop{position:absolute;inset:0;background:rgba(2,20,52,.64);backdrop-filter:blur(6px)}.archive-modal-card{position:relative;width:min(760px,calc(100% - 28px));max-height:min(88vh,780px);overflow:auto;margin:6vh auto 0;background:#fff;border-radius:24px;padding:28px;box-shadow:0 28px 70px rgba(0,0,0,.28)}.archive-close{position:absolute;right:14px;top:12px;border:0;background:#eef4fb;color:#183252;width:36px;height:36px;border-radius:50%;font-size:1.4rem;cursor:pointer}.archive-modal-meta{color:#728199;font-size:.82rem;font-weight:800;margin-bottom:16px}.archive-modal-card pre{white-space:pre-wrap;background:#f7faff;border:1px solid #e1e9f2;border-radius:16px;padding:18px;line-height:1.65;font:inherit;color:#203b5d}.archive-modal-actions{display:flex;gap:8px;margin-top:16px}.modal-open{overflow:hidden}@media(max-width:950px){.archive-grid-modern{grid-template-columns:repeat(2,1fr)}.archive-tools{grid-template-columns:1fr}.archive-years-filter{justify-content:flex-start}}@media(max-width:650px){.archive-intro{grid-template-columns:1fr}.archive-stat{width:100%}.archive-grid-modern,.archive-timeline{grid-template-columns:1fr}.archive-note{flex-direction:column;align-items:flex-start}.archive-note-badges{justify-content:flex-start}.archive-card-modern p{min-height:0}.archive-modal-card{margin-top:3vh}}
 </style>
