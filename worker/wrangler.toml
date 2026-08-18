@@ -13,3 +13,4 @@ PUBLIC_SITE_ORIGIN = "https://pcmsomagede.github.io"
 # wrangler secret put ADMIN_PASSWORD
 # wrangler secret put SESSION_SECRET
 # CMS API deployment
+# Trigger production deployment after GitHub Actions secrets are configured.
