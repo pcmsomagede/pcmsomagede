@@ -12,13 +12,13 @@ import { site, sitePath } from '../data/site';
     </article>
     <article id="suaramu" class="contact-card">
       <span class="eyebrow">SuaraMu</span><h2>Tulisan dari Anda</h2><p>Kirim cerita, gagasan, kritik, atau apresiasi kepada PCM Somagede melalui email.</p>
-      <form class="voice-form" action="mailto:" method="post" enctype="text/plain">
+      <form class="voice-form" action={`mailto:${site.email}`} method="post" enctype="text/plain">
         <label>Nama<input name="nama" type="text" required /></label>
         <label>Email<input name="email" type="email" required /></label>
         <label>Pesan<textarea name="pesan" rows="6" required></textarea></label>
         <button class="button button-primary" type="submit">Kirim SuaraMu</button>
       </form>
-      <p class="form-note">Alamat email tujuan akan dihubungkan setelah alamat resmi organisasi ditetapkan.</p>
+      <p class="form-note">Pesan SuaraMu akan diarahkan ke {site.email}.</p>
     </article>
   </div></main>
 </MainLayout>
