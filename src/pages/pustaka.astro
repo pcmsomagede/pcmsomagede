@@ -1,18 +1,105 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import PageHero from '../components/PageHero.astro';
+import { quranSurahs } from '../data/quran';
+
+const PUSTAKA_REF = 'https://www.pcmcepu.com/p/pustaka-digital-download-naskah-khutbah.html';
+const QURAN_REF = 'https://www.pcmcepu.com/p/quranmu-muhammadiyah.html';
+const books = [
+  { title: 'Kode Indeks Surat Muhammadiyah', type: 'Buku' },
+  { title: 'Tanya Jawab Agama Jilid 1', type: 'Buku' },
+  { title: 'Tanya Jawab Agama Jilid 2', type: 'Buku' },
+  { title: 'Tanya Jawab Agama Jilid 3', type: 'Buku' },
+  { title: 'Tanya Jawab Agama Jilid 5', type: 'Buku' },
+  { title: 'Tanya Jawab Agama Jilid 6', type: 'Buku' },
+  { title: 'Tanya Jawab Agama Jilid 7', type: 'Buku' },
+  { title: 'Tanya Jawab Agama Jilid 8', type: 'Buku' },
+  { title: 'Buku Tuntunan Tabligh', type: 'Buku' },
+  { title: 'Dua Menyemai Damai', type: 'Buku' },
+  { title: 'Pedoman Keprotokolan Muhammadiyah', type: 'Buku' },
+  { title: 'Himpunan Peraturan Organisasi Muhammadiyah 2022', type: 'Buku' },
+  { title: 'Muhammadiyah Ahmad Dahlan Menemukan Kembali Otentitas Gerakan', type: 'Buku' },
+  { title: 'Muhammadiyah dalam Perspektif Sejarah, Organisasi dan Sistem Nilai', type: 'Buku' },
+  { title: 'Muhammadiyah Jawa - Ahmad Najib Burhani', type: 'Buku' },
+  { title: 'Pedoman Tata Naskah Dinas Muhammadiyah', type: 'Buku' },
+  { title: 'Percik Pemikiran Tokoh Muhammadiyah untuk Indonesia Berkemajuan', type: 'Buku' },
+  { title: 'Rezim Gender Muhammadiyah', type: 'Buku' },
+  { title: 'Tafsir Al Ma’un Abad II Muhammadiyah', type: 'Buku' },
+  { title: 'Buku KHGT: Keunggulan dan Kritikan', type: 'Buku' },
+  { title: 'Kumpulan Doa Sehari-hari', type: 'Buku' },
+  { title: 'Buku Hikmah Ramadhan', type: 'Buku' },
+  { title: 'Arah Kebijakan PWM', type: 'Buku' },
+  { title: 'Retorika Dakwah', type: 'Buku' },
+  { title: 'Buku Kajian Tafsir Ayat-Ayat Dakwah', type: 'Buku' },
+  { title: 'Kitab As-Shiyam dan Zakat Fithri Menurut Putusan Muhammadiyah', type: 'Buku' },
+  { title: 'Pedoman Masjid Muhammadiyah', type: 'Buku' },
+  { title: 'Fikih Salat Berjamaah', type: 'Buku' },
+  { title: 'Himpunan Putusan Tarjih Buku 1', type: 'Buku' },
+  { title: 'Himpunan Putusan Tarjih Ketikan Ulang', type: 'Buku' },
+  { title: 'AD/ART Muhammadiyah Tahun 2020', type: 'Buku' },
+  { title: 'Pedoman Hidup Islami Warga Muhammadiyah', type: 'Buku' },
+  { title: 'Tuntunan Perawatan Jenazah', type: 'Buku' },
+  { title: 'Halal-Haram dalam Persoalan Kuliner di Luar Negeri', type: 'Buku' },
+  { title: 'Pedoman Perkaderan di Perguruan Tinggi Muhammadiyah-’Aisyiyah', type: 'Buku' },
+  { title: 'Pedoman Pelaksanaan Perkaderan Muhammadiyah', type: 'Buku' },
+  { title: 'Modul Baitul Arqam', type: 'Buku' },
+  { title: 'Sistem Perkaderan Muhammadiyah', type: 'Buku' },
+  { title: 'Pedoman Perkaderan di Amal Usaha Kesehatan Muhammadiyah', type: 'Buku' },
+  { title: 'Syarah Kitab Al Tawfīqāt Al Ilhāmiyyah', type: 'Buku' },
+  { title: 'Source Code KHGT Times V7', type: 'Buku' },
+  { title: 'Sains Dunia sebagai I’jazul Qur’an', type: 'Buku' },
+  { title: 'Praktek Python untuk Astronomi Islam', type: 'Buku' },
+  { title: 'KHGT Times: Konsep & Source Code', type: 'Buku' },
+  { title: 'Buku Beda Manhaj Fikih NU Muhammadiyah', type: 'Buku' },
+  { title: 'Buku Peta Jalan Persyarikatan Muhammadiyah', type: 'Buku' },
+  { title: 'Panduan Dakwah Digital Muhammadiyah Era AI', type: 'Buku' },
+  { title: 'Menimbang Rukyat dan Hisab dalam Kehidupan Modern', type: 'Buku' },
+  { title: 'Buku Kuliah Akhlaq', type: 'Buku' },
+  { title: 'Kosmologi Nuzulul Qur’an', type: 'Buku' },
+  { title: 'Hikmah Ramadan', type: 'Buku' },
+  { title: 'Fakta Sejarah dan Mitos Walisongo', type: 'Buku' },
+  { title: 'Booklet Membongkar Mitos Bulan Rajab', type: 'Booklet' },
+  { title: 'Booklet Tipu Daya Setan yang Lemah', type: 'Booklet' },
+  { title: 'Booklet Solusi Problem Krusial Penentuan Awal Bulan Menggunakan KHGT', type: 'Booklet' },
+  { title: 'Booklet Tutorial Teknik Prompt Menyusun Buku', type: 'Booklet' },
+  { title: 'Booklet Tanya Jawab KHGT', type: 'Booklet' },
+  { title: 'Booklet Ringkasan Himpunan Putusan Tarjih', type: 'Booklet' },
+  { title: 'Booklet Kontribusi Intelektual Muslim Persia bagi Dunia', type: 'Booklet' },
+  { title: 'Booklet Fikih Muamalah', type: 'Booklet' },
+  { title: 'Booklet AI: Pedang Bermata Dua', type: 'Booklet' },
+  { title: 'Booklet Teologi Perut dan Iman', type: 'Booklet' },
+  { title: 'Booklet Solusi Problematika Pengelolaan Masjid', type: 'Booklet' },
+  { title: 'Booklet Rezeki & Zakat', type: 'Booklet' },
+  { title: 'Booklet Penelitian Ilmiah Kecerdasan Penghapal Al Qur’an', type: 'Booklet' },
+  { title: 'Booklet Panduan Bekam', type: 'Booklet' },
+  { title: 'Booklet Menyalakan Kembali Sang Surya', type: 'Booklet' },
+  { title: 'Booklet Menjadi Suami Idaman Istri Menurut Islam', type: 'Booklet' },
+  { title: 'Booklet Menimbang Rukyat dan Hisab', type: 'Booklet' },
+  { title: 'Kultum Lengkap: Kisi-kisi Ceramah Tematik Ramadan', type: 'Kultum' },
+];
 ---
+
 <MainLayout title="PustakaMu">
-  <PageHero eyebrow="Belajar & membaca" title="PustakaMu" description="Ruang belajar dan koleksi pengetahuan Muhammadiyah untuk dibaca, dipelajari, dan dibagikan." />
-  <main class="section">
-    <div class="container">
-      <div class="cards library-grid">
-        <article class="card" id="arab"><span class="tag">Bahasa Arab</span><h3>Arab Dasar → Mahir</h3><p>Materi bertahap dari huruf, kosakata, nahwu, sharaf, membaca teks, sampai latihan pemahaman.</p><a class="read-more" href="#arab">Mulai belajar →</a></article>
-        <article class="card" id="kitab"><span class="tag">Turats</span><h3>Kitab Kuning</h3><p>Peta belajar dari pengenalan kitab, adab belajar, cara membaca matan, hingga tingkat kajian lanjutan.</p><a class="read-more" href="#kitab">Buka ruang belajar →</a></article>
-        <article class="card" id="bukumu"><span class="tag">Koleksi</span><h3>BukuMu</h3><p>Koleksi buku Islam dengan pratinjau dan ruang unduh DOCX maupun PDF sesuai hak akses yang tersedia.</p><a class="read-more" href="#bukumu">Jelajahi buku →</a></article>
-        <article class="card" id="quranmu"><span class="tag">Al Qur’an</span><h3>Al Qur’anMu</h3><p>Baca, cari, dan pelajari ayat beserta materi pendukung yang akan terus dikembangkan.</p><a class="read-more" href="#quranmu">Buka Al Qur’anMu →</a></article>
-        <article class="card" id="haditsmu"><span class="tag">Hadits</span><h3>HaditsMu</h3><p>Koleksi hadits tematik untuk membaca, mencari, dan belajar berdasarkan kebutuhan pengunjung.</p><a class="read-more" href="#haditsmu">Buka HaditsMu →</a></article>
-      </div>
-    </div>
-  </main>
+  <PageHero eyebrow="Belajar · Baca · Unduh" title="PustakaMu" description="Pusat belajar digital PCM Somagede: Al Qur’anMu, koleksi buku, materi khutbah, kultum, Arab, Kitab Kuning, dan HaditsMu." />
+  <main class="section"><div class="container">
+    <section class="library-hero" aria-labelledby="library-title"><div><span class="eyebrow">Pustaka Digital Muhammadiyah</span><h2 id="library-title">Satu ruang, banyak jalan untuk belajar.</h2><p>Konsep katalog dibuat praktis: tab kategori, pencarian cepat, kartu koleksi, serta akses langsung ke sumber rujukan. Konten lokal dapat terus ditambah dari panel admin.</p><div class="library-pills" role="navigation" aria-label="Bagian PustakaMu"><a href="#quranmu">Al Qur’anMu</a><a href="#bukumu">BukuMu</a><a href="#khutbah">Khutbah &amp; Kultum</a><a href="#arab">Arab &amp; Kitab Kuning</a><a href="#haditsmu">HaditsMu</a></div></div><div class="library-orbit" aria-hidden="true"><span>اقرأ</span><span>علم</span><span>نور</span></div></section>
+
+    <section id="quranmu" class="library-section quran-panel"><div class="library-section-head"><div><span class="eyebrow">Al Qur’anMu</span><h2>Daftar Surah Al-Qur’an</h2><p>Daftar 114 surah dengan arti, jumlah ayat, dan aksara Arab. Tombol rujukan membuka sumber QuranMu secara langsung pada tab yang sama.</p></div><a class="source-button" href={QURAN_REF}>Rujukan QuranMu ↗</a></div><div class="quran-toolbar"><label class="library-search"><span aria-hidden="true">⌕</span><input id="quran-search" type="search" placeholder="Cari nama surah..." autocomplete="off" /></label><span class="result-count" id="quran-count">114 surah</span></div><div class="quran-grid" id="quran-grid">{quranSurahs.map((surah) => <article class="quran-card" data-search={surah.no + ' ' + surah.name + ' ' + surah.meaning + ' ' + surah.arabic}><div class="quran-number">{surah.no}</div><div class="quran-main"><div class="quran-top"><strong>{surah.name}</strong><span>{surah.arabic}</span></div><p>{surah.meaning} · {surah.verses} ayat</p></div><a class="quran-open" href={`${QURAN_REF}#surah-${surah.no}`} aria-label={`Buka rujukan ${surah.name}`}>Buka</a></article>)}</div></section>
+
+    <section id="bukumu" class="library-section"><div class="library-section-head"><div><span class="eyebrow">BukuMu</span><h2>Koleksi buku &amp; naskah</h2><p>Katalog ringkas mengikuti pola pustaka digital referensi: judul mudah dicari, kartu ringkas, dan tombol akses langsung ke sumber rujukan.</p></div><a class="source-button" href={PUSTAKA_REF}>Buka sumber Pustaka Digital ↗</a></div><div class="quran-toolbar"><label class="library-search"><span aria-hidden="true">⌕</span><input id="book-search" type="search" placeholder="Cari judul buku..." autocomplete="off" /></label><span class="result-count" id="book-count">{books.length} koleksi</span></div><div class="book-grid" id="book-grid">{books.map((book, index) => <article class="book-card" data-search={book.title}><div class="book-icon" aria-hidden="true">▤</div><div class="book-body"><span class="book-type">{book.type}</span><h3>{book.title}</h3><div class="book-actions"><a href={`${PUSTAKA_REF}#koleksi-${index + 1}`}>Lihat sumber</a><span>PDF / DOCX sesuai sumber</span></div></div></article>)}</div></section>
+
+    <section id="khutbah" class="library-section feature-strip"><div class="feature-icon" aria-hidden="true">✦</div><div><span class="eyebrow">Khutbah &amp; Kultum</span><h2>Naskah siap dipakai untuk belajar dan persiapan ceramah.</h2><p>Bagian ini mengelompokkan Pustaka Digital, Materi Khutbah, dan Materi Kultum agar akses tetap cepat dan tidak membuat pengunjung tersesat.</p></div><div class="feature-actions"><a class="source-button" href={PUSTAKA_REF}>PustakaMu Digital</a><a class="source-button light" href={`${PUSTAKA_REF}#khutbah`}>Materi Khutbah</a><a class="source-button light" href={`${PUSTAKA_REF}#kultum`}>Materi Kultum</a></div></section>
+
+    <section id="arab" class="library-section subject-grid"><article class="subject-card blue"><span>ا ب ت</span><h2>Arab Dasar → Mahir</h2><p>Huruf, kosakata, percakapan, nahwu, sharaf, membaca teks, dan latihan bertahap.</p></article><article class="subject-card gold"><span>كتاب</span><h2>Kitab Kuning</h2><p>Adab belajar, pengenalan matan, cara membaca teks, dan jalur belajar bertingkat.</p></article><article id="haditsmu" class="subject-card teal"><span>حديث</span><h2>HaditsMu</h2><p>Koleksi belajar hadits tematik yang dapat dikembangkan menjadi pencarian tema dan sumber.</p></article></section>
+
+    <div class="library-note"><strong>Catatan akses:</strong> indeks dan kartu di atas adalah lapisan navigasi lokal. File PDF/DOCX tetap mengikuti sumber yang berhak menerbitkannya; tombol sumber membuka halaman rujukan langsung pada tab yang sama.</div>
+  </div></main>
 </MainLayout>
+
+<script>
+  const bindSearch = (inputId, cardSelector, countId, suffix) => { const input = document.querySelector(inputId); const cards = [...document.querySelectorAll(cardSelector)]; const count = document.querySelector(countId); const run = () => { const term = (input?.value || '').toLowerCase().trim(); let visible = 0; cards.forEach((card) => { const ok = !term || (card.getAttribute('data-search') || '').toLowerCase().includes(term); card.toggleAttribute('hidden', !ok); if (ok) visible += 1; }); if (count) count.textContent = `${visible} ${suffix}`; }; input?.addEventListener('input', run); };
+  bindSearch('#quran-search', '#quran-grid .quran-card', '#quran-count', 'surah'); bindSearch('#book-search', '#book-grid .book-card', '#book-count', 'koleksi');
+</script>
+<style>
+.library-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:20px;padding:34px;border-radius:28px;background:linear-gradient(135deg,#071f4d,#0b4aa2 60%,#0d77a5);color:#fff;overflow:hidden;box-shadow:0 22px 55px rgba(7,31,77,.18)}.library-hero::after{content:"";position:absolute;width:260px;height:260px;right:-100px;bottom:-130px;border-radius:50%;background:rgba(255,216,74,.15)}.library-hero h2{margin:6px 0 10px;font-size:clamp(2rem,4vw,3.2rem);line-height:1.05}.library-hero p{max-width:760px;color:#dfeaff}.library-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.library-pills a{display:inline-flex;padding:9px 12px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:#fff;font-weight:850;font-size:.78rem}.library-pills a:hover{background:rgba(255,216,74,.22)}.library-orbit{position:relative;display:grid;place-items:center;min-height:180px}.library-orbit::before,.library-orbit::after{content:"";position:absolute;border:1px solid rgba(255,255,255,.18);border-radius:50%}.library-orbit::before{inset:18px}.library-orbit::after{inset:42px}.library-orbit span{position:absolute;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.12);backdrop-filter:blur(10px);font-weight:950}.library-orbit span:nth-child(1){transform:translate(-50px,-38px)}.library-orbit span:nth-child(2){transform:translate(50px,8px)}.library-orbit span:nth-child(3){transform:translate(-5px,52px)}.library-section{margin-top:28px;padding:28px;border-radius:24px;background:#fff;border:1px solid #e3ebf4;box-shadow:0 14px 38px rgba(7,31,77,.07);scroll-margin-top:110px}.library-section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:20px}.library-section-head h2{margin:5px 0 7px}.library-section-head p{margin:0;color:#65758e;max-width:820px}.source-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 13px;border-radius:12px;background:#0b4aa2;color:#fff;font-weight:900;white-space:nowrap}.source-button:hover{filter:brightness(1.05)}.source-button.light{background:#fff;color:#0b4aa2;border:1px solid rgba(11,74,162,.22)}.quran-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.library-search{display:flex;align-items:center;gap:8px;min-width:min(100%,440px);padding:10px 13px;border:1px solid #dbe6f1;border-radius:14px;background:#f8fbff;color:#66809d}.library-search input{width:100%;border:0;background:transparent;outline:0;font:inherit;color:#17325b}.result-count{font-size:.78rem;font-weight:900;color:#6b7c92;white-space:nowrap}.quran-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.quran-card{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px;border:1px solid #e2eaf4;border-radius:16px;background:linear-gradient(135deg,#fff,#f8fbff);transition:.18s ease}.quran-card:hover{transform:translateY(-2px);border-color:#b8cbe2;box-shadow:0 12px 22px rgba(7,31,77,.08)}.quran-number{width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(135deg,#0b4aa2,#0d77a5);color:#fff;font-weight:950;font-variant-numeric:tabular-nums}.quran-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.quran-top strong{font-size:.88rem;color:#17325b}.quran-top span{font-family:serif;font-size:1.15rem;color:#0b6b66}.quran-main p{margin:2px 0 0;font-size:.71rem;color:#72839a}.quran-open{padding:7px 9px;border-radius:10px;background:#eef5ff;color:#0b4aa2;font-size:.72rem;font-weight:900}.book-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.book-card{display:flex;gap:11px;padding:15px;border:1px solid #e2eaf4;border-radius:18px;background:#fff;min-height:126px}.book-card:hover{border-color:#c5d7e9;box-shadow:0 12px 26px rgba(7,31,77,.07)}.book-icon{width:44px;height:44px;flex:0 0 44px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#ffd84a,#ffb23e);color:#10234a;font-weight:950}.book-type{font-size:.67rem;color:#0b6b66;font-weight:950;text-transform:uppercase;letter-spacing:.08em}.book-card h3{margin:4px 0 8px;font-size:.94rem;line-height:1.3;color:#18355d}.book-actions{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.7rem}.book-actions a{color:#0b4aa2;font-weight:900}.book-actions span{color:#7b899c}.feature-strip{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px;background:linear-gradient(135deg,#0b4aa2,#0d77a5);color:#fff}.feature-strip .eyebrow{color:#ffd84a}.feature-strip h2{margin:4px 0 6px}.feature-strip p{margin:0;color:#e4efff}.feature-icon{width:58px;height:58px;display:grid;place-items:center;border-radius:18px;background:rgba(255,255,255,.12);font-size:1.4rem}.feature-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.subject-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:0;background:transparent;border:0;box-shadow:none}.subject-card{padding:24px;border-radius:22px;color:#fff;min-height:210px;box-shadow:0 16px 35px rgba(7,31,77,.1)}.subject-card span{display:inline-grid;place-items:center;min-width:48px;height:36px;padding:0 10px;border-radius:12px;background:rgba(255,255,255,.16);font-family:serif;font-size:1rem}.subject-card h2{margin:20px 0 8px}.subject-card p{margin:0;color:rgba(255,255,255,.9)}.subject-card.blue{background:linear-gradient(135deg,#0b4aa2,#4d76db)}.subject-card.gold{background:linear-gradient(135deg,#b27b00,#f2bf37);color:#1f2a3c}.subject-card.teal{background:linear-gradient(135deg,#08746e,#13a49b)}.library-note{margin-top:18px;padding:14px 16px;border-radius:14px;background:#fff8d9;border:1px solid #f1df8a;color:#4b461f;font-size:.78rem}[hidden]{display:none!important}@media(max-width:900px){.library-hero{grid-template-columns:1fr}.library-orbit{display:none}.book-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.subject-grid{grid-template-columns:1fr}}@media(max-width:650px){.library-section{padding:20px;border-radius:20px}.library-section-head{align-items:flex-start;flex-direction:column}.quran-toolbar{align-items:stretch;flex-direction:column}.library-search{min-width:0}.quran-grid{grid-template-columns:1fr}.book-grid{grid-template-columns:1fr}.feature-strip{grid-template-columns:1fr}.feature-actions{justify-content:flex-start}}
+</style>
