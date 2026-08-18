@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 import '../styles/header-redesign.css';
+import '../styles/site-refresh.css';
 
 const { title = site.shortName, description = site.description } = Astro.props;
 const base = import.meta.env.BASE_URL;
@@ -18,7 +19,7 @@ const logoAsset = `${asset('logo-final.svg')}?v=20260818-final`;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#06479b" />
+    <meta name="theme-color" content="#071f4d" />
     <link rel="icon" type="image/svg+xml" href={logoAsset} />
     <link rel="shortcut icon" type="image/svg+xml" href={logoAsset} />
     <link rel="apple-touch-icon" href={logoAsset} />
