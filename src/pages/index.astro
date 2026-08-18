@@ -8,11 +8,17 @@ import { news, agenda, activities } from '../data/content';
   <main>
     <section class="hero-home">
       <div class="container hero-home-grid">
-        <div class="welcome">
-          <span class="eyebrow">Selamat Datang di Website</span>
-          <h1>Pimpinan Cabang Muhammadiyah Somagede Kabupaten Banyumas</h1>
-          <p>Portal informasi, publikasi, dokumentasi, dan arsip digital PC Muhammadiyah Somagede. Dibangun untuk memudahkan warga, simpatisan, dan masyarakat menemukan informasi persyarikatan.</p>
-          <div class="actions"><a class="button button-primary" href={sitePath('/organisasi')}>Profil Kami</a><a class="button button-secondary" href={sitePath('/kontak')}>Kontak Kami</a></div>
+        <div class="welcome" id="selayang-pandang">
+          <span class="eyebrow">Selamat datang</span>
+          <h1>PCM Somagede, ruang tumbuh bersama untuk dakwah, pendidikan, dan kemaslahatan.</h1>
+          <p>Jejak Muhammadiyah di Somagede telah tumbuh sejak dekade 1950-an. Pimpinan Cabang Muhammadiyah Somagede berdiri pada 2003 dan terus berkembang melalui pendidikan, dakwah, kaderisasi, kegiatan sosial, serta amal usaha yang dekat dengan masyarakat.</p>
+          <div class="actions"><a class="button button-primary" href={sitePath('/organisasi')}>Selayang Pandang</a><a class="button button-secondary" href={sitePath('/pustaka')}>Masuk PustakaMu</a></div>
+          <div class="stat-strip" aria-label="Ringkasan organisasi">
+            <div class="stat-chip"><strong>2003</strong><span>PCM Somagede berdiri</span></div>
+            <div class="stat-chip"><strong>1950-an</strong><span>Jejak awal Muhammadiyah di Somagede</span></div>
+            <div class="stat-chip"><strong>SMK</strong><span>Pilar pendidikan Muhammadiyah</span></div>
+            <div class="stat-chip"><strong>Aktif</strong><span>Dakwah, kajian & kegiatan warga</span></div>
+          </div>
         </div>
         <aside class="side-panel">
           <h2>Agenda Terdekat</h2>
@@ -24,22 +30,22 @@ import { news, agenda, activities } from '../data/content';
 
     <section class="section">
       <div class="container">
-        <div class="section-head"><div><h2>Berita Terbaru</h2><p>Informasi dan publikasi dari PC Muhammadiyah Somagede.</p></div><a class="button button-secondary" href={sitePath('/berita')}>Semua Berita →</a></div>
+        <div class="section-head"><div><h2>Berita Terbaru</h2><p>Ikuti kabar dan cerita terbaru dari Somagede.</p></div><a class="button button-secondary" href={sitePath('/berita')}>Semua Berita →</a></div>
         <div class="news-grid">{news.map((item) => <NewsCard item={item} />)}</div>
       </div>
     </section>
 
     <section class="section section-alt">
       <div class="container">
-        <div class="section-head"><div><h2>Kegiatan & Dokumentasi</h2><p>Ruang untuk menghimpun kegiatan, program, dan dokumentasi persyarikatan.</p></div><a class="button button-secondary" href={sitePath('/kegiatan')}>Lihat Kegiatan →</a></div>
+        <div class="section-head"><div><h2>Kegiatan yang menghidupkan gerakan</h2><p>Kajian, program, agenda, dan aktivitas warga Muhammadiyah.</p></div><a class="button button-secondary" href={sitePath('/kegiatan')}>Lihat Kegiatan →</a></div>
         <div class="cards">{activities.map((item) => <article class="card"><span class="tag">{item.category}</span><h3>{item.title}</h3><p>{item.description}</p></article>)}</div>
       </div>
     </section>
 
     <section class="section">
       <div class="container info-grid">
-        <div class="info-box"><span class="eyebrow">Tentang Organisasi</span><h2>Bergerak bersama, menebar manfaat.</h2><p>Pimpinan Cabang Muhammadiyah Somagede merupakan bagian dari Persyarikatan Muhammadiyah di Kabupaten Banyumas. Website ini menjadi pusat informasi publik dan arsip digital organisasi.</p><a class="read-more" href={sitePath('/organisasi')}>Kenali organisasi →</a></div>
-        <div class="info-box"><span class="eyebrow">Ketua</span><h2>{site.chair}</h2><p>Informasi struktur pimpinan akan dilengkapi secara bertahap melalui sistem konten.</p><a class="read-more" href={sitePath('/pimpinan')}>Lihat halaman pimpinan →</a></div>
+        <article class="info-box"><span class="eyebrow">Organisasi</span><h2>Kenali PCM Somagede</h2><p>Lihat selayang pandang, kajian rutin, rapat rutin, organisasi otonom, amal usaha, dan profil pimpinan.</p><a class="read-more" href={sitePath('/organisasi')}>Buka Organisasi →</a></article>
+        <article class="info-box"><span class="eyebrow">ArsipMu</span><h2>Dokumen yang mudah dicari</h2><p>Surat menyurat, surat masuk, surat keluar, pedoman, dan arsip kegiatan dalam satu ruang yang rapi.</p><a class="read-more" href={sitePath('/arsip')}>Buka ArsipMu →</a></article>
       </div>
     </section>
   </main>
