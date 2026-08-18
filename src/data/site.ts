@@ -6,7 +6,7 @@ export const site = {
   shortName: 'PC Muhammadiyah Somagede',
   address: 'Masjid Darul Arqom Komplek SMK Muhammadiyah Somagede, Jl. Raya Somagede Km. 5, Kode Pos 53193',
   whatsapp: ['081542889595', '081391329139'],
-  email: '',
+  email: 'pcmsomagede@gmail.com',
   url: 'https://pcmsomagede.github.io/',
   description: 'Website resmi Pimpinan Cabang Muhammadiyah Somagede Kabupaten Banyumas.',
   heroImage: 'https://res.cloudinary.com/v6hqki7m/image/upload/f_auto,q_auto,w_1600/profil-1-1024x490',
