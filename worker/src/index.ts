@@ -95,7 +95,16 @@ export default {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(origin, env) });
 
     if (url.pathname === '/api/health' && request.method === 'GET') {
-      return json({ ok: true, service: 'pcmsomagede-cms-api', authConfigured: Boolean(env.ADMIN_USER && env.ADMIN_PASSWORD && env.SESSION_SECRET) }, 200, origin, env);
+      return json({
+        ok: true,
+        service: 'pcmsomagede-cms-api',
+        authConfigured: Boolean(env.ADMIN_USER && env.ADMIN_PASSWORD && env.SESSION_SECRET),
+        checks: {
+          adminUser: Boolean(env.ADMIN_USER),
+          adminPassword: Boolean(env.ADMIN_PASSWORD),
+          sessionSecret: Boolean(env.SESSION_SECRET),
+        },
+      }, 200, origin, env);
     }
 
     if (url.pathname === '/api/login' && request.method === 'POST') {
