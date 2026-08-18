@@ -7,9 +7,6 @@ GITHUB_OWNER = "pcmsomagede"
 GITHUB_REPO = "pcmsomagede"
 PUBLIC_SITE_ORIGIN = "https://pcmsomagede.github.io"
 
-[secrets]
-required = ["ADMIN_USER", "ADMIN_PASSWORD", "SESSION_SECRET"]
-
-# Secret values are never committed.
-# GITHUB_TOKEN is also required by /api/publish and remains managed as a Worker secret.
+# Secret values are managed in the Cloudflare Worker dashboard.
+# GITHUB_TOKEN, ADMIN_USER, ADMIN_PASSWORD, and SESSION_SECRET remain Worker secrets.
 # CMS API deployment
