@@ -22,7 +22,7 @@ export const navGroups = [
     { label: 'Kajian Rutin', href: sitePath('/organisasi#kajian') }, { label: 'Rapat Rutin', href: sitePath('/organisasi#rapat') }, { label: 'Kartu Anggota Muhammadiyah', href: sitePath('/organisasi#anggota') }, { label: 'Organisasi Otonom', href: sitePath('/organisasi#ortom') }, { label: 'Profil Pimpinan', href: sitePath('/pimpinan') }
   ]},
   { label: 'ArsipMu', icon: '▥', href: sitePath('/arsip'), items: [
-    { label: 'Surat Menyurat', href: sitePath('/arsip#surat') }, { label: 'Surat Keluar', href: sitePath('/arsip#keluar') }, { label: 'Surat Masuk', href: sitePath('/arsip#masuk') }, { label: 'Pedoman Surat Menyurat', href: sitePath('/arsip#pedoman') }
+    { label: 'Surat Menyurat', href: sitePath('/arsip#surat') }, { label: 'Surat Keluar', href: sitePath('/arsip#keluar') }, { label: 'Surat Masuk', href: sitePath('/arsip#masuk') }, { label: 'Surat Keputusan & Surat Tugas', href: sitePath('/arsip#keputusan') }, { label: 'Notulensi', href: sitePath('/arsip#notulensi') }, { label: 'Daftar & Sertifikat Wakaf', href: sitePath('/arsip#wakaf') }, { label: 'Surat Aktif Organisasi', href: sitePath('/arsip#aktif-organisasi') }, { label: 'Pedoman Surat Menyurat', href: sitePath('/arsip#pedoman') }
   ]},
   { label: 'KabarMu', icon: '▤', href: sitePath('/berita'), items: [
     { label: 'Berita', href: sitePath('/berita') }, { label: 'Kegiatan', href: sitePath('/kegiatan') }, { label: 'Agenda', href: sitePath('/agenda') }
