@@ -5,87 +5,37 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const heroSrc = site.heroImage.startsWith('http') ? site.heroImage : asset(site.heroImage);
 ---
 <header class="site-header">
-  <div class="utility-bar">
-    <div class="container utility-inner">
-      <span class="utility-place"><span class="utility-dot" aria-hidden="true"></span> Pimpinan Cabang Muhammadiyah Somagede · Banyumas</span>
-      <div class="utility-live" aria-label="Waktu dan tanggal saat ini">
-        <span id="digital-clock">00:00:00 WIB</span>
-        <span aria-hidden="true">•</span>
-        <span id="digital-date">Memuat tanggal…</span>
-        <span aria-hidden="true">•</span>
-        <span id="hijri-date">Memuat kalender Hijriyyah…</span>
-      </div>
-      <span class="utility-contact">WhatsApp <strong>{site.whatsapp[0]}</strong><span aria-hidden="true">·</span><strong>{site.whatsapp[1]}</strong></span>
-    </div>
-  </div>
-
-  <div class="ticker-wrap" aria-label="Pengumuman sambutan">
-    <div class="ticker-track">
-      <span>{site.ticker}</span><span aria-hidden="true">✦</span><span>{site.ticker}</span>
-    </div>
-  </div>
-
+  <div class="utility-bar"><div class="container utility-inner">
+    <span class="utility-place"><span class="utility-dot" aria-hidden="true"></span> Pimpinan Cabang Muhammadiyah Somagede · Banyumas</span>
+    <div class="utility-live" aria-label="Waktu dan tanggal saat ini"><span id="digital-clock">00:00:00 WIB</span><span aria-hidden="true">•</span><span id="digital-date">Memuat tanggal…</span><span aria-hidden="true">•</span><span id="hijri-date">Memuat kalender Hijriyyah…</span></div>
+    <span class="utility-contact">WhatsApp <strong>{site.whatsapp[0]}</strong><span aria-hidden="true">·</span><strong>{site.whatsapp[1]}</strong></span>
+  </div></div>
+  <div class="ticker-wrap" aria-label="Pesan sambutan"><div class="ticker-track"><span>{site.ticker}</span><span aria-hidden="true">✦</span><span>{site.ticker}</span><span aria-hidden="true">✦</span></div></div>
   <section class="hero-shell" aria-labelledby="site-brand-title">
     <img class="hero-photo" src={heroSrc} alt="Gedung dan lingkungan Muhammadiyah Somagede" width="1600" height="720" loading="eager" fetchpriority="high" decoding="async" />
-    <div class="hero-overlay" aria-hidden="true"></div>
-    <div class="hero-vignette" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div><div class="hero-vignette" aria-hidden="true"></div>
     <div class="container hero-content">
       <div class="hero-brand">
-        <a class="hero-lockup" href={sitePath('/')} aria-label="Beranda PC Muhammadiyah Somagede">
-          <img class="hero-logo" src={asset('logo-final.svg')} alt="Logo Pimpinan Cabang Muhammadiyah Somagede" width="132" height="132" decoding="async" />
-          <span class="hero-brand-text"><span class="hero-kicker">PIMPINAN CABANG MUHAMMADIYAH</span><strong id="site-brand-title">SOMAGEDE</strong><span class="hero-region">KABUPATEN BANYUMAS</span></span>
-        </a>
+        <a class="hero-lockup" href={sitePath('/')} aria-label="Beranda PC Muhammadiyah Somagede"><img class="hero-logo" src={asset('logo-final.svg')} alt="Logo Pimpinan Cabang Muhammadiyah Somagede" width="132" height="132" decoding="async" /><span class="hero-brand-text"><span class="hero-kicker">PIMPINAN CABANG MUHAMMADIYAH</span><strong id="site-brand-title">SOMAGEDE</strong><span class="hero-region">KABUPATEN BANYUMAS</span></span></a>
         <span class="hero-status"><span aria-hidden="true"></span> WEBSITE RESMI</span>
       </div>
-      <div class="hero-caption"><span>Gedung &amp; pusat aktivitas</span><b>MUHAMMADIYAH SOMAGEDE</b></div>
+      <div class="hero-ahmad" aria-label="K.H. Ahmad Dahlan"><img src="https://pcmsomagede.github.io/ahmad-dahlan.webp" alt="K.H. Ahmad Dahlan" width="340" height="256" loading="eager" decoding="async" /></div>
     </div>
   </section>
-
-  <div class="nav-wrap">
-    <div class="container nav-inner">
+  <div class="nav-wrap"><div class="container nav-inner">
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav"><span class="menu-icon" aria-hidden="true">☰</span><span>Menu</span></button>
       <nav id="main-nav" aria-label="Navigasi utama">
-        {navGroups.map((group) => {
-          const groupPath = new URL(group.href, Astro.url).pathname.replace(/\/$/, '') || '/';
-          const active = groupPath === currentPath || group.items.some((item) => new URL(item.href, Astro.url).pathname.replace(/\/$/, '') === currentPath);
-          return (
-            <div class="nav-item-group">
-              <a class:list={{ 'nav-link': true, active }} href={group.href} aria-current={active ? 'page' : undefined}>
-                <span class="nav-icon" aria-hidden="true">{group.icon}</span><span>{group.label}</span>{group.items.length > 0 && <span class="nav-caret" aria-hidden="true">⌄</span>}
-              </a>
-              {group.items.length > 0 && (
-                <div class="nav-dropdown">
-                  {group.items.map((item) => <a href={item.href}>{item.label}</a>)}
-                </div>
-              )}
-            </div>
-          );
-        })}
+        {navGroups.map((group) => { const groupPath = new URL(group.href, Astro.url).pathname.replace(/\/$/, '') || '/'; const active = groupPath === currentPath || group.items.some((item) => new URL(item.href, Astro.url).pathname.replace(/\/$/, '') === currentPath); return <div class="nav-item-group"><a class:list={{ 'nav-link': true, active }} href={group.href} aria-current={active ? 'page' : undefined}><span class="nav-icon" aria-hidden="true">{group.icon}</span><span>{group.label}</span>{group.items.length > 0 && <span class="nav-caret" aria-hidden="true">⌄</span>}</a>{group.items.length > 0 && <div class="nav-dropdown">{group.items.map((item) => <a href={item.href}>{item.label}</a>)}</div>}</div>; })}
       </nav>
       <a class="nav-admin" href={sitePath('/admin/')} aria-label="Masuk panel admin"><span aria-hidden="true">⚙</span><span>Admin</span></a>
-    </div>
-  </div>
+  </div></div>
 </header>
 <script>
-  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
-  const nav = document.querySelector<HTMLElement>('#main-nav');
-  toggle?.addEventListener('click', () => { const open = nav?.classList.toggle('is-open') ?? false; toggle.setAttribute('aria-expanded', String(open)); });
-
-  const updateClock = () => {
-    const now = new Date();
-    const clock = document.querySelector('#digital-clock');
-    const date = document.querySelector('#digital-date');
-    const hijri = document.querySelector('#hijri-date');
-    if (clock) clock.textContent = new Intl.DateTimeFormat('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZoneName: 'short' }).format(now);
-    if (date) date.textContent = new Intl.DateTimeFormat('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }).format(now);
-    if (hijri) {
-      try {
-        hijri.textContent = new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura', { day: '2-digit', month: 'long', year: 'numeric' }).format(now) + ' H';
-      } catch {
-        hijri.textContent = new Intl.DateTimeFormat('id-ID-u-ca-islamic', { day: '2-digit', month: 'long', year: 'numeric' }).format(now) + ' H';
-      }
-    }
-  };
-  updateClock();
-  setInterval(updateClock, 1000);
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle'); const nav = document.querySelector<HTMLElement>('#main-nav'); toggle?.addEventListener('click', () => { const open = nav?.classList.toggle('is-open') ?? false; toggle.setAttribute('aria-expanded', String(open)); });
+  const updateClock = () => { const now = new Date(); const c=document.querySelector('#digital-clock'); const d=document.querySelector('#digital-date'); const h=document.querySelector('#hijri-date'); if(c)c.textContent=new Intl.DateTimeFormat('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZoneName:'short'}).format(now); if(d)d.textContent=new Intl.DateTimeFormat('id-ID',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).format(now); if(h){try{let s=new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura',{day:'2-digit',month:'long',year:'numeric'}).format(now); s=s.replace(/Rabiulawal/i,'Rabiul Awwal').replace(/\s*(AH|H)\s*$/i,'').trim(); h.textContent=s+' H';}catch{let s=new Intl.DateTimeFormat('id-ID-u-ca-islamic',{day:'2-digit',month:'long',year:'numeric'}).format(now); s=s.replace(/Rabiulawal/i,'Rabiul Awwal').replace(/\s*(AH|H)\s*$/i,'').trim(); h.textContent=s+' H';}}}; updateClock(); setInterval(updateClock,1000);
 </script>
+<style>
+.hero-brand{max-width:760px}.hero-kicker{font-size:clamp(1.05rem,2.1vw,1.55rem);letter-spacing:.14em;color:#fff;text-shadow:0 3px 18px rgba(0,0,0,.28)}.hero-brand-text strong{font-size:clamp(2.2rem,4.6vw,4.1rem);letter-spacing:-.03em}.hero-ahmad{align-self:flex-end;position:relative;margin:0 0 18px auto;width:min(33vw,340px);min-width:235px;filter:drop-shadow(0 14px 28px rgba(0,0,0,.24));mix-blend-mode:screen;opacity:.94}.hero-ahmad img{display:block;width:100%;height:auto;border-radius:18px;box-shadow:0 14px 40px rgba(0,0,0,.18)}
+@media(max-width:900px){.hero-ahmad{width:220px;min-width:180px;margin-bottom:8px}.hero-kicker{font-size:1rem}.hero-brand-text strong{font-size:2.6rem}}
+@media(max-width:650px){.hero-ahmad{position:absolute;right:8px;bottom:12px;width:150px;min-width:0;opacity:.74}.hero-kicker{font-size:.82rem;letter-spacing:.1em}.hero-brand-text strong{font-size:2.15rem}.hero-region{font-size:.68rem}}
+</style>
