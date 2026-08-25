@@ -1,0 +1,63 @@
+---
+import { navGroups, site, sitePath } from '../data/site';
+const asset = (path: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const heroSrc = site.heroImage.startsWith('http') ? site.heroImage : asset(site.heroImage);
+---
+<header class="site-header">
+  <div class="utility-bar"><div class="container utility-inner">
+    <span class="utility-place"><span class="utility-dot" aria-hidden="true"></span> Pimpinan Cabang Muhammadiyah Somagede · Banyumas</span>
+    <div class="utility-live" aria-label="Waktu dan tanggal saat ini"><span id="digital-clock">00:00:00 WIB</span><span aria-hidden="true">•</span><span id="digital-date">Memuat tanggal…</span><span aria-hidden="true">•</span><span id="hijri-date">Memuat kalender Hijriyyah…</span></div>
+    <span class="utility-contact">WhatsApp <strong>{site.whatsapp[0]}</strong><span aria-hidden="true">·</span><strong>{site.whatsapp[1]}</strong></span>
+  </div></div>
+  <div class="ticker-wrap" aria-label="Pesan sambutan"><div class="ticker-track"><span>{site.ticker}</span><span aria-hidden="true">✦</span><span>{site.ticker}</span><span aria-hidden="true">✦</span></div></div>
+  <section class="hero-shell" aria-labelledby="site-brand-title">
+    <img class="hero-photo" src={heroSrc} alt="Gedung dan lingkungan Muhammadiyah Somagede" width="1600" height="720" loading="eager" fetchpriority="high" decoding="async" />
+    <div class="hero-overlay" aria-hidden="true"></div><div class="hero-vignette" aria-hidden="true"></div>
+    <div class="container hero-content">
+      <div class="hero-brand">
+        <a class="hero-lockup" href={sitePath('/')} aria-label="Beranda PC Muhammadiyah Somagede"><img class="hero-logo" src={asset('logo-final.svg')} alt="Logo Pimpinan Cabang Muhammadiyah Somagede" width="132" height="132" decoding="async" /><span class="hero-brand-text"><span class="hero-kicker">PIMPINAN CABANG MUHAMMADIYAH</span><strong id="site-brand-title">SOMAGEDE</strong><span class="hero-region">KABUPATEN BANYUMAS</span></span></a>
+        <span class="hero-status"><span aria-hidden="true"></span> WEBSITE RESMI</span>
+      </div>
+      <div class="hero-ahmad" aria-hidden="true"><img src={asset('ahmad-dahlan.webp')} alt="" width="340" height="256" loading="eager" decoding="async" /></div>
+    </div>
+  </section>
+  <div class="nav-wrap"><div class="container nav-inner">
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav"><span class="menu-icon" aria-hidden="true">☰</span><span>Menu</span></button>
+    <nav id="main-nav" aria-label="Navigasi utama">
+      {navGroups.map((group) => {
+        const groupPath = new URL(group.href, Astro.url).pathname.replace(/\/$/, '') || '/';
+        const active = groupPath === currentPath || group.items.some((item) => new URL(item.href, Astro.url).pathname.replace(/\/$/, '') === currentPath);
+        return <div class="nav-item-group" data-nav-group>
+          <div class="nav-main-row">
+            <a class:list={{ 'nav-link': true, active }} href={group.href} aria-current={active ? 'page' : undefined}><span class="nav-icon" aria-hidden="true">{group.icon}</span><span>{group.label}</span></a>
+            {group.items.length > 0 && <button class="nav-caret" type="button" aria-expanded="false" aria-label={`Buka submenu ${group.label}`}>⌄</button>}
+          </div>
+          {group.items.length > 0 && <div class="nav-dropdown">{group.items.map((item) => <a href={item.href}>{item.label}</a>)}</div>}
+        </div>;
+      })}
+    </nav>
+    <a class="nav-admin" href={sitePath('/admin/')} aria-label="Masuk panel admin"><span aria-hidden="true">⚙</span><span>Admin</span></a>
+  </div></div>
+</header>
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const nav = document.querySelector<HTMLElement>('#main-nav');
+  toggle?.addEventListener('click', () => { const open = nav?.classList.toggle('is-open') ?? false; toggle.setAttribute('aria-expanded', String(open)); });
+  document.querySelectorAll<HTMLButtonElement>('.nav-caret').forEach((button) => button.addEventListener('click', (event) => {
+    event.preventDefault(); event.stopPropagation();
+    const group = button.closest<HTMLElement>('[data-nav-group]'); if (!group) return;
+    const open = group.classList.toggle('submenu-open'); button.setAttribute('aria-expanded', String(open));
+  }));
+  document.addEventListener('click', (event) => {
+    const target = event.target as Node; if (target && (target as HTMLElement).closest?.('[data-nav-group]')) return;
+    document.querySelectorAll<HTMLElement>('[data-nav-group].submenu-open').forEach((group) => group.classList.remove('submenu-open'));
+    document.querySelectorAll<HTMLButtonElement>('.nav-caret[aria-expanded="true"]').forEach((b) => b.setAttribute('aria-expanded','false'));
+  });
+  const updateClock = () => { const now = new Date(); const c=document.querySelector('#digital-clock'); const d=document.querySelector('#digital-date'); const h=document.querySelector('#hijri-date'); if(c)c.textContent=new Intl.DateTimeFormat('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZoneName:'short'}).format(now); if(d)d.textContent=new Intl.DateTimeFormat('id-ID',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).format(now); if(h){try{let s=new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura',{day:'2-digit',month:'long',year:'numeric'}).format(now);s=s.replace(/Rabiulawal/i,'Rabiul Awwal').replace(/\s*(AH|H)\s*$/i,'').trim();h.textContent=s+' H';}catch{let s=new Intl.DateTimeFormat('id-ID-u-ca-islamic',{day:'2-digit',month:'long',year:'numeric'}).format(now);s=s.replace(/Rabiulawal/i,'Rabiul Awwal').replace(/\s*(AH|H)\s*$/i,'').trim();h.textContent=s+' H';}}};updateClock();setInterval(updateClock,1000);
+</script>
+<style>
+.nav-item-group{position:relative}.nav-main-row{display:flex;align-items:stretch}.nav-main-row .nav-link{flex:1}.nav-caret{display:inline-grid;place-items:center;width:30px;border:0;background:transparent;color:inherit;cursor:pointer;border-radius:0 10px 10px 0}.nav-caret:hover{background:rgba(255,255,255,.11)}.nav-dropdown{position:absolute;top:calc(100% + 8px);left:0;min-width:235px;padding:8px;border-radius:16px;background:#fff;border:1px solid #dce6f2;box-shadow:0 20px 42px rgba(7,31,77,.18);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .16s ease,transform .16s ease,visibility .16s ease;z-index:120}.nav-item-group:hover .nav-dropdown,.nav-item-group:focus-within .nav-dropdown,.nav-item-group.submenu-open .nav-dropdown{opacity:1;visibility:visible;transform:none}.nav-dropdown a{display:block!important;padding:10px 12px!important;border-radius:10px!important;color:#203a5c!important;background:#fff!important;font-size:.78rem!important;white-space:normal!important}.nav-dropdown a:hover{background:#eef6ff!important;color:#06479b!important}.nav-dropdown a::after{display:none!important}.nav-caret[aria-expanded="true"]{background:#eef6ff;color:#06479b}
+.hero-brand{max-width:760px}.hero-kicker{font-size:clamp(1.05rem,2.1vw,1.55rem);letter-spacing:.14em;color:#fff;text-shadow:0 3px 18px rgba(0,0,0,.28)}.hero-brand-text strong{font-size:clamp(2.2rem,4.6vw,4.1rem);letter-spacing:-.03em}.hero-ahmad{align-self:flex-end;position:relative;margin:0 0 8px auto;width:min(33vw,340px);min-width:235px;filter:drop-shadow(0 14px 28px rgba(0,0,0,.24));mix-blend-mode:screen;opacity:.96}.hero-ahmad img{display:block;width:100%;height:auto;border-radius:0;box-shadow:none;filter:sepia(.18) saturate(1.18) contrast(1.04) brightness(1.04)}
+@media(max-width:900px){.hero-ahmad{width:220px;min-width:180px;margin-bottom:8px}.hero-kicker{font-size:1rem}.hero-brand-text strong{font-size:2.6rem}}@media(max-width:650px){.nav-item-group{width:100%}.nav-main-row{width:100%}.nav-dropdown{position:static;min-width:0;margin:2px 0 5px;padding:5px;background:#eef6ff;box-shadow:none;border-radius:12px;display:none;opacity:1;visibility:visible;transform:none}.nav-item-group.submenu-open .nav-dropdown{display:block}.nav-dropdown a{background:transparent!important;padding:9px 12px!important}.nav-caret{width:40px}.hero-ahmad{position:absolute;right:8px;bottom:12px;width:150px;min-width:0;opacity:.78}.hero-kicker{font-size:.82rem;letter-spacing:.1em}.hero-brand-text strong{font-size:2.15rem}.hero-region{font-size:.68rem}}
+</style>
