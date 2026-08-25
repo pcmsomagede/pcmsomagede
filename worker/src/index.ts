@@ -14,7 +14,7 @@ const cors = (origin: string | null, env: Env) => {
     'access-control-allow-origin': allowed,
     'access-control-allow-credentials': 'true',
     'access-control-allow-headers': 'Content-Type, Authorization, Accept',
-    'access-control-allow-methods': 'GET, POST, OPTIONS',
+    'access-control-allow-methods': 'GET, POST, PUT, OPTIONS',
     vary: 'Origin',
   };
 };
@@ -71,6 +71,8 @@ async function github(env: Env, path: string, init: RequestInit = {}) {
 
 const slugify = (value: string) => value.toLowerCase().trim().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 120);
 const sameCredential = (input: unknown, expected: string) => typeof input === 'string' && (input === expected || input.trim() === expected.trim());
+const encodeUtf8 = (value: string) => btoa(unescape(encodeURIComponent(value)));
+const decodeUtf8 = (value: string) => decodeURIComponent(escape(atob(value)));
 
 async function readLoginBody(request: Request) {
   const raw = await request.text();
@@ -88,7 +90,14 @@ async function readLoginBody(request: Request) {
   }
 }
 
-// Secrets are managed in the Cloudflare Worker dashboard and preserved across code deployments.
+async function readGithubJson(env: Env, path: string) {
+  const response = await github(env, `contents/${path}`);
+  if (!response.ok) return { response, data: null as unknown };
+  const payload = await response.json<{ content?: string; sha?: string }>();
+  if (!payload.content) return { response, data: null as unknown };
+  return { response, data: JSON.parse(decodeUtf8(payload.content.replace(/\n/g, ''))), sha: payload.sha };
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -96,34 +105,43 @@ export default {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(origin, env) });
 
     if (url.pathname === '/api/health' && request.method === 'GET') {
-      return json({
-        ok: true,
-        service: 'pcmsomagede-cms-api',
-        authConfigured: Boolean(env.ADMIN_USER && env.ADMIN_PASSWORD && env.SESSION_SECRET),
-        checks: {
-          adminUser: Boolean(env.ADMIN_USER),
-          adminPassword: Boolean(env.ADMIN_PASSWORD),
-          sessionSecret: Boolean(env.SESSION_SECRET),
-        },
-      }, 200, origin, env);
+      return json({ ok: true, service: 'pcmsomagede-cms-api', authConfigured: Boolean(env.ADMIN_USER && env.ADMIN_PASSWORD && env.SESSION_SECRET), checks: { adminUser: Boolean(env.ADMIN_USER), adminPassword: Boolean(env.ADMIN_PASSWORD), sessionSecret: Boolean(env.SESSION_SECRET) } }, 200, origin, env);
     }
 
     if (url.pathname === '/api/login' && request.method === 'POST') {
       const body = await readLoginBody(request);
-      if (!body || !sameCredential(body.username, env.ADMIN_USER) || !sameCredential(body.password, env.ADMIN_PASSWORD)) {
-        return json({ error: 'Username atau password salah.' }, 401, origin, env);
-      }
+      if (!body || !sameCredential(body.username, env.ADMIN_USER) || !sameCredential(body.password, env.ADMIN_PASSWORD)) return json({ error: 'Username atau password salah.' }, 401, origin, env);
       if (!env.SESSION_SECRET) return json({ error: 'Konfigurasi sesi CMS belum lengkap.' }, 500, origin, env);
       const token = await makeSession(env);
       return json({ ok: true, user: env.ADMIN_USER, token }, 200, origin, env, { 'set-cookie': `cms_session=${token}; HttpOnly; Secure; SameSite=None; Max-Age=28800; Path=/` });
     }
 
-    if (url.pathname === '/api/logout' && request.method === 'POST') {
-      return json({ ok: true }, 200, origin, env, { 'set-cookie': 'cms_session=; HttpOnly; Secure; SameSite=None; Max-Age=0; Path=/' });
+    if (url.pathname === '/api/logout' && request.method === 'POST') return json({ ok: true }, 200, origin, env, { 'set-cookie': 'cms_session=; HttpOnly; Secure; SameSite=None; Max-Age=0; Path=/' });
+    if (url.pathname === '/api/session' && request.method === 'GET') return json({ authenticated: await validSession(request, env) }, 200, origin, env);
+
+    if (url.pathname === '/api/menu' && request.method === 'GET') {
+      try {
+        const result = await readGithubJson(env, 'src/data/menu.json');
+        if (!result.response.ok) return json({ error: 'Menu belum dapat dibaca.' }, 502, origin, env);
+        return json({ ok: true, menu: result.data }, 200, origin, env);
+      } catch { return json({ error: 'Format menu tidak valid.' }, 500, origin, env); }
     }
 
-    if (url.pathname === '/api/session' && request.method === 'GET') {
-      return json({ authenticated: await validSession(request, env) }, 200, origin, env);
+    if (url.pathname === '/api/menu' && request.method === 'PUT') {
+      if (!(await validSession(request, env))) return json({ error: 'Sesi tidak valid atau sudah berakhir.' }, 401, origin, env);
+      try {
+        const menu = await request.json<unknown>();
+        if (!Array.isArray(menu) || menu.length === 0) return json({ error: 'Menu harus berupa daftar yang tidak kosong.' }, 400, origin, env);
+        const normalized = menu.map((group:any) => ({ label:String(group.label || '').trim(), icon:String(group.icon || '•'), href:String(group.href || '/').trim(), items:Array.isArray(group.items) ? group.items.map((item:any)=>({label:String(item.label || '').trim(),href:String(item.href || '/').trim()})).filter((item:any)=>item.label && item.href) : [] })).filter((group:any)=>group.label && group.href);
+        const existing = await github(env, 'contents/src/data/menu.json');
+        let sha: string | undefined;
+        if (existing.ok) sha = (await existing.json<{sha:string}>()).sha;
+        else if (existing.status !== 404) return json({ error: 'Gagal memeriksa menu di GitHub.' }, 502, origin, env);
+        const content = JSON.stringify(normalized, null, 2) + '\n';
+        const response = await github(env, 'contents/src/data/menu.json', { method:'PUT', body:JSON.stringify({message:'admin: update navigation menu',content:encodeUtf8(content),...(sha?{sha}:{})}) });
+        if (!response.ok) return json({ error:'GitHub menolak perubahan menu.', detail:await response.text() }, 502, origin, env);
+        return json({ ok:true, menu:normalized, note:'Menu tersimpan ke GitHub dan akan aktif setelah deployment situs selesai.' }, 200, origin, env);
+      } catch { return json({ error:'Data menu tidak valid.' }, 400, origin, env); }
     }
 
     if (url.pathname === '/api/publish' && request.method === 'POST') {
@@ -140,15 +158,10 @@ export default {
         let sha: string | undefined;
         if (existing.ok) sha = (await existing.json<{ sha: string }>()).sha;
         else if (existing.status !== 404) return json({ error: 'Gagal memeriksa konten di GitHub.' }, 502, origin, env);
-        const response = await github(env, `contents/${path}`, {
-          method: 'PUT',
-          body: JSON.stringify({ message: `${sha ? 'update' : 'add'}: ${type} ${slug}`, content: btoa(unescape(encodeURIComponent(content))), ...(sha ? { sha } : {}) }),
-        });
+        const response = await github(env, `contents/${path}`, { method:'PUT', body:JSON.stringify({message:`${sha?'update':'add'}: ${type} ${slug}`,content:encodeUtf8(content),...(sha?{sha}:{})}) });
         if (!response.ok) return json({ error: 'GitHub menolak publikasi.', detail: await response.text() }, 502, origin, env);
         return json({ ok: true, published: true, path, slug }, 200, origin, env);
-      } catch {
-        return json({ error: 'Data konten tidak valid.' }, 400, origin, env);
-      }
+      } catch { return json({ error: 'Data konten tidak valid.' }, 400, origin, env); }
     }
 
     return json({ error: 'Not found' }, 404, origin, env);
