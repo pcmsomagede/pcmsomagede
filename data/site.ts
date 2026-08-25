@@ -6,6 +6,7 @@ export const sitePath = (path = '/') => `${base.replace(/\/$/, '')}${path.starts
 export const site = {
   name: 'Pimpinan Cabang Muhammadiyah Somagede Kabupaten Banyumas',
   shortName: 'PC Muhammadiyah Somagede',
+  chair: 'Drs. Bambang Budiarso',
   address: 'Masjid Darul Arqom Komplek SMK Muhammadiyah Somagede, Jl. Raya Somagede Km. 5, Kode Pos 53193',
   whatsapp: ['081542889595', '081391329139'],
   email: 'pcmsomagede@gmail.com',
