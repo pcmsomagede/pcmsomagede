@@ -1,8 +1,9 @@
 [
-  {"label":"Beranda","icon":"⌂","href":"/","items":[{"label":"Selayang Pandang","href":"/#selayang-pandang"},{"label":"Jejak Sejarah Muhammadiyah di Somagede","href":"/#sejarah-somagede"}]},
-  {"label":"PustakaMu","icon":"✦","href":"/pustaka","items":[{"label":"Arab Dasar → Mahir","href":"/pustaka#arab"},{"label":"Kitab Kuning","href":"/pustaka#kitab"},{"label":"BukuMu — Pustaka Digital","href":"/pustaka#bukumu"},{"label":"Al Qur’anMu — 114 Surah","href":"/pustaka#quranmu"},{"label":"Khutbah & Kultum","href":"/pustaka#khutbah"},{"label":"HaditsMu — Referensi","href":"/pustaka#haditsmu"}]},
-  {"label":"Organisasi","icon":"◎","href":"/organisasi","items":[{"label":"Kajian Rutin","href":"/organisasi#kajian"},{"label":"Rapat Rutin","href":"/organisasi#rapat"},{"label":"Kartu Anggota Muhammadiyah","href":"/organisasi#anggota"},{"label":"Organisasi Otonom","href":"/organisasi#ortom"},{"label":"Profil Pimpinan","href":"/pimpinan"}]},
-  {"label":"ArsipMu","icon":"▥","href":"/arsip","items":[{"label":"Surat Menyurat","href":"/arsip#surat"},{"label":"Surat Keluar","href":"/arsip#keluar"},{"label":"Surat Masuk","href":"/arsip#masuk"},{"label":"Surat Keputusan & Surat Tugas","href":"/arsip#keputusan"},{"label":"Notulensi","href":"/arsip#notulensi"},{"label":"Daftar & Sertifikat Wakaf","href":"/arsip#wakaf"},{"label":"Surat Aktif Organisasi","href":"/arsip#aktif-organisasi"},{"label":"Pedoman Surat Menyurat","href":"/arsip#pedoman"}]},
-  {"label":"KabarMu","icon":"▤","href":"/berita","items":[{"label":"Berita","href":"/berita"},{"label":"Kegiatan","href":"/kegiatan"},{"label":"Agenda","href":"/agenda"}]},
-  {"label":"Kontak","icon":"⌕","href":"/kontak","items":[{"label":"WhatsApp & Telepon","href":"/kontak#hubungi"},{"label":"SuaraMu","href":"/kontak#suaramu"}]}
+  {"label":"Beranda","icon":"⌂","href":"/","items":[{"label":"Selayang Pandang","href":"/#selayang-pandang"},{"label":"Sejarah Muhammadiyah Somagede","href":"/#sejarah-somagede"}]},
+  {"label":"BeritaMu","icon":"✦","href":"/berita","items":[{"label":"Profil Pimpinan","href":"/berita#profil"},{"label":"Kajian Rutin","href":"/berita#kajian"},{"label":"Agenda Persyarikatan","href":"/berita#agenda"},{"label":"Susunan Lengkap","href":"/organisasi"}]},
+  {"label":"PustakaMu","icon":"✺","href":"/pustaka","items":[{"label":"KhutbahMu","href":"/pustaka#khutbah"},{"label":"BukuMu","href":"/pustaka#bukumu"},{"label":"HaditsMu","href":"/pustaka#haditsmu"},{"label":"Al-Qur’anMu","href":"/pustaka#quranmu"}]},
+  {"label":"KTAMu","icon":"◎","href":"/ktamu","items":[]},
+  {"label":"ArsipMu","icon":"▥","href":"/arsip","items":[{"label":"Pedoman Surat","href":"/arsip#pedoman"},{"label":"Surat Masuk","href":"/arsip#masuk"},{"label":"Surat Keluar","href":"/arsip#keluar"},{"label":"Lampiran Surat Keluar","href":"/arsip#lampiran-keluar"},{"label":"Dokumen Lainnya","href":"/arsip#dokumen-lainnya"},{"label":"Data Wakaf","href":"/arsip#wakaf"}]},
+  {"label":"SuaraMu","icon":"◉","href":"/kontak#suaramu","items":[]},
+  {"label":"KontakMu","icon":"⌕","href":"/kontak","items":[]}
 ]
